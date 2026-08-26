@@ -16,7 +16,6 @@ interface ProjectItem {
   tags: string[];
   githubUrl: string;
   demoUrl?: string;
-  color: string;
 }
 
 const PROJECTS_LIST: ProjectItem[] = [
@@ -25,7 +24,7 @@ const PROJECTS_LIST: ProjectItem[] = [
     titleKey: "PROJECT-1",
     titleEng: "Real-Time MLOps Fraud Detection & Drift Monitoring",
     titlePt: "Detecção de Fraude em Tempo Real com MLOps",
-    descriptions: ["Production ML", "FastAPI", "MLflow", "Docker", "Evidently AI", "pytest", "CI/CD"],
+    descriptions: ["FastAPI", "MLflow", "Docker", "Evidently AI", "pytest", "CI/CD"],
     descEng: "End-to-end production ML system serving real-time fraud predictions at test PR-AUC 0.77 with automated Evidently drift triggers, MLflow registry promotion gates, and FastAPI zero-downtime hot-reload.",
     descPt: "Sistema completo de MLOps em produção que detecta fraudes em tempo real com PR-AUC de 0.77, gatilhos automáticos de drift no Evidently e recarregamento sem downtime.",
     fullDescEng: `<div class="ul-title">About the Project:</div>
@@ -46,7 +45,6 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["MLflow", "FastAPI", "Docker", "Evidently AI", "scikit-learn", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
-    color: "#3dd9eb",
   },
   {
     id: "proj-2",
@@ -72,14 +70,13 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["LangGraph", "QLoRA", "Spider", "RAGAS", "DeepEval", "LangSmith"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
-    color: "#38bdf8",
   },
   {
     id: "proj-3",
     titleKey: "PROJECT-3",
     titleEng: "Causal Inference & A/B Experimentation Platform",
     titlePt: "Plataforma de Inferência Causal e Testes A/B",
-    descriptions: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit", "Propensity Score", "DiD"],
+    descriptions: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit", "Propensity Score"],
     descEng: "Self-serve causal experimentation engine with automated SRM & power diagnostics, CUPED variance reduction (35-50%), and 5x bias correction under confounding.",
     descPt: "Plataforma de testes A/B e inferência causal com redução de variância CUPED de até 50% e correção de viés de 5x em dados observacionais com confusão.",
     fullDescEng: `<div class="ul-title">Technical Highlights:</div>
@@ -98,7 +95,6 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
-    color: "#10b981",
   },
   {
     id: "proj-4",
@@ -123,7 +119,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Statistical Arbitrage", "Kalman Filter", "Cointegration", "statsmodels", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin1",
-    color: "#e8b94e",
   },
   {
     id: "proj-5",
@@ -146,7 +141,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Options Pricing", "Black-Scholes", "Monte Carlo", "Implied Volatility", "SciPy"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin2",
-    color: "#f59e0b",
   },
   {
     id: "proj-6",
@@ -169,7 +163,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Factor Models", "Long-Short", "Beta Hedging", "Risk Attribution", "pandas"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin3",
-    color: "#fbbf24",
   },
   {
     id: "proj-7",
@@ -192,7 +185,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Deep Learning", "3D-CNN", "MediaPipe", "Multimodal AI", "IEEE"],
     githubUrl: "https://github.com/Abhi241-bot",
-    color: "#38bdf8",
   },
   {
     id: "proj-8",
@@ -215,7 +207,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Econometrics", "Network Models", "Drawdown Warning", "Bootstrap", "Risk Management"],
     githubUrl: "https://github.com/Abhi241-bot",
-    color: "#f59e0b",
   },
   {
     id: "proj-9",
@@ -238,7 +229,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Option Pricing", "Heston", "Merton Jumps", "Diebold-Mariano", "Quantitative Finance"],
     githubUrl: "https://github.com/Abhi241-bot",
-    color: "#e8b94e",
   },
 ];
 
@@ -372,7 +362,7 @@ export default function GustavoPortfolio() {
     toggleSound();
   };
 
-  // Scroll-Spy Dot Navigation
+  // Scroll-Spy Dot Navigation & Section Transition Fade Reveals
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight * 0.4;
@@ -396,13 +386,13 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Three.js 3D WebGL Scene Engine
+  // Three.js 3D WebGL Scene Engine with Exact Camera Gliding Across Sections
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x121212, 0.002);
+    scene.fog = new THREE.FogExp2(0x121212, 0.0018);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(-3, 0, 100);
@@ -416,52 +406,52 @@ export default function GustavoPortfolio() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor("#121212");
 
-    // 3D Neural Wireframe Mesh / Cybernetic Core
+    // 3D Cyberpunk Head / Neural Wireframe Mesh
     const headGroup = new THREE.Group();
     scene.add(headGroup);
 
-    const geo = new THREE.IcosahedronGeometry(25, 2);
+    const geo = new THREE.IcosahedronGeometry(26, 2);
     const wireGeo = new THREE.WireframeGeometry(geo);
     const lineMat = new THREE.LineBasicMaterial({
-      color: 0x3dd9eb,
+      color: 0x888888,
       transparent: true,
       opacity: 0.35,
     });
     const wireMesh = new THREE.LineSegments(wireGeo, lineMat);
     headGroup.add(wireMesh);
 
-    // Inner Glowing Geometric Core
-    const innerGeo = new THREE.DodecahedronGeometry(15, 1);
+    // Inner Glowing Core
+    const innerGeo = new THREE.DodecahedronGeometry(16, 1);
     const innerMat = new THREE.MeshBasicMaterial({
-      color: 0x22d3ee,
+      color: 0xaaaaaa,
       wireframe: true,
       transparent: true,
-      opacity: 0.15,
+      opacity: 0.12,
     });
     const innerMesh = new THREE.Mesh(innerGeo, innerMat);
     headGroup.add(innerMesh);
 
     // Dynamic Orbital Particles (Smoke / Cybernetic Dust)
-    const particleCount = 200;
+    const particleCount = 240;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 350;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 350;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 150;
+      particlePositions[i] = (Math.random() - 0.5) * 400;
+      particlePositions[i + 1] = (Math.random() - 0.5) * 400;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 200;
     }
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
-      size: 1.8,
-      color: 0x3dd9eb,
+      size: 1.6,
+      color: 0xcccccc,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    headGroup.position.set(-15, 0, 0);
+    headGroup.position.set(-18, 0, 0);
 
     let mouseX = 0;
     let mouseY = 0;
@@ -494,21 +484,22 @@ export default function GustavoPortfolio() {
       // Smooth mouse follow interpolation
       headGroup.rotation.y += (targetRotationY - headGroup.rotation.y) * 0.05;
       headGroup.rotation.x = mouseY * 0.15;
-      headGroup.rotation.z = Math.sin(elapsedTime * 0.5) * 0.05;
+      headGroup.rotation.z = Math.sin(elapsedTime * 0.4) * 0.05;
 
-      innerMesh.rotation.y = -elapsedTime * 0.3;
-      innerMesh.rotation.x = elapsedTime * 0.2;
+      innerMesh.rotation.y = -elapsedTime * 0.25;
+      innerMesh.rotation.x = elapsedTime * 0.18;
 
-      particles.rotation.y = elapsedTime * 0.02;
+      particles.rotation.y = elapsedTime * 0.015;
 
-      // Scroll camera gliding
+      // Scroll camera gliding smoothly through sections
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollFraction = scrollY / maxScroll;
 
-      camera.position.y = -scrollFraction * 60;
-      camera.position.x = -3 + scrollFraction * 10;
-      camera.lookAt(0, -scrollFraction * 40, 0);
+      camera.position.y = -scrollFraction * 70;
+      camera.position.x = -3 + Math.sin(scrollFraction * Math.PI * 2) * 8;
+      camera.position.z = 100 - Math.sin(scrollFraction * Math.PI) * 15;
+      camera.lookAt(0, -scrollFraction * 50, 0);
 
       renderer.render(scene, camera);
       animId = requestAnimationFrame(animate);
@@ -681,7 +672,7 @@ export default function GustavoPortfolio() {
                 rel="noopener noreferrer"
               >
                 <div className="whatsapp-logo" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "16px", fontWeight: "900", color: "#3dd9eb", fontFamily: "monospace" }}>K</span>
+                  <span style={{ fontSize: "16px", fontWeight: "900", color: "#a8a8a8", fontFamily: "monospace" }}>K</span>
                 </div>
               </a>
             </div>
@@ -1177,26 +1168,26 @@ export default function GustavoPortfolio() {
                           style={{
                             width: "100%",
                             height: "100%",
-                            background: "rgba(18, 24, 38, 0.9)",
-                            border: isActive ? "1px solid #3dd9eb" : "1px solid rgba(255,255,255,0.1)",
-                            borderRadius: "16px",
+                            background: "rgba(18, 18, 18, 0.95)",
+                            border: isActive ? "2px solid #c2c2c2" : "1px solid rgba(255,255,255,0.12)",
+                            borderRadius: "10px",
                             padding: "20px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
-                            boxShadow: isActive ? "0 0 30px rgba(61, 217, 235, 0.3)" : "0 15px 35px rgba(0,0,0,0.6)",
+                            boxShadow: isActive ? "0 0 25px rgba(255, 255, 255, 0.25)" : "20px 20px 50px rgba(0,0,0,0.8)",
                             transform: `perspective(1200px) rotateY(${rotateY}deg) scale(${isActive ? 1.05 : 0.92})`,
                             transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
                           }}
                         >
                           <div>
-                            <div style={{ fontSize: "11px", color: proj.color, fontFamily: "monospace", textTransform: "uppercase", marginBottom: "8px" }}>
+                            <div style={{ fontSize: "11px", color: "#a8a8a8", fontFamily: "monospace", textTransform: "uppercase", marginBottom: "8px" }}>
                               {proj.tags[0]}
                             </div>
                             <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#fff", marginBottom: "10px", lineHeight: "1.3" }}>
                               {isEng ? proj.titleEng : proj.titlePt}
                             </h3>
-                            <p style={{ fontSize: "12px", color: "#94a3b8", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                            <p style={{ fontSize: "12px", color: "#888888", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                               {isEng ? proj.descEng : proj.descPt}
                             </p>
                           </div>
@@ -1204,7 +1195,7 @@ export default function GustavoPortfolio() {
                           <div>
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "12px" }}>
                               {proj.descriptions.slice(0, 3).map((d, dIdx) => (
-                                <span key={dIdx} style={{ fontSize: "10px", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: "4px", color: "#cbd5e1" }}>
+                                <span key={dIdx} style={{ fontSize: "10px", background: "#111", border: "1px solid rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: "4px", color: "#a8a8a8" }}>
                                   {d}
                                 </span>
                               ))}
@@ -1220,9 +1211,9 @@ export default function GustavoPortfolio() {
                                 width: "100%",
                                 padding: "8px",
                                 background: "transparent",
-                                border: "1px solid #3dd9eb",
+                                border: "1px solid #c2c2c2",
                                 borderRadius: "50px",
-                                color: "#3dd9eb",
+                                color: "#c2c2c2",
                                 fontSize: "11px",
                                 fontWeight: "700",
                                 letterSpacing: "0.05em",
@@ -1230,12 +1221,12 @@ export default function GustavoPortfolio() {
                                 transition: "all 0.3s",
                               }}
                               onMouseEnter={(e) => {
-                                e.currentTarget.style.background = "#3dd9eb";
-                                e.currentTarget.style.color = "#0a0e14";
+                                e.currentTarget.style.background = "#c2c2c2";
+                                e.currentTarget.style.color = "#121212";
                               }}
                               onMouseLeave={(e) => {
                                 e.currentTarget.style.background = "transparent";
-                                e.currentTarget.style.color = "#3dd9eb";
+                                e.currentTarget.style.color = "#c2c2c2";
                               }}
                             >
                               {isEng ? "VIEW PROJECT" : "VISUALIZAR PROJETO"}
@@ -1393,7 +1384,11 @@ export default function GustavoPortfolio() {
                       </svg>
                     </div>
                   </a>
-                  <a href="https://www.linkedin.com/in/abhiram-boini" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://www.linkedin.com/in/abhiram-boini"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <div className="linkedIn-logo-contact">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="24px" height="24px" fill="#ffffff">
                         <path d="M24,4H6C4.895,4,4,4.895,4,6v18c0,1.105,0.895,2,2,2h18c1.105,0,2-0.895,2-2V6C26,4.895,25.105,4,24,4z M10.954,22h-2.95 v-9.492h2.95V22z M9.449,11.151c-0.951,0-1.72-0.771-1.72-1.72c0-0.949,0.77-1.719,1.72-1.719c0.948,0,1.719,0.771,1.719,1.719 C11.168,10.38,10.397,11.151,9.449,11.151z M22.004,22h-2.948v-4.616c0-1.101-0.02-2.517-1.533-2.517 c-1.535,0-1.771,1.199-1.771,2.437V22h-2.948v-9.492h2.83v1.297h0.04c0.394-0.746,1.356-1.533,2.791-1.533 c2.987,0,3.539,1.966,3.539,4.522V22z"/>
@@ -1402,7 +1397,7 @@ export default function GustavoPortfolio() {
                   </a>
                   <a href="https://www.kaggle.com/abhiramboini" target="_blank" rel="noopener noreferrer">
                     <div className="whatsapp-logo-contact" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ fontSize: "16px", fontWeight: "900", color: "#3dd9eb", fontFamily: "monospace" }}>K</span>
+                      <span style={{ fontSize: "16px", fontWeight: "900", color: "#a8a8a8", fontFamily: "monospace" }}>K</span>
                     </div>
                   </a>
                 </div>
@@ -1432,7 +1427,7 @@ export default function GustavoPortfolio() {
         </section>
       </main>
 
-      {/* Loading Screen 1 */}
+      {/* Loading Screen */}
       {!startClicked && (
         <>
           <section
@@ -1502,14 +1497,14 @@ export default function GustavoPortfolio() {
       {/* Virtual Experience / Game Modal */}
       {gameModalOpen && (
         <div className="privacy-modal" style={{ display: "flex" }}>
-          <div className="privacy-modal-content" style={{ maxWidth: "600px", background: "#0c121e", border: "1px solid #3dd9eb" }}>
+          <div className="privacy-modal-content" style={{ maxWidth: "600px", background: "#181818", border: "1px solid #c2c2c2" }}>
             <span
               className="privacy-modal-close"
               onClick={() => setGameModalOpen(false)}
             >
               ×
             </span>
-            <h2 style={{ color: "#3dd9eb", fontFamily: "Bitter, serif" }}>
+            <h2 style={{ color: "#ffffff", fontFamily: "Bitter, serif" }}>
               {isEng ? "Virtual Simulation Terminal" : "Terminal de Simulação Virtual"}
             </h2>
             <div style={{ color: "#cbd5e1", fontSize: "13px", lineHeight: "1.6", marginTop: "16px" }}>
@@ -1518,11 +1513,11 @@ export default function GustavoPortfolio() {
                   ? "Interactive Quant & MLOps System node initialized. All 9 production pipelines and research papers are running active live calibrations."
                   : "Nó de sistema quantitativo e MLOps inicializado. Todos os 9 pipelines e artigos de pesquisa estão com calibração ativa."}
               </p>
-              <div style={{ background: "#060a10", padding: "12px", borderRadius: "8px", fontFamily: "monospace", fontSize: "12px", border: "1px solid rgba(61,217,235,0.3)" }}>
-                <p style={{ color: "#10b981" }}>› System: MLOps Fraud Drift Model (PR-AUC 0.77)</p>
-                <p style={{ color: "#38bdf8" }}>› Multi-Agent LangGraph QLoRA SQL (+11% boost)</p>
-                <p style={{ color: "#e8b94e" }}>› Statistical Arbitrage (Engle-Granger p=0.0002)</p>
-                <p style={{ color: "#f59e0b" }}>› NSE Nifty 50 Options (115,709 contracts analyzed)</p>
+              <div style={{ background: "#0c0c0c", padding: "12px", borderRadius: "8px", fontFamily: "monospace", fontSize: "12px", border: "1px solid rgba(255,255,255,0.15)" }}>
+                <p style={{ color: "#ffffff" }}>› System: MLOps Fraud Drift Model (PR-AUC 0.77)</p>
+                <p style={{ color: "#a8a8a8" }}>› Multi-Agent LangGraph QLoRA SQL (+11% boost)</p>
+                <p style={{ color: "#888888" }}>› Statistical Arbitrage (Engle-Granger p=0.0002)</p>
+                <p style={{ color: "#c2c2c2" }}>› NSE Nifty 50 Options (115,709 contracts analyzed)</p>
               </div>
               <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "20px" }}>
                 <button
@@ -1530,8 +1525,8 @@ export default function GustavoPortfolio() {
                   style={{
                     padding: "8px 20px",
                     borderRadius: "50px",
-                    background: "#3dd9eb",
-                    color: "#0a0e14",
+                    background: "#c2c2c2",
+                    color: "#121212",
                     fontWeight: "700",
                     border: "none",
                     cursor: "pointer",

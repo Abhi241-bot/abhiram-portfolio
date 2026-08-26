@@ -3,6 +3,11 @@
 /* Ensure smooth scrolling and prevent scroll before start */
 html {
   scroll-behavior: smooth;
+  background-color: #121212;
+}
+
+body {
+  background-color: #121212;
 }
 
 /* Custom override for font clarity and responsiveness */
@@ -21,7 +26,7 @@ html {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
   z-index: 99;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -33,15 +38,15 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90vw;
-  max-width: 900px;
+  max-width: 850px;
   max-height: 85vh;
-  background: #121824;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(61, 217, 235, 0.15);
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 255, 255, 0.08);
   z-index: 100;
   overflow-y: auto;
-  padding: 24px;
+  padding: 26px;
 }
 
 .lightbox .close {
@@ -66,7 +71,7 @@ html {
 }
 
 .project-description-container {
-  color: #ccc;
+  color: #a8a8a8;
   font-family: Lato, sans-serif;
 }
 
@@ -88,7 +93,7 @@ html {
 .ul-title {
   font-size: 15px;
   font-weight: 700;
-  color: #3dd9eb;
+  color: #ffffff;
   margin-top: 16px;
   margin-bottom: 8px;
   font-family: Bitter, serif;
@@ -113,10 +118,10 @@ html {
   font-size: 11px;
   font-family: monospace;
   padding: 4px 10px;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  color: #38bdf8;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: #c2c2c2;
 }
 
 .project-action-links {
@@ -140,13 +145,13 @@ html {
 }
 
 .project-link-btn.primary {
-  background: #3dd9eb;
-  color: #0a0e14;
+  background: #c2c2c2;
+  color: #121212;
 }
 
 .project-link-btn.primary:hover {
-  background: #22d3ee;
-  box-shadow: 0 0 15px rgba(61, 217, 235, 0.5);
+  background: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
 .project-link-btn.secondary {
