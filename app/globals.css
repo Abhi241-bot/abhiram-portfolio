@@ -1,14 +1,39 @@
 @import "./gustavo.css";
 
-/* Ensure smooth scrolling and dark theme */
-html {
-  scroll-behavior: smooth;
-  background-color: #121212;
+/* Universal Viewport Container Lock */
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #121212 !important;
+  scroll-behavior: smooth !important;
 }
 
-body {
-  background-color: #121212;
-  overflow-x: hidden;
+/* Neutralize legacy translation and offsets */
+section,
+.section,
+#section-home,
+#about,
+.about,
+#service,
+.service,
+#projects,
+.projects,
+#contact,
+.contact {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  transform: none !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
 }
 
 /* Hide language dropdown completely */
@@ -105,7 +130,7 @@ body {
   transform: translateX(-4px) !important;
 }
 
-/* Hero Section Positioning & Layout - 100% Dead-Center across all screens */
+/* Hero Section Positioning & Layout - 100% Centered */
 #section-home {
   visibility: visible !important;
   display: flex !important;
@@ -154,16 +179,13 @@ body {
   justify-content: center !important;
   text-align: center !important;
   width: 100% !important;
-  position: absolute !important;
-  /* was: relative */
-  top: 50% !important;
-  /* was: 0 */
+  position: relative !important;
+  top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   margin: 0 auto !important;
   padding: 0 !important;
-  transform: translateY(-50%) !important;
-  /* was: none */
+  transform: none !important;
   z-index: 50 !important;
 }
 
@@ -237,14 +259,129 @@ body {
   margin: 0 auto !important;
 }
 
-/* Skills Section - Exact Match to Screenshot 3 */
+/* Section base styles */
+.section {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  position: relative !important;
+  z-index: 10 !important;
+  padding: 80px 8vw !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+}
+
+/* Section 2: About - Parallel to 3D Head on Left */
+#about,
+.section#about {
+  width: 100% !important;
+  max-width: 100vw !important;
+  padding: 80px 8vw !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-end !important;
+  background: transparent !important;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+}
+
+.about-content-wrapper {
+  max-width: 530px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  position: relative !important;
+  z-index: 20 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+}
+
+.about-title {
+  font-family: 'Bitter', serif !important;
+  font-size: clamp(28px, 3.2vw, 42px) !important;
+  letter-spacing: 0.18em !important;
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+  max-width: 260px !important;
+  transform: none !important;
+}
+
+.about-text {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  color: #c5c5c5 !important;
+  font-weight: 400 !important;
+  margin-bottom: 20px !important;
+}
+
+/* Tabs: Both Education & Skills Vertically Aligned with Icons On Top */
+.tab-titles {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 40px !important;
+  margin: 24px 0 20px 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding-bottom: 10px !important;
+}
+
+.tab-links {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  gap: 8px !important;
+  font-family: 'Bitter', serif !important;
+  font-size: 14px !important;
+  color: #777777 !important;
+  padding-bottom: 8px !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+  user-select: none !important;
+}
+
+.tab-links svg {
+  width: 20px !important;
+  height: 20px !important;
+  transition: color 0.3s ease !important;
+}
+
+.tab-links.active-link {
+  color: #ffffff !important;
+}
+
+.tab-links.active-link::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -11px !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 2px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 12px #ffffff !important;
+}
+
+/* Skills Section - Exact Match to Screenshot with Official SVG Icons */
 .skills-columns-wrapper {
   display: flex !important;
   flex-direction: row !important;
   justify-content: flex-start !important;
-  gap: 4vw !important;
+  gap: 24px !important;
   width: 100% !important;
-  margin-top: 20px !important;
+  margin-top: 16px !important;
   flex-wrap: wrap !important;
 }
 
@@ -252,30 +389,30 @@ body {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
-  min-width: 280px !important;
+  min-width: 220px !important;
 }
 
 .skills-column-title {
   font-family: 'Bitter', serif !important;
-  font-size: 16px !important;
-  letter-spacing: 0.2em !important;
+  font-size: 13px !important;
+  letter-spacing: 0.16em !important;
   color: #ffffff !important;
   text-transform: uppercase !important;
-  margin-bottom: 18px !important;
+  margin-bottom: 14px !important;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3) !important;
 }
 
 .skills-icon-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, 72px) !important;
-  gap: 16px !important;
+  grid-template-columns: repeat(3, 64px) !important;
+  gap: 12px !important;
 }
 
 .skill-card-icon {
-  width: 72px !important;
-  height: 72px !important;
+  width: 64px !important;
+  height: 64px !important;
   background: #1e1e1e !important;
-  border-radius: 18px !important;
+  border-radius: 14px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -289,14 +426,14 @@ body {
 }
 
 .skill-card-icon:hover {
-  transform: translateY(-5px) scale(1.08) !important;
+  transform: translateY(-4px) scale(1.08) !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.2) !important;
 }
 
 .skill-card-icon img {
-  width: 38px !important;
-  height: 38px !important;
+  width: 32px !important;
+  height: 32px !important;
   object-fit: contain !important;
   transition: transform 0.3s ease !important;
 }
@@ -307,8 +444,8 @@ body {
 
 .skill-name-tooltip {
   position: absolute !important;
-  bottom: 3px !important;
-  font-size: 8px !important;
+  bottom: 2px !important;
+  font-size: 7.5px !important;
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
   color: #c2c2c2 !important;
@@ -321,22 +458,212 @@ body {
   opacity: 1 !important;
 }
 
-/* Contact Section - Clean Layout Strictly Constrained Inside Frame */
-.contact.section {
+/* Download CV Button - Pure Silver/White Glowing Theme */
+.btn-cv-border {
+  position: relative !important;
+  left: 0 !important;
+  transform: none !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+}
+
+.dcv {
+  position: relative !important;
+  left: 0 !important;
+  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 32px !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50px !important;
+  font-family: 'Lato', sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+  width: auto !important;
+  min-width: 160px !important;
+  height: auto !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1) !important;
+}
+
+.dcv span {
+  display: none !important;
+}
+
+.dcv:hover {
+  background: #ffffff !important;
+  color: #121212 !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8) !important;
+  border-color: #ffffff !important;
+}
+
+/* Section 3: Service - Side-by-Side 3x2 Grid on Left, 3D Brain on Right */
+.section.service,
+#service,
+.section#service {
+  width: 100% !important;
+  max-width: 100vw !important;
+  padding: 60px 8vw !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  background: transparent !important;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+}
+
+.service-content-wrapper {
+  max-width: 530px !important;
+  width: 100% !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  position: relative !important;
+  z-index: 20 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+}
+
+.service-title {
+  font-family: 'Bitter', serif !important;
+  font-size: clamp(28px, 3.2vw, 42px) !important;
+  letter-spacing: 0.18em !important;
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 14px !important;
+  width: 100% !important;
+  max-width: 240px !important;
+  transform: none !important;
+}
+
+.service-text {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #c5c5c5 !important;
+  font-weight: 400 !important;
+  margin-bottom: 20px !important;
+  max-width: 500px !important;
+}
+
+/* Service 3x2 Grid exactly matching Reference */
+.service-grid-3x2 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 14px !important;
+  width: 100% !important;
+}
+
+.service-box-card {
+  height: 135px !important;
+  background: rgba(26, 26, 26, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 14px 10px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.service-box-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 255, 255, 0.12) !important;
+}
+
+.service-box-icon {
+  width: 38px !important;
+  height: 38px !important;
+  margin-bottom: 10px !important;
+  color: #a8a8a8 !important;
+  transition: color 0.3s ease, transform 0.3s ease !important;
+}
+
+.service-box-card:hover .service-box-icon {
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+}
+
+.service-box-title {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: #c2c2c2 !important;
+  line-height: 1.3 !important;
+  margin: 0 !important;
+  transition: color 0.3s ease !important;
+}
+
+.service-box-card:hover .service-box-title {
+  color: #ffffff !important;
+}
+
+.service-box-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(14, 14, 14, 0.96) !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+  color: #cbd5e1 !important;
+  line-height: 1.4 !important;
+  opacity: 0 !important;
+  transform: translateY(100%) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.service-box-card:hover .service-box-overlay {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Contact Section - Spacious & Robust inside viewport */
+.contact.section,
+#contact,
+.section#contact {
   min-height: 100vh !important;
   width: 100% !important;
   max-width: 100vw !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
+  align-items: flex-start !important;
   position: relative !important;
   z-index: 10 !important;
   padding: 80px 8vw !important;
   box-sizing: border-box !important;
   left: 0 !important;
   right: 0 !important;
-  margin: 0 !important;
   transform: none !important;
+  background: transparent !important;
 }
 
 #contact,
@@ -347,7 +674,7 @@ body {
   right: 0 !important;
   transform: none !important;
   width: 100% !important;
-  max-width: 500px !important;
+  max-width: 520px !important;
   margin: 0 !important;
   box-sizing: border-box !important;
   z-index: 20 !important;
@@ -362,7 +689,8 @@ body {
   text-transform: uppercase !important;
   border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
   padding-bottom: 12px !important;
-  width: auto !important;
+  width: 100% !important;
+  max-width: 280px !important;
   transform: none !important;
   text-align: left !important;
 }
@@ -380,7 +708,7 @@ body {
 #contact-form input[type="email"],
 #contact-form textarea {
   width: 100% !important;
-  background: rgba(22, 22, 22, 0.9) !important;
+  background: rgba(22, 22, 22, 0.92) !important;
   border: 1px solid rgba(255, 255, 255, 0.22) !important;
   border-radius: 8px !important;
   padding: 14px 18px !important;
@@ -390,6 +718,7 @@ body {
   box-sizing: border-box !important;
   margin: 0 !important;
   height: auto !important;
+  transition: all 0.3s ease !important;
 }
 
 #contact-form textarea {
@@ -402,7 +731,7 @@ body {
 #contact-form textarea:focus {
   outline: none !important;
   border-color: #ffffff !important;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.35) !important;
 }
 
 .button-container {
@@ -429,7 +758,7 @@ body {
   font-family: 'Lato', sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: 0.12em !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
 }
@@ -458,18 +787,6 @@ body {
 
 .footer-privacy-link:hover {
   color: #aaaaaa !important;
-}
-
-/* Section styling */
-.section {
-  min-height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  position: relative !important;
-  z-index: 5 !important;
-  padding: 80px 8vw !important;
-  box-sizing: border-box !important;
 }
 
 /* Carousel 3D styling */
