@@ -278,7 +278,7 @@ export default function GustavoPortfolio() {
         setLoadingComplete(true);
       }
       setLoadingPercent(current);
-    }, 20);
+    }, 18);
     return () => clearInterval(interval);
   }, []);
 
@@ -308,7 +308,6 @@ export default function GustavoPortfolio() {
 
   const handleStart = () => {
     setStartClicked(true);
-    document.body.style.overflowY = "scroll";
     toggleSound();
   };
 
@@ -336,16 +335,16 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Correct Mountain Wave & Brain Orbit
+  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Upward Crest Terrain & Concentric Brain Orbit
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x121212, 0.0015);
+    scene.fog = new THREE.FogExp2(0x121212, 0.0012);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(-3, 510, 100);
+    camera.position.set(0, 510, 110);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -360,62 +359,61 @@ export default function GustavoPortfolio() {
     const gltfLoader = new GLTFLoader();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
     dirLight.position.set(0, 550, 200);
     scene.add(dirLight);
 
     // 1. HOME SCENE: Celestial Star + Mountain Wave Terrain
-    const starGeo = new THREE.SphereGeometry(1.6, 16, 16);
+    const starGeo = new THREE.SphereGeometry(2.0, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 565, 0);
+    starMesh.position.set(0, 560, 0);
     scene.add(starMesh);
 
     // Glowing Star Point Light
-    const starLight = new THREE.PointLight(0xffffff, 3.0, 350);
-    starLight.position.set(-2.5, 565, 10);
+    const starLight = new THREE.PointLight(0xffffff, 3.5, 400);
+    starLight.position.set(0, 560, 15);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane with Alpha and Displacement (Arching upward behind name)
+    // Terrain Wireframe Plane with Alpha and Displacement Map (Arching upward behind name)
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
 
-    const terrainGeo = new THREE.PlaneGeometry(200, 200, 96, 128);
+    const terrainGeo = new THREE.PlaneGeometry(220, 220, 96, 128);
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.22,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 40,
+      displacementScale: -40,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-    // Correct orientation so the crest arches upward like the reference screenshot
-    terrainMesh.rotation.set(11, 0, 0);
-    terrainMesh.position.set(0, 485, 0);
+    terrainMesh.rotation.set(-Math.PI / 2.3, 0, 0);
+    terrainMesh.position.set(0, 480, -20);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
-    const binCount = 1300;
+    const binCount = 1400;
     const binGeo = new THREE.BufferGeometry();
     const binPos = new Float32Array(binCount * 3);
     for (let i = 0; i < binCount * 3; i += 3) {
-      binPos[i] = (Math.random() - 0.5) * 240;
-      binPos[i + 1] = (Math.random() - 0.5) * 240;
+      binPos[i] = (Math.random() - 0.5) * 260;
+      binPos[i + 1] = (Math.random() - 0.5) * 260;
       binPos[i + 2] = (Math.random() - 0.5) * 60;
     }
     binGeo.setAttribute("position", new THREE.BufferAttribute(binPos, 3));
     const binParticleMat = new THREE.PointsMaterial({
-      size: 1.2,
+      size: 1.3,
       map: binMap,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.7,
       blending: THREE.AdditiveBlending,
     });
     const binParticles = new THREE.Points(binGeo, binParticleMat);
@@ -423,14 +421,14 @@ export default function GustavoPortfolio() {
 
     // 2. ABOUT SCENE: Wireframe Head & Glowing Lightbulb
     const headGroup = new THREE.Group();
-    headGroup.position.set(-28, 260, 0);
+    headGroup.position.set(-26, 260, 0);
     headGroup.scale.set(25, 25, 25);
     headGroup.rotation.y = Math.PI / 6;
     scene.add(headGroup);
 
     // Lamp Point Light inside the head
-    const lampLight = new THREE.PointLight(0xffffff, 2.2, 150);
-    lampLight.position.set(-28, 275, 10);
+    const lampLight = new THREE.PointLight(0xffffff, 2.5, 150);
+    lampLight.position.set(-26, 275, 10);
     scene.add(lampLight);
 
     gltfLoader.load(
@@ -451,9 +449,9 @@ export default function GustavoPortfolio() {
       (err) => console.warn("scene3.gltf fallback:", err)
     );
 
-    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Orbiting Particle Sphere
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Concentric Orbiting Particle Sphere
     const brainGroup = new THREE.Group();
-    brainGroup.position.set(30, 110, 0);
+    brainGroup.position.set(32, 110, 0);
     brainGroup.scale.set(13, 13, 13);
     brainGroup.rotation.y = 1;
     scene.add(brainGroup);
@@ -463,7 +461,13 @@ export default function GustavoPortfolio() {
     gltfLoader.load(
       "/models/brain/te3.glb",
       (gltf) => {
+        // Compute bounding box and center internal mesh at (0, 0, 0)
+        const box = new THREE.Box3().setFromObject(gltf.scene);
+        const center = box.getCenter(new THREE.Vector3());
+        gltf.scene.position.sub(center);
+
         brainGroup.add(gltf.scene);
+
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(gltf.scene);
           gltf.animations.forEach((clip) => {
@@ -476,10 +480,10 @@ export default function GustavoPortfolio() {
     );
 
     // Concentric Spherical Particle Ring around Brain
-    const sphereParticleCount = 1300;
+    const sphereParticleCount = 1400;
     const sphereGeo = new THREE.BufferGeometry();
     const spherePos: number[] = [];
-    const radius = 3.5;
+    const radius = 3.2;
     for (let i = 0; i < sphereParticleCount; i++) {
       const u = Math.random();
       const v = Math.random();
@@ -491,13 +495,13 @@ export default function GustavoPortfolio() {
     }
     sphereGeo.setAttribute("position", new THREE.Float32BufferAttribute(spherePos, 3));
     const sphereMat = new THREE.PointsMaterial({
-      color: 0x868686,
-      size: 0.05,
+      color: 0x94a3b8,
+      size: 0.04,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    // Attached directly to brainGroup so it is always 100% concentric and aligned
+    // Concentrically attached at (0,0,0) directly inside brainGroup
     brainGroup.add(brainOrbitParticles);
 
     // 4. AMBIENT SMOKE & SPACE DUST
@@ -544,7 +548,7 @@ export default function GustavoPortfolio() {
       const headIntersects = raycaster.intersectObjects(headGroup.children, true);
       if (headIntersects.length > 0) {
         playSfx("/sound/lampSound.wav");
-        lampLight.intensity = lampLight.intensity > 3.0 ? 2.2 : 4.5;
+        lampLight.intensity = lampLight.intensity > 3.0 ? 2.5 : 4.5;
       }
 
       const brainIntersects = raycaster.intersectObjects(brainGroup.children, true);
@@ -610,39 +614,39 @@ export default function GustavoPortfolio() {
       const scrollProgress = scrollY / maxScroll;
 
       // Camera positions mapped:
-      // Home: y: 510, z: 100 -> About: y: 260, z: 90 -> Service: y: 110, z: 90 -> Projects: y: -30, z: 100 -> Contact: y: -160, z: 90
+      // Home: y: 510, z: 110 -> About: y: 260, z: 95 -> Service: y: 110, z: 95 -> Projects: y: -30, z: 100 -> Contact: y: -160, z: 95
       let targetY = 510;
-      let targetZ = 100;
-      let targetX = -3;
+      let targetZ = 110;
+      let targetX = 0;
       let targetLookY = 490;
 
       if (scrollProgress < 0.25) {
         // Home -> About
         const progress = scrollProgress / 0.25;
         targetY = 510 - progress * (510 - 260);
-        targetZ = 100 - progress * (100 - 90);
-        targetX = -3 - progress * 5;
+        targetZ = 110 - progress * (110 - 95);
+        targetX = -progress * 5;
         targetLookY = 490 - progress * (490 - 260);
       } else if (scrollProgress < 0.5) {
         // About -> Service
         const progress = (scrollProgress - 0.25) / 0.25;
         targetY = 260 - progress * (260 - 110);
-        targetZ = 90;
-        targetX = -8 + progress * 15;
+        targetZ = 95;
+        targetX = -5 + progress * 12;
         targetLookY = 260 - progress * (260 - 110);
       } else if (scrollProgress < 0.75) {
         // Service -> Projects
         const progress = (scrollProgress - 0.5) / 0.25;
         targetY = 110 - progress * (110 - (-30));
-        targetZ = 90 + progress * 10;
+        targetZ = 95 + progress * 5;
         targetX = 7 - progress * 7;
         targetLookY = 110 - progress * (110 - (-30));
       } else {
         // Projects -> Contact
         const progress = (scrollProgress - 0.75) / 0.25;
         targetY = -30 - progress * (-30 - (-160));
-        targetZ = 100 - progress * 10;
-        targetX = -progress * 3;
+        targetZ = 100 - progress * 5;
+        targetX = -progress * 2;
         targetLookY = -30 - progress * (-30 - (-160));
       }
 
@@ -953,38 +957,34 @@ export default function GustavoPortfolio() {
       <main>
         {/* Section 1: Home (Hero) */}
         <section className="section" id="section-home">
-          <section className="home" data-nav="data-nav">
-            <a className="home-href" href="#home" id="Home">
-              <div className="name-container">
-                <div className="name-highlight">
-                  <span id="letter">A</span>
-                  <span id="name">BHIRAM</span>
-                  <span id="letter2">B</span>
-                  <span className="name2" id="name">OINI</span>
-                </div>
+          <div className="name-container">
+            <div className="name-highlight">
+              <span id="letter">A</span>
+              <span id="name">BHIRAM</span>
+              <span id="letter2">B</span>
+              <span className="name2" id="name">OINI</span>
+            </div>
 
-                <div className="typed-wrapper">
-                  <span className="typed" id="typed">
-                    {isEng ? "| DATA SCIENCE & AI ENGINEER |" : "| ENGENHEIRO DE DADOS & IA |"}
-                  </span>
-                </div>
+            <div className="typed-wrapper">
+              <span className="typed" id="typed">
+                {isEng ? "| DATA SCIENCE & AI ENGINEER |" : "| ENGENHEIRO DE DADOS & IA |"}
+              </span>
+            </div>
 
-                <div className="contact-Btn-wrapper">
-                  <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
-                    <button className="contact-Btn">
-                      {isEng ? "Get in Touch" : "Entre em Contato"}
-                    </button>
-                  </a>
-                </div>
+            <div className="contact-Btn-wrapper">
+              <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
+                <button className="contact-Btn">
+                  {isEng ? "Get in Touch" : "Entre em Contato"}
+                </button>
+              </a>
+            </div>
 
-                <div id="scroll-down-animation">
-                  <span className="mouse">
-                    <span className="move"></span>
-                  </span>
-                </div>
-              </div>
-            </a>
-          </section>
+            <div id="scroll-down-animation" style={{ marginTop: "40px" }}>
+              <span className="mouse">
+                <span className="move"></span>
+              </span>
+            </div>
+          </div>
         </section>
 
         {/* Section 2: About */}
@@ -997,7 +997,7 @@ export default function GustavoPortfolio() {
           </h2>
 
           {/* Tabs Header */}
-          <div className="tab-titles">
+          <div className="tab-titles" style={{ width: "100%", justifyContent: "flex-end" }}>
             <p
               className={`tab-links ${activeTab === "education" ? "active-link" : ""}`}
               onClick={() => {
@@ -1026,7 +1026,7 @@ export default function GustavoPortfolio() {
           </div>
 
           {/* Education Tab Content */}
-          <div className={`tab-contents ${activeTab === "education" ? "active-tab" : ""}`} id="education">
+          <div className={`tab-contents ${activeTab === "education" ? "active-tab" : ""}`} id="education" style={{ width: "100%" }}>
             <ul>
               <li className="graduation-title">
                 <span>2024–2028</span>
@@ -1083,7 +1083,7 @@ export default function GustavoPortfolio() {
           </div>
 
           {/* Skills Tab Content */}
-          <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills">
+          <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills" style={{ width: "100%" }}>
             {/* Group 1: Core Languages */}
             <div className="our-skills">
               <p>{isEng ? "Languages & Systems" : "Linguagens & Sistemas"}</p>
@@ -1134,7 +1134,7 @@ export default function GustavoPortfolio() {
           </div>
 
           {/* Animated Download CV Button */}
-          <div className="btn-cv-border">
+          <div className="btn-cv-border" style={{ marginTop: "20px" }}>
             <a
               className="dcv"
               href="/resumes/Abhiram_Boini_ML_Resume.pdf"
