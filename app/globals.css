@@ -16,46 +16,33 @@ body {
   display: none !important;
 }
 
-/* Hide floating circle text overlay that was bleeding over hero buttons */
+/* Hide floating sound circle text overlay */
 #circle, .circle, .circle-inner, .circle .label {
   display: none !important;
 }
 
-/* Hamburger Menu (3 white lines) in top right corner - matching reference */
+/* Hamburger Menu Icon in top right */
 .mobile-menu {
   position: fixed !important;
   top: 24px !important;
   right: 28px !important;
-  width: 32px !important;
-  height: 20px !important;
+  width: 34px !important;
+  height: 22px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   cursor: pointer !important;
-  z-index: 10005 !important;
+  z-index: 99999 !important;
 }
 
-.mobile-menu .line1,
-.mobile-menu .line2,
-.mobile-menu .line3 {
+.mobile-menu span,
+.mobile-menu div {
   display: block !important;
   width: 100% !important;
   height: 2px !important;
   background-color: #ffffff !important;
   border-radius: 2px !important;
   transition: all 0.3s ease !important;
-}
-
-.mobile-menu.active .line1 {
-  transform: rotate(-45deg) translate(-5px, 6px) !important;
-}
-
-.mobile-menu.active .line2 {
-  opacity: 0 !important;
-}
-
-.mobile-menu.active .line3 {
-  transform: rotate(45deg) translate(-5px, -6px) !important;
 }
 
 /* Slide-out Navigation Drawer */
@@ -80,7 +67,7 @@ body {
   opacity: 0 !important;
   visibility: hidden !important;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s !important;
-  z-index: 10000 !important;
+  z-index: 99990 !important;
   box-shadow: -15px 0 45px rgba(0, 0, 0, 0.95) !important;
 }
 
@@ -126,7 +113,7 @@ body {
   right: 0 !important;
   width: 100% !important;
   height: 100vh !important;
-  z-index: 10 !important;
+  z-index: 50 !important;
 }
 
 .home {
@@ -156,7 +143,7 @@ body {
   right: 0 !important;
   left: 0 !important;
   transform: none !important;
-  z-index: 20 !important;
+  z-index: 50 !important;
 }
 
 .name-highlight {
@@ -166,13 +153,13 @@ body {
   gap: 12px !important;
   width: 100% !important;
   transform: none !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 14px !important;
 }
 
 #letter, #letter2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 700 !important;
-  font-size: clamp(2.8rem, 6.5vw, 6.5rem) !important;
+  font-size: clamp(2.8rem, 6.2vw, 6.2rem) !important;
   color: #ffffff !important;
   text-shadow: 0 0 12px #ffffff, 0 0 24px #ffffff, 0 0 45px rgba(255, 255, 255, 0.9), 0 0 70px rgba(255, 255, 255, 0.6) !important;
 }
@@ -180,14 +167,14 @@ body {
 #name, .name2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 400 !important;
-  font-size: clamp(2.1rem, 5.2vw, 5.2rem) !important;
+  font-size: clamp(2.1rem, 5vw, 5rem) !important;
   color: #a8a8a8 !important;
   letter-spacing: 0.28em !important;
 }
 
 .typed-wrapper {
-  margin-top: 6px !important;
-  margin-bottom: 22px !important;
+  margin-top: 4px !important;
+  margin-bottom: 24px !important;
   transform: none !important;
   width: 100% !important;
   text-align: center !important;
@@ -195,7 +182,7 @@ body {
 
 .typed {
   font-family: 'Lato', sans-serif !important;
-  font-size: clamp(0.85rem, 1.25vw, 1.4rem) !important;
+  font-size: clamp(0.85rem, 1.2vw, 1.35rem) !important;
   color: #888888 !important;
   letter-spacing: 0.38em !important;
   font-weight: 400 !important;
@@ -207,7 +194,7 @@ body {
   justify-content: center !important;
   align-items: center !important;
   width: 100% !important;
-  margin: 12px 0 40px 0 !important;
+  margin: 10px 0 45px 0 !important;
   transform: none !important;
   position: static !important;
   left: auto !important;
@@ -220,8 +207,8 @@ body {
   right: auto !important;
   transform: none !important;
   width: auto !important;
-  min-width: 220px !important;
-  height: 48px !important;
+  min-width: 200px !important;
+  height: 44px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -229,10 +216,10 @@ body {
   color: #999999 !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 50px !important;
-  padding: 0 42px !important;
+  padding: 0 38px !important;
   font-family: 'Lato', sans-serif !important;
   font-size: 13px !important;
-  letter-spacing: 0.25rem !important;
+  letter-spacing: 0.22rem !important;
   text-transform: capitalize !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
@@ -247,7 +234,7 @@ body {
 
 #scroll-down-animation {
   position: absolute !important;
-  bottom: 30px !important;
+  bottom: 25px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   cursor: pointer !important;

@@ -288,15 +288,15 @@ export default function GustavoPortfolio() {
     const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 565, 0);
+    starMesh.position.set(-2.5, 565, -30);
     scene.add(starMesh);
 
     // Glowing Star Point Light
-    const starLight = new THREE.PointLight(0xffffff, 3.2, 350);
-    starLight.position.set(-2.5, 565, 10);
+    const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
+    starLight.position.set(-2.5, 565, -20);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane matching exact reference coordinates
+    // Terrain Wireframe Plane positioned in the background behind the name
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -305,18 +305,18 @@ export default function GustavoPortfolio() {
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.12,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 40,
+      displacementScale: 25,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
     // Rotate terrain by 11 rad so mountain ridge arches UPWARDS in middle behind text
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 485, 0);
-    terrainMesh.scale.set(1.3, 1.3, 1.3);
+    terrainMesh.position.set(0, 440, -70);
+    terrainMesh.scale.set(1.4, 1.4, 1.4);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
@@ -369,7 +369,7 @@ export default function GustavoPortfolio() {
       (err) => console.warn("scene3.gltf fallback:", err)
     );
 
-    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Spherical Particle Shell
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Concentric Spherical Particle Shell
     const brainGroup = new THREE.Group();
     brainGroup.position.set(45, 110, 0);
     brainGroup.scale.set(13, 13, 13);
@@ -381,7 +381,13 @@ export default function GustavoPortfolio() {
     gltfLoader.load(
       "/models/brain/te3.glb",
       (gltf) => {
+        // Mathematically center the brain mesh around (0, 0, 0)
+        const box = new THREE.Box3().setFromObject(gltf.scene);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        gltf.scene.position.sub(center);
         brainGroup.add(gltf.scene);
+
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(gltf.scene);
           gltf.animations.forEach((clip) => {
@@ -393,14 +399,14 @@ export default function GustavoPortfolio() {
       (err) => console.warn("te3.glb fallback:", err)
     );
 
-    // Spherical Particle Shell accurately centered around the Brain
-    const sphereRadius = Math.min(45, (typeof window !== "undefined" ? window.innerWidth : 1200) / 4);
+    // Spherical Particle Shell Concentric with Brain at (45, 110, 0)
+    const sphereRadius = 45;
     const sphereParticleCount = 1300;
     const sphereGeo = new THREE.BufferGeometry();
     const spherePos: number[] = [];
 
     for (let i = 0; i < sphereParticleCount; i++) {
-      // Spherical shell distribution matching original Gustavo formula
+      // Spherical shell distribution matching Gustavo's math
       const lf = Math.acos(THREE.MathUtils.randFloatSpread(2));
       const Lv = THREE.MathUtils.randFloatSpread(360);
       const px = sphereRadius * Math.sin(lf) * Math.cos(Lv);
@@ -505,7 +511,7 @@ export default function GustavoPortfolio() {
         const x = Math.sin(y) * 0.2;
         const S = v + t;
         const T = Math.cos(S) * 0.2;
-        positionAttr.setZ(f, (x + T) * 4.0);
+        positionAttr.setZ(f, (x + T) * 3.0);
       }
       terrainGeo.computeVertexNormals();
       positionAttr.needsUpdate = true;
@@ -607,7 +613,7 @@ export default function GustavoPortfolio() {
       {/* Header & Sticky Navigation */}
       <header id="home">
         <nav className="menu">
-          {/* Hamburger Menu Icon (3 horizontal lines) in Top-Right */}
+          {/* Hamburger Menu Icon (3 horizontal white lines) in Top-Right */}
           <div
             className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
             onClick={() => {
@@ -616,9 +622,9 @@ export default function GustavoPortfolio() {
             }}
             aria-label="Toggle Navigation Menu"
           >
-            <div className="line1"></div>
-            <div className="line2"></div>
-            <div className="line3"></div>
+            <span style={{ display: "block", width: "100%", height: "2px", backgroundColor: "#ffffff", borderRadius: "2px", transition: "all 0.3s ease", transform: mobileMenuOpen ? "rotate(-45deg) translate(-5px, 6px)" : "none" }}></span>
+            <span style={{ display: "block", width: "100%", height: "2px", backgroundColor: "#ffffff", borderRadius: "2px", transition: "all 0.3s ease", opacity: mobileMenuOpen ? 0 : 1 }}></span>
+            <span style={{ display: "block", width: "100%", height: "2px", backgroundColor: "#ffffff", borderRadius: "2px", transition: "all 0.3s ease", transform: mobileMenuOpen ? "rotate(45deg) translate(-5px, -6px)" : "none" }}></span>
           </div>
 
           {/* Slide-out Navigation Drawer Menu */}
