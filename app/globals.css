@@ -12,12 +12,18 @@ body {
 }
 
 /* Hide language dropdown completely */
-.dropdown, .dropdown__button, .dropdown__items {
+.dropdown,
+.dropdown__button,
+.dropdown__items {
   display: none !important;
 }
 
 /* Hide floating sound circle text overlay and old scroll indicators */
-#circle, .circle, .circle-inner, .circle .label, #scroll-down-animation {
+#circle,
+.circle,
+.circle-inner,
+.circle .label,
+#scroll-down-animation {
   display: none !important;
 }
 
@@ -148,13 +154,16 @@ body {
   justify-content: center !important;
   text-align: center !important;
   width: 100% !important;
-  position: relative !important;
-  top: 0 !important;
+  position: absolute !important;
+  /* was: relative */
+  top: 50% !important;
+  /* was: 0 */
   left: 0 !important;
   right: 0 !important;
   margin: 0 auto !important;
   padding: 0 !important;
-  transform: none !important;
+  transform: translateY(-50%) !important;
+  /* was: none */
   z-index: 50 !important;
 }
 
@@ -182,7 +191,8 @@ body {
   transform: none !important;
 }
 
-#letter, #letter2 {
+#letter,
+#letter2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 700 !important;
   font-size: clamp(3rem, 6.5vw, 6.5rem) !important;
@@ -193,7 +203,8 @@ body {
   transform: none !important;
 }
 
-#name, .name2 {
+#name,
+.name2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 400 !important;
   font-size: clamp(2.3rem, 5.2vw, 5.2rem) !important;
