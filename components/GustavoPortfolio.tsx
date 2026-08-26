@@ -6,14 +6,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 interface ProjectItem {
   id: string;
-  titleKey: string;
-  titleEng: string;
-  titlePt: string;
+  title: string;
   descriptions: string[];
-  descEng: string;
-  descPt: string;
-  fullDescEng: string;
-  fullDescPt: string;
+  desc: string;
+  fullDesc: string;
   tags: string[];
   githubUrl: string;
   demoUrl?: string;
@@ -23,26 +19,16 @@ interface ProjectItem {
 const PROJECTS_LIST: ProjectItem[] = [
   {
     id: "proj-1",
-    titleKey: "PROJECT-1",
-    titleEng: "Real-Time MLOps Fraud Detection & Drift Monitoring",
-    titlePt: "Detecção de Fraude em Tempo Real com MLOps",
+    title: "Real-Time MLOps Fraud Detection & Drift Monitoring",
     descriptions: ["FastAPI", "MLflow", "Docker", "Evidently AI", "pytest", "CI/CD"],
-    descEng: "End-to-end production ML system serving real-time fraud predictions at test PR-AUC 0.77 with automated Evidently drift triggers, MLflow registry promotion gates, and FastAPI zero-downtime hot-reload.",
-    descPt: "Sistema completo de MLOps em produção que detecta fraudes em tempo real com PR-AUC de 0.77, gatilhos automáticos de drift no Evidently e recarregamento sem downtime.",
-    fullDescEng: `<div class="ul-title">About the Project:</div>
+    desc: "End-to-end production ML system serving real-time fraud predictions at test PR-AUC 0.77 with automated Evidently drift triggers, MLflow registry promotion gates, and FastAPI zero-downtime hot-reload.",
+    fullDesc: `<div class="ul-title">About the Project:</div>
 <ul class="ul-description">
   <li>Built an end-to-end production system serving real-time fraud predictions at test PR-AUC 0.77 (precision 0.87 / recall 0.75) on a ~0.17%-positive imbalanced dataset.</li>
   <li>Closed the MLOps loop: Evidently AI Kolmogorov-Smirnov drift detection triggers automated retraining.</li>
   <li>MLflow registry promotion gate strictly promotes the challenger model only if it beats the incumbent on identical holdout data.</li>
   <li>FastAPI async microservice hot-reloads model weights with zero downtime.</li>
   <li>Fully containerized with Docker Compose; ruff + pytest CI via GitHub Actions.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Sobre o Projeto:</div>
-<ul class="ul-description">
-  <li>Construiu um sistema completo em produção servindo predições de fraude com PR-AUC 0.77 em dados desbalanceados (0.17%).</li>
-  <li>Ciclo fechado de MLOps: monitoramento de drift no Evidently AI dispara retreinamento automático.</li>
-  <li>Gate de promoção no registro MLflow avalia challenger contra incumbent antes da promoção.</li>
-  <li>Microsserviço FastAPI assíncrono com hot-reload dinâmico.</li>
 </ul>`,
     tags: ["MLflow", "FastAPI", "Docker", "Evidently AI", "scikit-learn", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -51,24 +37,15 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-2",
-    titleKey: "PROJECT-2",
-    titleEng: "Multi-Agent Financial Analyst with QLoRA Text-to-SQL",
-    titlePt: "Analista Financeiro Multi-Agente com SQL Fine-Tuned",
+    title: "Multi-Agent Financial Analyst with QLoRA Text-to-SQL",
     descriptions: ["LangGraph", "QLoRA", "RAGAS", "DeepEval", "LangSmith", "ChromaDB", "SEC EDGAR"],
-    descEng: "Autonomous LangGraph multi-agent financial researcher with 4-bit QLoRA fine-tuned Text-to-SQL tool, SEC EDGAR 10-K RAG, prompt-injection guardrails, and automated RAGAS evaluations.",
-    descPt: "Sistema multi-agente autônomo em LangGraph com Text-to-SQL fine-tuned via QLoRA 4-bit, busca vetorial em 10-Ks da SEC e guardrails contra prompt injection.",
-    fullDescEng: `<div class="ul-title">Key Architectural Features:</div>
+    desc: "Autonomous LangGraph multi-agent financial researcher with 4-bit QLoRA fine-tuned Text-to-SQL tool, SEC EDGAR 10-K RAG, prompt-injection guardrails, and automated RAGAS evaluations.",
+    fullDesc: `<div class="ul-title">Key Architectural Features:</div>
 <ul class="ul-description">
   <li>Autonomous LangGraph multi-agent workflow (planner → researcher → analyst) generating cited financial teardowns from SEC EDGAR filings.</li>
   <li>Fine-tuned Text-to-SQL with 4-bit QLoRA on Spider dataset, boosting execution accuracy from 49.0% to 54.5% (+11% relative boost).</li>
   <li>Input/output guardrails: prompt-injection intercept, regex PII filtering, and read-only SQL execution.</li>
   <li>Integrated human-in-the-loop validation checkpoints and full LangSmith distributed tracing.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Principais Recursos:</div>
-<ul class="ul-description">
-  <li>Fluxo multi-agente autônomo LangGraph com relatórios fundamentados em dados da SEC EDGAR.</li>
-  <li>Fine-tuning de Text-to-SQL com QLoRA 4-bit elevando acurácia em +11% no benchmark Spider.</li>
-  <li>Guardrails de segurança contra injeção de prompt e mascaramento de PII.</li>
 </ul>`,
     tags: ["LangGraph", "QLoRA", "Spider", "RAGAS", "DeepEval", "LangSmith"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -77,24 +54,15 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-3",
-    titleKey: "PROJECT-3",
-    titleEng: "Causal Inference & A/B Experimentation Platform",
-    titlePt: "Plataforma de Inferência Causal e Testes A/B",
+    title: "Causal Inference & A/B Experimentation Platform",
     descriptions: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit", "Propensity Score"],
-    descEng: "Self-serve causal experimentation engine with automated SRM & power diagnostics, CUPED variance reduction (35-50%), and 5x bias correction under confounding.",
-    descPt: "Plataforma de testes A/B e inferência causal com redução de variância CUPED de até 50% e correção de viés de 5x em dados observacionais com confusão.",
-    fullDescEng: `<div class="ul-title">Technical Highlights:</div>
+    desc: "Self-serve causal experimentation engine with automated SRM & power diagnostics, CUPED variance reduction (35-50%), and 5x bias correction under confounding.",
+    fullDesc: `<div class="ul-title">Technical Highlights:</div>
 <ul class="ul-description">
   <li>Pre-experiment Sample Ratio Mismatch (SRM) checks and statistical power calculations.</li>
   <li>CUPED variance reduction shrinking necessary experiment duration and sample sizes by up to 50%.</li>
   <li>Causal estimators (DoWhy, EconML): Propensity Score Matching, Difference-in-Differences, and Causal Forests.</li>
   <li>Demonstrated 5x bias recovery on confounded observational data (naive 11.0 vs true 2.0; PSM 1.6).</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Destaques Técnicos:</div>
-<ul class="ul-description">
-  <li>Verificações automáticas de SRM e cálculo de poder estatístico.</li>
-  <li>Redução de variância com CUPED acelerando experimentos em até 50%.</li>
-  <li>Estimadores causais com DoWhy e EconML para decisões de produto com verdicts em linguagem natural.</li>
 </ul>`,
     tags: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -103,24 +71,15 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-4",
-    titleKey: "PROJECT-4",
-    titleEng: "Statistical Arbitrage / Pairs Trading (NSE Equities)",
-    titlePt: "Arbitragem Estatística / Pairs Trading (Ações NSE)",
+    title: "Statistical Arbitrage / Pairs Trading (NSE Equities)",
     descriptions: ["Python", "statsmodels", "Kalman Filter", "Cointegration", "Walk-Forward", "pytest"],
-    descEng: "Cost-aware cointegration pairs strategy on TCS/INFY with Engle-Granger Bonferroni clearance (p=0.0002), rolling Kalman filter hedge ratios, and 9-fold walk-forward validation.",
-    descPt: "Estratégia de pairs trading cointegrada em ações da NSE com filtro de Kalman dinâmico, validação walk-forward em 9 blocos e análise rigorosa de custos.",
-    fullDescEng: `<div class="ul-title">Methodological Breakdown:</div>
+    desc: "Cost-aware cointegration pairs strategy on TCS/INFY with Engle-Granger Bonferroni clearance (p=0.0002), rolling Kalman filter hedge ratios, and 9-fold walk-forward validation.",
+    fullDesc: `<div class="ul-title">Methodological Breakdown:</div>
 <ul class="ul-description">
   <li>Engle-Granger cointegration (p = 0.0002, Bonferroni-cleared) on TCS/INFY; spread parameters estimated strictly on train period.</li>
   <li>Honest result: in-sample Sharpe 0.97 decaying to -0.72 OOS diagnosed via rolling Kalman filter dynamic hedge ratios.</li>
   <li>Cost-sensitivity sweep proving signal breakdown rather than transaction cost drag.</li>
   <li>27-test automated pytest suite enforcing zero look-ahead bias invariants.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Detalhamento Metodológico:</div>
-<ul class="ul-description">
-  <li>Cointegração de Engle-Granger (p = 0.0002) em TCS/INFY com confirmação ADF e Johansen.</li>
-  <li>Diagnóstico de decaimento fora da amostra via filtro de Kalman e 9 blocos de walk-forward.</li>
-  <li>27 testes automatizados no pytest garantindo ausência de viés temporal.</li>
 </ul>`,
     tags: ["Statistical Arbitrage", "Kalman Filter", "Cointegration", "statsmodels", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin1",
@@ -128,22 +87,14 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-5",
-    titleKey: "PROJECT-5",
-    titleEng: "Options Pricing & Implied Volatility Surface",
-    titlePt: "Precificação de Opções e Superfície de Volatilidade Implícita",
+    title: "Options Pricing & Implied Volatility Surface",
     descriptions: ["Python", "SciPy", "Black-Scholes", "Monte Carlo", "CRR Binomial", "Delta Hedging"],
-    descEng: "Analytical Black-Scholes Greeks, CRR binomial lattice, and Monte Carlo three-way numerical agreement proof. SPY implied volatility surface inversion and discrete delta hedging simulation.",
-    descPt: "Precificador de derivativos com prova de concordância tripla (BSM, CRR e Monte Carlo), inversão de superfície de volatilidade implícita no SPY e simulação de delta hedging.",
-    fullDescEng: `<div class="ul-title">Derivatives Engineering:</div>
+    desc: "Analytical Black-Scholes Greeks, CRR binomial lattice, and Monte Carlo three-way numerical agreement proof. SPY implied volatility surface inversion and discrete delta hedging simulation.",
+    fullDesc: `<div class="ul-title">Derivatives Engineering:</div>
 <ul class="ul-description">
   <li>Implemented Black-Scholes (analytical Greeks), multi-step CRR binomial trees, and vectorized Monte Carlo simulation agreeing within standard error.</li>
   <li>Inverted real SPY option chains via Brent's root-finder to map empirical downward equity volatility skew (+9.6% at 7d → +5.1% at 88d).</li>
   <li>Discrete delta-hedging simulation proving error scaling as 1/√n under friction.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Engenharia de Derivativos:</div>
-<ul class="ul-description">
-  <li>Implementação de Black-Scholes com Gregas completas, árvores CRR e simulação de Monte Carlo.</li>
-  <li>Reconstrução de superfícies de volatilidade e skew empírico em opções reais do SPY.</li>
 </ul>`,
     tags: ["Options Pricing", "Black-Scholes", "Monte Carlo", "Implied Volatility", "SciPy"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin2",
@@ -151,22 +102,14 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-6",
-    titleKey: "PROJECT-6",
-    titleEng: "Multi-Factor Long-Short Equity Strategy (Nifty 100)",
-    titlePt: "Estratégia Long-Short Multi-Fator (Nifty 100)",
+    title: "Multi-Factor Long-Short Equity Strategy (Nifty 100)",
     descriptions: ["Python", "pandas", "Factor Investing", "Beta Hedging", "Alpha Attribution", "Nifty 100"],
-    descEng: "Cross-sectional z-score factor book (momentum, low-volatility, value) on Nifty 100 with monthly rebalancing, explicit turnover costs, and point-in-time beta hedging teardown.",
-    descPt: "Portfólio long-short quantitativo multi-fator no índice Nifty 100 com rebalanceamento mensal, custos de turnover e decomposição rigorosa de alfa vs beta.",
-    fullDescEng: `<div class="ul-title">Quantitative Portfolio Construction:</div>
+    desc: "Cross-sectional z-score factor book (momentum, low-volatility, value) on Nifty 100 with monthly rebalancing, explicit turnover costs, and point-in-time beta hedging teardown.",
+    fullDesc: `<div class="ul-title">Quantitative Portfolio Construction:</div>
 <ul class="ul-description">
   <li>Combined momentum, low-volatility, and value factors into standardized cross-sectional z-scores.</li>
   <li>Rigorous attribution: proved an apparent +3.1% static alpha collapsed to +0.7% once market beta exposure was stripped.</li>
   <li>Full Information Coefficient (IC) decay analysis and survivorship bias disclosures.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Construção de Portfólio:</div>
-<ul class="ul-description">
-  <li>Combinação de fatores de momentum, baixa volatilidade e valor em z-scores transversais.</li>
-  <li>Atribuição rigorosa separando alfa idiossincrático real de exposição latente a beta de mercado.</li>
 </ul>`,
     tags: ["Factor Models", "Long-Short", "Beta Hedging", "Risk Attribution", "pandas"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin3",
@@ -174,22 +117,14 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-7",
-    titleKey: "PROJECT-7",
-    titleEng: "Multimodal Stress Detection using Deep Learning (IEEE)",
-    titlePt: "Detecção Multimodal de Estresse com Deep Learning (IEEE)",
+    title: "Multimodal Stress Detection using Deep Learning (IEEE)",
     descriptions: ["PyTorch", "3D-CNN", "EfficientNet", "MediaPipe", "Audio-Visual Fusion", "IEEE"],
-    descEng: "Hybrid 3D-CNN + EfficientNet architecture fusing facial video dynamics and acoustic spectral features with Action-Unit gating, achieving 94.7% accuracy vs 87.3% unimodal baseline.",
-    descPt: "Arquitetura híbrida 3D-CNN + EfficientNet fundindo dinâmica facial e características acústicas de fala, alcançando 94.7% de acurácia (artigo IEEE).",
-    fullDescEng: `<div class="ul-title">Research Contributions:</div>
+    desc: "Hybrid 3D-CNN + EfficientNet architecture fusing facial video dynamics and acoustic spectral features with Action-Unit gating, achieving 94.7% accuracy vs 87.3% unimodal baseline.",
+    fullDesc: `<div class="ul-title">Research Contributions:</div>
 <ul class="ul-description">
   <li>Hybrid 3D-CNN + EfficientNet with Action-Unit gating for dynamic temporal-spectral fusion.</li>
   <li>Automated preprocessing pipeline with MediaPipe facial landmark alignment and Voice Activity Detection (VAD), reducing baseline error by 38%.</li>
   <li>Published in IEEE conference proceedings (in progress).</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Contribuições Científicas:</div>
-<ul class="ul-description">
-  <li>Fusão de vídeo facial e áudio com 3D-CNN e EfficientNet atingindo 94.7% de acurácia.</li>
-  <li>Pipeline de pré-processamento com MediaPipe e VAD reduzindo erro em 38%.</li>
 </ul>`,
     tags: ["Deep Learning", "3D-CNN", "MediaPipe", "Multimodal AI", "IEEE"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -197,22 +132,14 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-8",
-    titleKey: "PROJECT-8",
-    titleEng: "Cross-Asset Stress-Flow Index for Drawdown Warning",
-    titlePt: "Índice de Fluxo de Estresse Entre Ativos para Alerta de Quedas",
+    title: "Cross-Asset Stress-Flow Index for Drawdown Warning",
     descriptions: ["Network Econometrics", "21-Asset Panel", "Block Bootstrap", "Diebold-Yilmaz", "Drawdowns"],
-    descEng: "Sole-author manuscript designing a parameter-free network statistic across a 21-asset global panel leading own volatility in 64% of 145 drawdown episodes (p=0.002, block-bootstrap).",
-    descPt: "Manuscrito de autor único formulando o Stress Flow Index (SFI) em painel global de 21 ativos, antecipando drawdowns em 64% dos 145 episódios históricos (p=0.002).",
-    fullDescEng: `<div class="ul-title">Econometric Innovation:</div>
+    desc: "Sole-author manuscript designing a parameter-free network statistic across a 21-asset global panel leading own volatility in 64% of 145 drawdown episodes (p=0.002, block-bootstrap).",
+    fullDesc: `<div class="ul-title">Econometric Innovation:</div>
 <ul class="ul-description">
   <li>Formulated the Stress Flow Index (SFI): parameter-free network statistic aggregating directed stress transfer across 21 cross-asset markets (2000–2024).</li>
   <li>Out-of-sample walk-forward validation: leads asset volatility ahead of drawdowns in 64% of 145 episodes (p = 0.002 via stationary block-bootstrap).</li>
   <li>Demonstrated near-orthogonality (|ρ| ≤ 0.16) and incremental information beyond Diebold-Yilmaz connectedness.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Inovação Econométrica:</div>
-<ul class="ul-description">
-  <li>Índice em forma fechada que agrega contágio de estresse entre 21 classes de ativos globais.</li>
-  <li>Validação out-of-sample comprovando antecipação de volatilidade em 64% dos drawdowns históricos.</li>
 </ul>`,
     tags: ["Econometrics", "Network Models", "Drawdown Warning", "Bootstrap", "Risk Management"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -220,22 +147,14 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
   {
     id: "proj-9",
-    titleKey: "PROJECT-9",
-    titleEng: "Jumps vs. Stochastic Volatility on NSE Nifty 50 Options",
-    titlePt: "Saltos vs Volatilidade Estocástica em Opções Nifty 50",
+    title: "Jumps vs. Stochastic Volatility on NSE Nifty 50 Options",
     descriptions: ["Derivatives Pricing", "Heston Model", "Merton Jump-Diffusion", "Diebold-Mariano", "115K Options"],
-    descEng: "Empirical out-of-sample comparison of BSM, CRR, Merton jump-diffusion, and Heston stochastic volatility on 115,709 NSE option records across crash and calm regimes.",
-    descPt: "Comparação empírica out-of-sample de BSM, CRR, Merton e Heston em 115.709 contratos de opções do Nifty 50 na NSE indiana sob múltiplos regimes de mercado.",
-    fullDescEng: `<div class="ul-title">Empirical Pricing Findings:</div>
+    desc: "Empirical out-of-sample comparison of BSM, CRR, Merton jump-diffusion, and Heston stochastic volatility on 115,709 NSE option records across crash and calm regimes.",
+    fullDesc: `<div class="ul-title">Empirical Pricing Findings:</div>
 <ul class="ul-description">
   <li>Benchmarked 4 option models from scratch on 115,709 NSE Nifty 50 quotes using trailing realized volatility.</li>
   <li>Regime-dependent result: Heston wins calm regimes (40.4% RMSE reduction), while Merton jumps win COVID shock (27.7%), all verified at p < 0.001 via Diebold-Mariano testing.</li>
   <li>Analytical BSM-CRR equivalence used as exact numerical control.</li>
-</ul>`,
-    fullDescPt: `<div class="ul-title">Resultados Empíricos:</div>
-<ul class="ul-description">
-  <li>Avaliação de modelos em 115.709 registros de opções reais na NSE.</li>
-  <li>Heston minimiza erro em períodos calmos (redução de 40.4% no RMSE), enquanto Merton vence em choques extremos de mercado (27.7%).</li>
 </ul>`,
     tags: ["Option Pricing", "Heston", "Merton Jumps", "Diebold-Mariano", "Quantitative Finance"],
     githubUrl: "https://github.com/Abhi241-bot",
@@ -244,8 +163,6 @@ const PROJECTS_LIST: ProjectItem[] = [
 ];
 
 export default function GustavoPortfolio() {
-  const [lang, setLang] = useState<"eng" | "pt">("eng");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [activeTab, setActiveTab] = useState<"education" | "skills">("education");
   const [courseworkOpen, setCourseworkOpen] = useState(false);
@@ -336,7 +253,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Wave Terrain, Star & Brain
+  // Complete Three.js 3D WebGL Multi-Scene Engine
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -345,7 +262,7 @@ export default function GustavoPortfolio() {
     scene.fog = new THREE.FogExp2(0x121212, 0.0015);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(-3, 510, 100);
+    camera.position.set(-3, 500, 110);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -360,23 +277,23 @@ export default function GustavoPortfolio() {
     const gltfLoader = new GLTFLoader();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
     scene.add(ambientLight);
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
     dirLight.position.set(0, 550, 200);
     scene.add(dirLight);
 
-    // 1. HOME SCENE: Celestial Star + Flowing Heightmap Wave Terrain
-    const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
+    // 1. HOME SCENE: Glowing Celestial Star in Sky + Flowing Heightmap Mountain Wave Terrain
+    const starGeo = new THREE.SphereGeometry(2.0, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 565, 0);
+    starMesh.position.set(-2.5, 555, -20);
     scene.add(starMesh);
 
     // Glowing Star Point Light
-    const starLight = new THREE.PointLight(0xffffff, 3.0, 350);
-    starLight.position.set(-2.5, 565, 10);
+    const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
+    starLight.position.set(-2.5, 555, -10);
     scene.add(starLight);
 
     // Terrain Wireframe Plane with Alpha and Displacement Map
@@ -391,14 +308,14 @@ export default function GustavoPortfolio() {
       opacity: 0.18,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 40,
+      displacementScale: 38,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-    // Rotate terrain by 11 rad (or 270 deg) so mountain ridge arches UPWARDS in middle
+    // Rotate terrain by 11 rad so mountain ridge arches UPWARDS in middle behind text
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 485, 0);
+    terrainMesh.position.set(0, 465, -30);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
@@ -475,7 +392,7 @@ export default function GustavoPortfolio() {
       (err) => console.warn("te3.glb fallback:", err)
     );
 
-    // Orbiting Spherical Particle Ring around Brain
+    // Orbiting Spherical Particle Ring accurately centered around Brain
     const sphereParticleCount = 1300;
     const sphereGeo = new THREE.BufferGeometry();
     const spherePos: number[] = [];
@@ -497,7 +414,8 @@ export default function GustavoPortfolio() {
       opacity: 0.85,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    brainOrbitParticles.position.set(38, 115, -10);
+    // Align particle orbit center directly with brain
+    brainOrbitParticles.position.set(45, 110, 0);
     scene.add(brainOrbitParticles);
 
     // 4. AMBIENT SMOKE & SPACE DUST
@@ -604,25 +522,20 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 5. Scroll-driven Multi-Scene Camera Interpolation matching original GSAP triggers:
-      // Section 0 (Home): camera at y: 510, z: 100, x: -3
-      // Section 1 (About): camera at y: 315, z: 100, x: -3
-      // Section 2 (Service): camera at y: 150, z: 100, x: -3
-      // Section 3 (Projects): camera at y: 25, z: 100, x: -3
-      // Section 4 (Contact): camera at y: -100, z: 100, x: -3
+      // 5. Scroll-driven Multi-Scene Camera Interpolation
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
 
-      let targetY = 510;
-      let targetZ = 100;
+      let targetY = 500;
+      let targetZ = 110;
       let targetX = -3;
-      let targetLookY = 510;
+      let targetLookY = 500;
 
       if (scrollProgress < 0.25) {
         // Home -> About
         const progress = scrollProgress / 0.25;
-        targetY = 510 - progress * (510 - 315);
+        targetY = 500 - progress * (500 - 315);
         targetLookY = targetY;
       } else if (scrollProgress < 0.5) {
         // About -> Service
@@ -676,8 +589,6 @@ export default function GustavoPortfolio() {
     }, 1200);
   };
 
-  const isEng = lang === "eng";
-
   return (
     <>
       {/* Background Audio */}
@@ -700,9 +611,7 @@ export default function GustavoPortfolio() {
           title="Click to enable sound"
         >
           <span id="circle" className="circle-inner"></span>
-          <div className="label">
-            {isEng ? "Click To Enable Sounds" : "Clique Para Ativar o Som"}
-          </div>
+          <div className="label">Click To Enable Sounds</div>
         </span>
       )}
 
@@ -713,18 +622,59 @@ export default function GustavoPortfolio() {
           <div
             className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ display: "block", cursor: "pointer", zIndex: 100 }}
           >
             <div className="line1"></div>
             <div className="line2"></div>
             <div className="line3"></div>
           </div>
 
-          {/* Navigation Links */}
-          <ul className={`nav-list ${mobileMenuOpen ? "active" : ""}`}>
+          {/* Slide-out Navigation Drawer Menu */}
+          <ul
+            className={`nav-list ${mobileMenuOpen ? "active" : ""}`}
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              width: "320px",
+              maxWidth: "85vw",
+              height: "100vh",
+              background: "rgba(18, 18, 18, 0.96)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              borderLeft: "1px solid rgba(255, 255, 255, 0.1)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "28px",
+              padding: "40px 20px",
+              transform: mobileMenuOpen ? "translateX(0)" : "translateX(100%)",
+              transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              zIndex: 90,
+              boxShadow: mobileMenuOpen ? "-10px 0 30px rgba(0,0,0,0.8)" : "none",
+            }}
+          >
+            {/* Close button inside menu */}
+            <div
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                position: "absolute",
+                top: "24px",
+                right: "24px",
+                fontSize: "28px",
+                color: "#a8a8a8",
+                cursor: "pointer",
+              }}
+            >
+              ×
+            </div>
+
             <li>
               <a
                 href="#home"
                 className="nav-list-href"
+                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -737,102 +687,95 @@ export default function GustavoPortfolio() {
               <a
                 href="#about"
                 className="nav-list-href"
+                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
-                {isEng ? "About" : "Sobre"}
+                About
               </a>
             </li>
             <li>
               <a
                 href="#service"
                 className="nav-list-href"
+                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
-                {isEng ? "Service" : "Serviço"}
+                Service
               </a>
             </li>
             <li>
               <a
                 href="#projects"
                 className="nav-list-href"
+                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
-                {isEng ? "Projects" : "Projetos"}
+                Projects
               </a>
             </li>
             <li>
               <a
                 href="#contact"
                 className="nav-list-href"
+                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
-                {isEng ? "Contact" : "Contato"}
+                Contact
               </a>
             </li>
 
-            {/* Social Logos in Header */}
-            <div className="social">
-              <a
-                href="https://github.com/Abhi241-bot"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+            {/* Social Logos inside drawer */}
+            <div className="social" style={{ display: "flex", gap: "16px", marginTop: "20px" }}>
+              <a href="https://github.com/Abhi241-bot" target="_blank" rel="noopener noreferrer">
                 <div className="github-logo">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                   </svg>
                 </div>
               </a>
               <a href="mailto:abhiram04122006@gmail.com" target="_blank" rel="noopener noreferrer">
                 <div className="email-logo">
-                  <svg fill="#ffffff" width="22" height="22" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                  <svg fill="#ffffff" width="20" height="20" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1920 428.266v1189.54l-464.16-580.146-88.203 70.585 468.679 585.904H83.684l468.679-585.904-88.202-70.585L0 1617.805V428.265l959.944 832.441L1920 428.266ZM1919.932 226v52.627l-959.943 832.44L.045 278.628V226h1919.887Z" fillRule="evenodd"/>
                   </svg>
                 </div>
               </a>
-              <a
-                href="https://www.linkedin.com/in/abhiram-boini"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://www.linkedin.com/in/abhiram-boini" target="_blank" rel="noopener noreferrer">
                 <div className="linkedIn-logo">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="24px" height="24px" fill="#ffffff">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="22px" height="22px" fill="#ffffff">
                     <path d="M24,4H6C4.895,4,4,4.895,4,6v18c0,1.105,0.895,2,2,2h18c1.105,0,2-0.895,2-2V6C26,4.895,25.105,4,24,4z M10.954,22h-2.95 v-9.492h2.95V22z M9.449,11.151c-0.951,0-1.72-0.771-1.72-1.72c0-0.949,0.77-1.719,1.72-1.719c0.948,0,1.719,0.771,1.719,1.719 C11.168,10.38,10.397,11.151,9.449,11.151z M22.004,22h-2.948v-4.616c0-1.101-0.02-2.517-1.533-2.517 c-1.535,0-1.771,1.199-1.771,2.437V22h-2.948v-9.492h2.83v1.297h0.04c0.394-0.746,1.356-1.533,2.791-1.533 c2.987,0,3.539,1.966,3.539,4.522V22z"/>
                   </svg>
                 </div>
               </a>
-              <a
-                href="https://www.kaggle.com/abhiramboini"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://www.kaggle.com/abhiramboini" target="_blank" rel="noopener noreferrer">
                 <div className="whatsapp-logo" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "16px", fontWeight: "900", color: "#a8a8a8", fontFamily: "monospace" }}>K</span>
+                  <span style={{ fontSize: "15px", fontWeight: "900", color: "#a8a8a8", fontFamily: "monospace" }}>K</span>
                 </div>
               </a>
             </div>
 
             {/* Music Credits */}
-            <div className="music-credits">
+            <div className="music-credits" style={{ marginTop: "16px" }}>
               <a
                 href="https://cryochamber.bandcamp.com/album/dream-chambers"
                 className="music-txt"
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ fontSize: "11px", color: "#777", textDecoration: "none" }}
               >
-                {isEng ? "Music: Alphaxone - Ashes Of Time" : "Música: Alphaxone - Ashes Of Time"}
+                Music: Alphaxone - Ashes Of Time
               </a>
             </div>
           </ul>
@@ -878,40 +821,6 @@ export default function GustavoPortfolio() {
           ></li>
         </ul>
 
-        {/* Language Switcher Dropdown */}
-        <div className="dropdown">
-          <button
-            className="dropdown__button"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            {isEng ? "ENG ▼" : "PT-BR ▼"}
-          </button>
-          <div className={`dropdown__items ${dropdownOpen ? "dropdown--show" : "dropdown--hide"}`}>
-            <button
-              className="dropdown__item"
-              id="eng"
-              onClick={() => {
-                setLang("eng");
-                setDropdownOpen(false);
-                playSfx("/sound/woosh.mp3");
-              }}
-            >
-              ENG
-            </button>
-            <button
-              className="dropdown__item"
-              id="pt"
-              onClick={() => {
-                setLang("pt");
-                setDropdownOpen(false);
-                playSfx("/sound/woosh.mp3");
-              }}
-            >
-              PT-BR
-            </button>
-          </div>
-        </div>
-
         {/* Speaker with 6 Equalizer Bars */}
         <a
           className={`speaker ${isMuted ? "mute" : ""}`}
@@ -932,7 +841,7 @@ export default function GustavoPortfolio() {
         {/* Game Button */}
         <button
           className="game-button"
-          aria-label="Abrir Jogo / Open Experience"
+          aria-label="Open Experience"
           onClick={() => {
             playSfx("/sound/woosh.mp3");
             setGameModalOpen(true);
@@ -960,14 +869,14 @@ export default function GustavoPortfolio() {
 
                 <div className="typed-wrapper">
                   <span className="typed" id="typed">
-                    {isEng ? "| DATA SCIENCE & AI ENGINEER |" : "| ENGENHEIRO DE DADOS & IA |"}
+                    | DATA SCIENCE &amp; AI ENGINEER |
                   </span>
                 </div>
 
                 <div className="contact-Btn-wrapper">
                   <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
                     <button className="contact-Btn">
-                      {isEng ? "Get in Touch" : "Entre em Contato"}
+                      Get in Touch
                     </button>
                   </a>
                 </div>
@@ -984,11 +893,9 @@ export default function GustavoPortfolio() {
 
         {/* Section 2: About */}
         <section className="section" id="about" data-nav="data-nav">
-          <h1 className="about-title">{isEng ? "About" : "Sobre"}</h1>
+          <h1 className="about-title">About</h1>
           <h2 className="about-text">
-            {isEng
-              ? "“Hello, my name is Abhiram Boini and I am a Data Science & AI undergraduate at IIIT Naya Raipur with production ML experience (a deployed government AI zoo system, MLOps pipelines, LLM multi-agent tooling) and quantitative finance research on option pricing and cross-asset market stress. I care about rigor: honest reporting of negative results, proper out-of-sample walk-forward validation, and statistical significance testing show up throughout my work below. Check out my projects in this portfolio or on my GitHub. If you are interested in collaborating or working together, feel free to contact me via email or LinkedIn.”"
-              : "“Olá, me chamo Abhiram Boini e sou estudante de Ciência de Dados e IA no IIIT Naya Raipur com experiência em sistemas de ML em produção (sistema de IA implantado para o zoológico do governo, MLOps, agentes LLM) e pesquisa quantitativa em precificação de opções e estresse de mercado. Priorizo o rigor científico: validação out-of-sample, testes de significância estatística e métricas reais. Confira meus projetos abaixo ou no GitHub.”"}
+            “Hello, my name is Abhiram Boini and I am a Data Science &amp; AI undergraduate at IIIT Naya Raipur with production ML experience (a deployed government AI zoo system, MLOps pipelines, LLM multi-agent tooling) and quantitative finance research on option pricing and cross-asset market stress. I care about rigor: honest reporting of negative results, proper out-of-sample walk-forward validation, and statistical significance testing show up throughout my work below. Check out my projects in this portfolio or on my GitHub. If you are interested in collaborating or working together, feel free to contact me via email or LinkedIn.”
           </h2>
 
           {/* Tabs Header */}
@@ -1003,7 +910,7 @@ export default function GustavoPortfolio() {
               <svg className="education-icon" viewBox="0 0 245.827 245.827" width="18" height="18" fill="currentColor">
                 <path d="M223.336,148.384l-0.137-23.527l22.628-12.662L122.576,47.195L0,113.495l49.144,28.216 l0.098,16.766l0.01,1.339l0.449-0.215c-0.518,0.703-0.85,1.426-0.84,2.149c0.039,8.246,33.326,14.772,74.41,14.548 c41.064-0.215,74.302-7.122,74.273-15.349c0-0.723-0.381-1.426-0.889-2.149l0.449,0.215v-1.339l-0.088-16.834l21.309-13.258 l0.117,20.83c-2.345,1.006-3.976,3.312-3.957,6.009c0.02,3.537,2.892,6.399,6.458,6.37c3.586-0.02,6.429-2.912,6.409-6.439 C227.332,151.657,225.691,149.371,223.336,148.384z"/>
               </svg>
-              {isEng ? "Education & Timeline" : "Educação & Trajetória"}
+              Education &amp; Timeline
             </p>
 
             <p
@@ -1016,7 +923,7 @@ export default function GustavoPortfolio() {
               <svg className="skill-icon" viewBox="0 0 1024 1024" width="18" height="18" fill="currentColor">
                 <path d="M448.512 479.232a54.272 54.272 0 1 1 56.32-55.296 55.296 55.296 0 0 1-56.32 55.296z m343.04 91.136l-73.728-110.592V450.56a245.76 245.76 0 0 0-244.736-245.76 225.28 225.28 0 0 0-58.368 7.168A244.736 244.736 0 0 0 228.352 450.56a224.256 224.256 0 0 0 36.864 130.048c43.008 61.44 71.68 110.592 54.272 177.152a47.104 47.104 0 0 0 9.216 43.008 45.056 45.056 0 0 0 36.864 18.432h200.704a48.128 48.128 0 0 0 48.128-38.912 51.2 51.2 0 0 0 2.048-12.288 24.576 24.576 0 0 1 24.576-20.48H655.36a48.128 48.128 0 0 0 48.128-34.816 422.912 422.912 0 0 0 15.36-98.304h52.224a28.672 28.672 0 0 0 22.528-16.384 29.696 29.696 0 0 0-2.048-27.648z"/>
               </svg>
-              {isEng ? "Skills" : "Habilidades"}
+              Skills
             </p>
           </div>
 
@@ -1060,7 +967,7 @@ export default function GustavoPortfolio() {
                 </button>
                 <br />
                 <span className="course-text">
-                  {isEng ? "Key Honors & Certified Specializations" : "Honras & Certificações Especializadas"}
+                  Key Honors &amp; Certified Specializations
                 </span>
                 {courseworkOpen && (
                   <ul className="child" style={{ display: "block" }}>
@@ -1081,7 +988,7 @@ export default function GustavoPortfolio() {
           <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills">
             {/* Group 1: Core Languages */}
             <div className="our-skills">
-              <p>{isEng ? "Languages & Systems" : "Linguagens & Sistemas"}</p>
+              <p>Languages &amp; Systems</p>
               {["Python", "SQL", "C++", "R", "Java", "MATLAB", "HTML5", "CSS3", "JavaScript"].map((tech) => (
                 <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
@@ -1093,7 +1000,7 @@ export default function GustavoPortfolio() {
 
             {/* Group 2: Machine Learning & MLOps */}
             <div className="our-skills">
-              <p>{isEng ? "Machine Learning & MLOps" : "Machine Learning & MLOps"}</p>
+              <p>Machine Learning &amp; MLOps</p>
               {["PyTorch", "TensorFlow", "FastAPI", "MLflow", "Docker", "Evidently AI", "scikit-learn", "pytest", "GitHub Actions"].map((tech) => (
                 <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
@@ -1105,7 +1012,7 @@ export default function GustavoPortfolio() {
 
             {/* Group 3: LLM & Agentic AI */}
             <div className="our-skills">
-              <p>{isEng ? "LLM & Agentic AI" : "LLM & IA Agêntica"}</p>
+              <p>LLM &amp; Agentic AI</p>
               {["LangGraph", "QLoRA", "RAG", "RAGAS", "DeepEval", "LangSmith", "ChromaDB", "Hugging Face"].map((tech) => (
                 <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
@@ -1117,7 +1024,7 @@ export default function GustavoPortfolio() {
 
             {/* Group 4: Quantitative Finance */}
             <div className="our-skills">
-              <p>{isEng ? "Quantitative Finance & Stats" : "Finanças Quantitativas"}</p>
+              <p>Quantitative Finance &amp; Stats</p>
               {["Black-Scholes", "Heston Model", "Kalman Filter", "Cointegration", "Factor Models", "CUPED", "DoWhy", "EconML"].map((tech) => (
                 <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
@@ -1141,7 +1048,7 @@ export default function GustavoPortfolio() {
               <span></span>
               <span></span>
               <span></span>
-              {isEng ? "Download CV" : "Baixar CV"}
+              Download CV
             </a>
           </div>
         </section>
@@ -1149,94 +1056,68 @@ export default function GustavoPortfolio() {
         {/* Section 3: Service */}
         <section className="section service">
           <section className="content" id="service" data-nav="data-nav">
-            <h2 className="service-title">{isEng ? "Service" : "Serviço"}</h2>
+            <h2 className="service-title">Service</h2>
             <p className="service-text">
-              {isEng
-                ? "“You might be wondering how I can help you. As an AI Engineer and Quantitative Researcher, I transform complex data and research hypotheses into robust production systems, scalable MLOps architectures, and mathematically rigorous predictive models.”"
-                : "“Como posso ajudá-lo? Como engenheiro de IA e pesquisador quantitativo, transformo desafios complexos de dados em sistemas robustos de produção, pipelines escaláveis de MLOps e modelos preditivos com rigor estatístico.”"}
+              “You might be wondering how I can help you. As an AI Engineer and Quantitative Researcher, I transform complex data and research hypotheses into robust production systems, scalable MLOps architectures, and mathematically rigorous predictive models.”
             </p>
 
             <div className="service-card-wrapper">
               {/* Service Card 1 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text api-title">
-                  {isEng ? "Production ML & MLOps" : "Desenvolvimento de MLOps"}
-                </h1>
+                <h1 className="service-card-text api-title">Production ML &amp; MLOps</h1>
                 <div className="service-card-content">
                   <p className="api-text">
-                    {isEng
-                      ? "I build end-to-end containerized ML pipelines with automated drift monitoring, MLflow registry promotion gates, and FastAPI zero-downtime hot-reloading."
-                      : "Desenvolvo pipelines de ML conteinerizados com monitoramento de drift no Evidently, gates de promoção no MLflow e serving com FastAPI."}
+                    I build end-to-end containerized ML pipelines with automated drift monitoring, MLflow registry promotion gates, and FastAPI zero-downtime hot-reloading.
                   </p>
                 </div>
               </div>
 
               {/* Service Card 2 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text web-title">
-                  {isEng ? "Autonomous LLM Agents" : "Agentes LLM Autônomos"}
-                </h1>
+                <h1 className="service-card-text web-title">Autonomous LLM Agents</h1>
                 <div className="service-card-content">
                   <p className="web-text">
-                    {isEng
-                      ? "I design multi-agent LangGraph systems with 4-bit QLoRA fine-tuned tools, RAG over enterprise filings, safety guardrails, and automated RAGAS evaluations."
-                      : "Crio sistemas multi-agentes com LangGraph, fine-tuning QLoRA de ferramentas Text-to-SQL, guardrails de segurança e avaliações RAGAS."}
+                    I design multi-agent LangGraph systems with 4-bit QLoRA fine-tuned tools, RAG over enterprise filings, safety guardrails, and automated RAGAS evaluations.
                   </p>
                 </div>
               </div>
 
               {/* Service Card 3 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text desktop-title">
-                  {isEng ? "Quantitative Finance & StatArb" : "Finanças Quantitativas"}
-                </h1>
+                <h1 className="service-card-text desktop-title">Quantitative Finance &amp; StatArb</h1>
                 <div className="service-card-content">
                   <p className="desktop-text">
-                    {isEng
-                      ? "I develop statistical arbitrage pairs strategies, options implied volatility surfaces, multi-factor risk attribution models, and cross-asset stress flow indices."
-                      : "Desenvolvo estratégias de arbitragem estatística, superfícies de volatilidade implícita, modelos multi-fator e índices de contágio de estresse."}
+                    I develop statistical arbitrage pairs strategies, options implied volatility surfaces, multi-factor risk attribution models, and cross-asset stress flow indices.
                   </p>
                 </div>
               </div>
 
               {/* Service Card 4 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text devops-title">
-                  {isEng ? "Computer Vision & Remote Sensing" : "Visão Computacional"}
-                </h1>
+                <h1 className="service-card-text devops-title">Computer Vision &amp; Remote Sensing</h1>
                 <div className="service-card-content">
                   <p className="devops-text">
-                    {isEng
-                      ? "I engineer deep learning segmentation architectures fusing optical and SAR satellite imagery, 3D-CNNs for multimodal stress detection, and real-time facial analytics."
-                      : "Crio modelos de segmentação semântica fundindo imagens de satélite ópticas e SAR, 3D-CNNs para detecção multimodal de estresse e análise facial em tempo real."}
+                    I engineer deep learning segmentation architectures fusing optical and SAR satellite imagery, 3D-CNNs for multimodal stress detection, and real-time facial analytics.
                   </p>
                 </div>
               </div>
 
               {/* Service Card 5 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text database-title">
-                  {isEng ? "Causal Inference & A/B Testing" : "Inferência Causal"}
-                </h1>
+                <h1 className="service-card-text database-title">Causal Inference &amp; A/B Testing</h1>
                 <div className="service-card-content">
                   <p className="database-text">
-                    {isEng
-                      ? "I implement self-serve causal experimentation platforms with CUPED variance reduction (35–50%), sample ratio mismatch checks, and observational bias correction."
-                      : "Implemento plataformas de testes A/B com redução de variância CUPED, verificação de SRM e correção de viés via Propensity Score Matching."}
+                    I implement self-serve causal experimentation platforms with CUPED variance reduction (35–50%), sample ratio mismatch checks, and observational bias correction.
                   </p>
                 </div>
               </div>
 
               {/* Service Card 6 */}
               <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <h1 className="service-card-text cloud-title">
-                  {isEng ? "Cloud & Data Infrastructure" : "Infraestrutura Cloud & Dados"}
-                </h1>
+                <h1 className="service-card-text cloud-title">Cloud &amp; Data Infrastructure</h1>
                 <div className="service-card-content">
                   <p className="cloud-text">
-                    {isEng
-                      ? "I architect scalable cloud microservices, PostgreSQL/DuckDB pipelines, automated invariant test suites (pytest), and CI/CD automation."
-                      : "Estruturo microsserviços na nuvem, bancos de dados relacionais e vetoriais, suites de testes invariantes e automação CI/CD."}
+                    I architect scalable cloud microservices, PostgreSQL/DuckDB pipelines, automated invariant test suites (pytest), and CI/CD automation.
                   </p>
                 </div>
               </div>
@@ -1247,11 +1128,9 @@ export default function GustavoPortfolio() {
         {/* Section 4: Projects (Exact 3D Perspective Carousel) */}
         <section className="section">
           <section className="content" id="projects" data-nav="data-nav">
-            <h1 className="project-title">{isEng ? "Projects" : "Projetos"}</h1>
+            <h1 className="project-title">Projects</h1>
             <p className="project-text">
-              {isEng
-                ? "“Check out some of my projects. They reflect my experience in production AI engineering, MLOps, LLM agents, and quantitative finance research.”"
-                : "“Confira alguns dos meus projetos. Eles refletem minha experiência e dedicação ao desenvolvimento de IA em produção, MLOps e pesquisa quantitativa.”"}
+              “Check out some of my projects. They reflect my experience in production AI engineering, MLOps, LLM agents, and quantitative finance research.”
             </p>
 
             <div className="carousel">
@@ -1332,10 +1211,10 @@ export default function GustavoPortfolio() {
                               {proj.tags[0]}
                             </div>
                             <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#fff", marginBottom: "10px", lineHeight: "1.3" }}>
-                              {isEng ? proj.titleEng : proj.titlePt}
+                              {proj.title}
                             </h3>
                             <p style={{ fontSize: "12px", color: "#888888", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                              {isEng ? proj.descEng : proj.descPt}
+                              {proj.desc}
                             </p>
                           </div>
 
@@ -1376,7 +1255,7 @@ export default function GustavoPortfolio() {
                                 e.currentTarget.style.color = "#c2c2c2";
                               }}
                             >
-                              {isEng ? "VIEW PROJECT" : "VISUALIZAR PROJETO"}
+                              VIEW PROJECT
                             </button>
                           </div>
                         </div>
@@ -1417,15 +1296,15 @@ export default function GustavoPortfolio() {
                     )}
                     <div className="project-description-container">
                       <div className="project-name">
-                        {isEng ? activeProjectModal.titleEng : activeProjectModal.titlePt}
+                        {activeProjectModal.title}
                       </div>
                       <p className="project-description-text">
-                        {isEng ? activeProjectModal.descEng : activeProjectModal.descPt}
+                        {activeProjectModal.desc}
                       </p>
 
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: isEng ? activeProjectModal.fullDescEng : activeProjectModal.fullDescPt,
+                          __html: activeProjectModal.fullDesc,
                         }}
                       />
 
@@ -1475,12 +1354,12 @@ export default function GustavoPortfolio() {
         {/* Section 5: Contact */}
         <section className="contact section">
           <section className="content" id="contact" data-nav="data-nav">
-            <h2 className="contact-title">{isEng ? "Contact" : "Contato"}</h2>
+            <h2 className="contact-title">Contact</h2>
 
             {/* Delivering Animation */}
             {formState === "delivering" && (
               <div className="delivering" style={{ display: "block" }}>
-                {isEng ? "Sending message..." : "Enviando..."}
+                Sending message...
               </div>
             )}
 
@@ -1493,9 +1372,7 @@ export default function GustavoPortfolio() {
                   <div className="icon-circle"></div>
                   <div className="icon-fix"></div>
                   <p className="message">
-                    {isEng
-                      ? "Your message has been sent successfully. I will get back to you soon!"
-                      : "Sua mensagem foi enviada, assim que possível lhe respondo"}
+                    Your message has been sent successfully. I will get back to you soon!
                   </p>
                 </div>
               </div>
@@ -1506,7 +1383,7 @@ export default function GustavoPortfolio() {
               <input
                 type="text"
                 name="from_name"
-                placeholder={isEng ? "Name:" : "Nome:"}
+                placeholder="Name:"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -1521,7 +1398,7 @@ export default function GustavoPortfolio() {
               />
               <textarea
                 name="message"
-                placeholder={isEng ? "Message:" : "Mensagem:"}
+                placeholder="Message:"
                 required
                 rows={4}
                 value={formData.message}
@@ -1564,14 +1441,14 @@ export default function GustavoPortfolio() {
 
                 <div className="center">
                   <button className="sendBtn" type="submit">
-                    <span className="sentSpan">{isEng ? "SEND" : "ENVIAR"}</span>
+                    <span className="sentSpan">SEND</span>
                   </button>
                 </div>
               </div>
             </form>
 
             <h1 className="copyright">
-              © {new Date().getFullYear()} Abhiram Boini — {isEng ? "All rights reserved." : "Todos os direitos reservados."}
+              © {new Date().getFullYear()} Abhiram Boini — All rights reserved.
             </h1>
             <a
               className="footer-privacy-link"
@@ -1581,7 +1458,7 @@ export default function GustavoPortfolio() {
                 setPrivacyModalOpen(true);
               }}
             >
-              {isEng ? "Privacy Policy" : "Política de Privacidade"}
+              Privacy Policy
             </a>
           </section>
         </section>
@@ -1598,7 +1475,7 @@ export default function GustavoPortfolio() {
             <div id="loader-text">
               ABHIRAM BOINI
               <div className="loader-desc">
-                {isEng ? "DATA SCIENTIST & AI ENGINEER" : "CIENTISTA DE DADOS & ENGENHEIRO DE IA"}
+                DATA SCIENTIST &amp; AI ENGINEER
               </div>
             </div>
             <div id="loader"></div>
@@ -1617,7 +1494,7 @@ export default function GustavoPortfolio() {
               <div id="loader-text">
                 ABHIRAM BOINI
                 <div className="loader-desc">
-                  {isEng ? "DATA SCIENTIST & AI ENGINEER" : "CIENTISTA DE DADOS & ENGENHEIRO DE IA"}
+                  DATA SCIENTIST &amp; AI ENGINEER
                 </div>
               </div>
               <button
@@ -1625,7 +1502,7 @@ export default function GustavoPortfolio() {
                 id="start-button"
                 onClick={handleStart}
               >
-                {isEng ? "Start" : "Iniciar"}
+                Start
               </button>
             </section>
           )}
@@ -1642,12 +1519,10 @@ export default function GustavoPortfolio() {
             >
               ×
             </span>
-            <h2>{isEng ? "Privacy Policy" : "Política de Privacidade"}</h2>
+            <h2>Privacy Policy</h2>
             <div className="privacy-modal-body html-content" style={{ color: "#cbd5e1", fontSize: "14px", lineHeight: "1.6" }}>
               <p>
-                {isEng
-                  ? "This personal portfolio does not collect personal data from visitors without direct consent. Messages submitted through the contact form are used solely for professional communication with Abhiram Boini."
-                  : "Este portfólio pessoal não coleta dados de visitantes sem consentimento explícito. Mensagens enviadas através do formulário de contato são utilizadas exclusivamente para comunicação profissional com Abhiram Boini."}
+                This personal portfolio does not collect personal data from visitors without direct consent. Messages submitted through the contact form are used solely for professional communication with Abhiram Boini.
               </p>
             </div>
           </div>
@@ -1665,13 +1540,11 @@ export default function GustavoPortfolio() {
               ×
             </span>
             <h2 style={{ color: "#ffffff", fontFamily: "Bitter, serif" }}>
-              {isEng ? "Virtual Simulation Terminal" : "Terminal de Simulação Virtual"}
+              Virtual Simulation Terminal
             </h2>
             <div style={{ color: "#cbd5e1", fontSize: "13px", lineHeight: "1.6", marginTop: "16px" }}>
               <p style={{ marginBottom: "12px" }}>
-                {isEng
-                  ? "Interactive Quant & MLOps System node initialized. All 9 production pipelines and research papers are running active live calibrations."
-                  : "Nó de sistema quantitativo e MLOps inicializado. Todos os 9 pipelines e artigos de pesquisa estão com calibração ativa."}
+                Interactive Quant &amp; MLOps System node initialized. All 9 production pipelines and research papers are running active live calibrations.
               </p>
               <div style={{ background: "#0c0c0c", padding: "12px", borderRadius: "8px", fontFamily: "monospace", fontSize: "12px", border: "1px solid rgba(255,255,255,0.15)" }}>
                 <p style={{ color: "#ffffff" }}>› System: MLOps Fraud Drift Model (PR-AUC 0.77)</p>
@@ -1692,7 +1565,7 @@ export default function GustavoPortfolio() {
                     cursor: "pointer",
                   }}
                 >
-                  {isEng ? "Close Terminal" : "Fechar"}
+                  Close Terminal
                 </button>
               </div>
             </div>
