@@ -999,24 +999,186 @@ export default function GustavoPortfolio() {
 
       {/* Main Content */}
       <main>
-        {/* Section 1: Home (Hero) - Perfectly Centered in Viewport */}
-        <section className="section" id="section-home">
-          <section className="home" data-nav="data-nav">
-            <div className="home-href" id="Home">
-              <div className="name-container">
-                <div className="name-highlight">
-                  <div className="name-word">
-                    <span id="letter">A</span>
-                    <span id="name">BHIRAM</span>
+        {/* Section 1: Home (Hero) - 100% Dead-Center Lock */}
+        <section
+          className="section"
+          id="section-home"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100vw",
+            maxWidth: "100%",
+            minHeight: "100vh",
+            margin: "0 auto",
+            padding: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            transform: "none",
+            position: "relative",
+            zIndex: 50,
+          }}
+        >
+          <section
+            className="home"
+            data-nav="data-nav"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              margin: "0 auto",
+              transform: "none",
+            }}
+          >
+            <div
+              className="home-href"
+              id="Home"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                margin: "0 auto",
+                transform: "none",
+              }}
+            >
+              <div
+                className="name-container"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  width: "100%",
+                  margin: "0 auto",
+                  transform: "none",
+                  left: "auto",
+                  right: "auto",
+                }}
+              >
+                <div
+                  className="name-highlight"
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "center",
+                    gap: "24px",
+                    width: "100%",
+                    margin: "0 auto 16px auto",
+                    padding: 0,
+                    transform: "none",
+                    position: "static",
+                    left: "auto",
+                    right: "auto",
+                  }}
+                >
+                  <div
+                    className="name-word"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "baseline",
+                      justifyContent: "center",
+                      margin: 0,
+                      padding: 0,
+                      transform: "none",
+                    }}
+                  >
+                    <span
+                      id="letter"
+                      style={{
+                        fontFamily: "'Nanum Myeongjo', serif",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        padding: 0,
+                      }}
+                    >
+                      A
+                    </span>
+                    <span
+                      id="name"
+                      style={{
+                        fontFamily: "'Nanum Myeongjo', serif",
+                        fontWeight: 400,
+                        color: "#b5b5b5",
+                        letterSpacing: "0.22em",
+                        margin: "0 0 0 4px",
+                        padding: 0,
+                      }}
+                    >
+                      BHIRAM
+                    </span>
                   </div>
-                  <div className="name-word">
-                    <span id="letter2">B</span>
-                    <span className="name2" id="name">OINI</span>
+
+                  <div
+                    className="name-word"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "baseline",
+                      justifyContent: "center",
+                      margin: 0,
+                      padding: 0,
+                      transform: "none",
+                    }}
+                  >
+                    <span
+                      id="letter2"
+                      style={{
+                        fontFamily: "'Nanum Myeongjo', serif",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        padding: 0,
+                      }}
+                    >
+                      B
+                    </span>
+                    <span
+                      className="name2"
+                      id="name"
+                      style={{
+                        fontFamily: "'Nanum Myeongjo', serif",
+                        fontWeight: 400,
+                        color: "#b5b5b5",
+                        letterSpacing: "0.22em",
+                        margin: "0 0 0 4px",
+                        padding: 0,
+                      }}
+                    >
+                      OINI
+                    </span>
                   </div>
                 </div>
 
-                <div className="typed-wrapper">
-                  <span className="typed" id="typed">
+                <div
+                  className="typed-wrapper"
+                  style={{
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    width: "100%",
+                    textAlign: "center",
+                    margin: "0 auto",
+                    transform: "none",
+                  }}
+                >
+                  <span
+                    className="typed"
+                    id="typed"
+                    style={{
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: "clamp(1.05rem, 1.8vw, 1.65rem)",
+                      color: "#ffffff",
+                      letterSpacing: "0.38em",
+                      fontWeight: 700,
+                      textShadow: "0 0 12px #ffffff, 0 0 25px rgba(255, 255, 255, 0.85), 0 0 45px rgba(255, 255, 255, 0.5)",
+                      display: "inline-block",
+                      margin: "0 auto",
+                    }}
+                  >
                     | DATA SCIENCE &amp; AI ENGINEER |
                   </span>
                 </div>
