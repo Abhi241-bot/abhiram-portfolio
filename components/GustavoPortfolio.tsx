@@ -262,7 +262,7 @@ export default function GustavoPortfolio() {
     scene.fog = new THREE.FogExp2(0x121212, 0.0015);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(-3, 500, 110);
+    camera.position.set(-3, 510, 100);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -285,18 +285,18 @@ export default function GustavoPortfolio() {
     scene.add(dirLight);
 
     // 1. HOME SCENE: Glowing Celestial Star in Sky + Flowing Heightmap Mountain Wave Terrain
-    const starGeo = new THREE.SphereGeometry(2.0, 16, 16);
+    const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 550, -20);
+    starMesh.position.set(-2.5, 565, 0);
     scene.add(starMesh);
 
     // Glowing Star Point Light
-    const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
-    starLight.position.set(-2.5, 550, -10);
+    const starLight = new THREE.PointLight(0xffffff, 3.2, 350);
+    starLight.position.set(-2.5, 565, 10);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane positioned behind and below the name text
+    // Terrain Wireframe Plane matching exact reference coordinates
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -305,17 +305,18 @@ export default function GustavoPortfolio() {
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.16,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 30,
+      displacementScale: 40,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
     // Rotate terrain by 11 rad so mountain ridge arches UPWARDS in middle behind text
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 450, -40);
+    terrainMesh.position.set(0, 485, 0);
+    terrainMesh.scale.set(1.3, 1.3, 1.3);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
@@ -504,7 +505,7 @@ export default function GustavoPortfolio() {
         const x = Math.sin(y) * 0.2;
         const S = v + t;
         const T = Math.cos(S) * 0.2;
-        positionAttr.setZ(f, (x + T) * 3.5);
+        positionAttr.setZ(f, (x + T) * 4.0);
       }
       terrainGeo.computeVertexNormals();
       positionAttr.needsUpdate = true;
@@ -528,15 +529,15 @@ export default function GustavoPortfolio() {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
 
-      let targetY = 500;
-      let targetZ = 110;
+      let targetY = 510;
+      let targetZ = 100;
       let targetX = -3;
-      let targetLookY = 500;
+      let targetLookY = 510;
 
       if (scrollProgress < 0.25) {
         // Home -> About
         const progress = scrollProgress / 0.25;
-        targetY = 500 - progress * (500 - 315);
+        targetY = 510 - progress * (510 - 315);
         targetLookY = targetY;
       } else if (scrollProgress < 0.5) {
         // About -> Service
@@ -603,26 +604,17 @@ export default function GustavoPortfolio() {
       {/* Three.js Fixed Background Canvas */}
       <canvas id="main-content" ref={canvasRef}></canvas>
 
-      {/* Floating Circle Sound Prompt */}
-      {isMuted && (
-        <span
-          id="circle"
-          className="circle cursor-pointer"
-          onClick={toggleSound}
-          title="Click to enable sound"
-        >
-          <span id="circle" className="circle-inner"></span>
-          <div className="label">Click To Enable Sounds</div>
-        </span>
-      )}
-
       {/* Header & Sticky Navigation */}
       <header id="home">
         <nav className="menu">
-          {/* Mobile Hamburger Menu */}
+          {/* Hamburger Menu Icon (3 horizontal lines) in Top-Right */}
           <div
             className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => {
+              playSfx("/sound/woosh.mp3");
+              setMobileMenuOpen(!mobileMenuOpen);
+            }}
+            aria-label="Toggle Navigation Menu"
           >
             <div className="line1"></div>
             <div className="line2"></div>
@@ -737,7 +729,7 @@ export default function GustavoPortfolio() {
           </ul>
         </nav>
 
-        {/* 5-Dot Scroll-Spy Navigation */}
+        {/* 5-Dot Scroll-Spy Navigation on Right */}
         <ul className="nav__dot">
           <li
             className="current"
@@ -794,7 +786,7 @@ export default function GustavoPortfolio() {
           <button className="muted"></button>
         </a>
 
-        {/* Game Button */}
+        {/* Game Button in bottom left */}
         <button
           className="game-button"
           aria-label="Open Experience"
@@ -830,7 +822,7 @@ export default function GustavoPortfolio() {
                 </div>
 
                 <div className="contact-Btn-wrapper">
-                  <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
+                  <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")} style={{ textDecoration: "none" }}>
                     <button className="contact-Btn">
                       Get in Touch
                     </button>
