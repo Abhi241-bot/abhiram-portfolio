@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 interface ProjectItem {
   id: string;
@@ -16,6 +17,7 @@ interface ProjectItem {
   tags: string[];
   githubUrl: string;
   demoUrl?: string;
+  video?: string;
 }
 
 const PROJECTS_LIST: ProjectItem[] = [
@@ -45,6 +47,7 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["MLflow", "FastAPI", "Docker", "Evidently AI", "scikit-learn", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/PythonAPI_720p.mp4",
   },
   {
     id: "proj-2",
@@ -70,6 +73,7 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["LangGraph", "QLoRA", "Spider", "RAGAS", "DeepEval", "LangSmith"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/Fluxudo_480P.mp4",
   },
   {
     id: "proj-3",
@@ -95,6 +99,7 @@ const PROJECTS_LIST: ProjectItem[] = [
     tags: ["DoWhy", "EconML", "CUPED", "statsmodels", "Streamlit"],
     githubUrl: "https://github.com/Abhi241-bot",
     demoUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/Sapientum_480p.mp4",
   },
   {
     id: "proj-4",
@@ -119,6 +124,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Statistical Arbitrage", "Kalman Filter", "Cointegration", "statsmodels", "pytest"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin1",
+    video: "/videos/JavaAPI_720p.mp4",
   },
   {
     id: "proj-5",
@@ -141,6 +147,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Options Pricing", "Black-Scholes", "Monte Carlo", "Implied Volatility", "SciPy"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin2",
+    video: "/videos/VuExpensio_720p.mp4",
   },
   {
     id: "proj-6",
@@ -163,6 +170,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Factor Models", "Long-Short", "Beta Hedging", "Risk Attribution", "pandas"],
     githubUrl: "https://github.com/Abhi241-bot/Quantfin3",
+    video: "/videos/JavaParkingLot_720p.mp4",
   },
   {
     id: "proj-7",
@@ -185,6 +193,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Deep Learning", "3D-CNN", "MediaPipe", "Multimodal AI", "IEEE"],
     githubUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/Face_Recon_720p.mp4",
   },
   {
     id: "proj-8",
@@ -207,6 +216,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Econometrics", "Network Models", "Drawdown Warning", "Bootstrap", "Risk Management"],
     githubUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/Hades_720p.mp4",
   },
   {
     id: "proj-9",
@@ -229,6 +239,7 @@ const PROJECTS_LIST: ProjectItem[] = [
 </ul>`,
     tags: ["Option Pricing", "Heston", "Merton Jumps", "Diebold-Mariano", "Quantitative Finance"],
     githubUrl: "https://github.com/Abhi241-bot",
+    video: "/videos/Saturn_720p.mp4",
   },
 ];
 
@@ -254,9 +265,7 @@ export default function GustavoPortfolio() {
   const [carouselIndex, setCarouselIndex] = useState(2);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const ambientGainRef = useRef<GainNode | null>(null);
-  const oscillatorsRef = useRef<OscillatorNode[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Loading Counter Animation
   useEffect(() => {
@@ -273,87 +282,28 @@ export default function GustavoPortfolio() {
     return () => clearInterval(interval);
   }, []);
 
-  // Web Audio Synth Engine
-  const playTechClick = (freq = 600, dur = 0.04) => {
-    if (isMuted || !audioCtxRef.current) return;
+  const playSfx = (src: string) => {
+    if (isMuted) return;
     try {
-      const ctx = audioCtxRef.current;
-      if (ctx.state === "suspended") ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + dur);
-      gain.gain.setValueAtTime(0.04, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + dur);
-    } catch {
-      // ignore
-    }
+      const sfx = new Audio(src);
+      sfx.volume = 0.5;
+      sfx.play().catch(() => {});
+    } catch {}
   };
 
   const toggleSound = () => {
-    if (!audioCtxRef.current) {
-      try {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        audioCtxRef.current = new AudioCtx();
-      } catch {
-        // ignore
-      }
-    }
-
-    const ctx = audioCtxRef.current;
-    if (!ctx) return;
-
-    if (ctx.state === "suspended") ctx.resume();
-
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
 
-    if (!nextMuted) {
-      // Start ambient synth
-      try {
-        const ambientGain = ctx.createGain();
-        ambientGain.gain.setValueAtTime(0.001, ctx.currentTime);
-        ambientGain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 1.5);
-        ambientGain.connect(ctx.destination);
-        ambientGainRef.current = ambientGain;
-
-        const freqs = [110, 164.81, 220, 329.63];
-        oscillatorsRef.current = freqs.map((f, idx) => {
-          const osc = ctx.createOscillator();
-          const subGain = ctx.createGain();
-          osc.type = idx % 2 === 0 ? "sine" : "triangle";
-          osc.frequency.setValueAtTime(f, ctx.currentTime);
-          subGain.gain.setValueAtTime(0.3 / freqs.length, ctx.currentTime);
-          osc.connect(subGain);
-          subGain.connect(ambientGain);
-          osc.start();
-          return osc;
-        });
-      } catch {
-        // ignore
-      }
-      playTechClick(750, 0.05);
-    } else {
-      // Stop ambient synth
-      if (ambientGainRef.current && ctx) {
-        try {
-          ambientGainRef.current.gain.setValueAtTime(ambientGainRef.current.gain.value, ctx.currentTime);
-          ambientGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-          setTimeout(() => {
-            oscillatorsRef.current.forEach((o) => {
-              try { o.stop(); o.disconnect(); } catch {}
-            });
-            oscillatorsRef.current = [];
-            ambientGainRef.current = null;
-          }, 500);
-        } catch {}
+    if (audioRef.current) {
+      if (!nextMuted) {
+        audioRef.current.volume = 0.4;
+        audioRef.current.play().catch(() => {});
+      } else {
+        audioRef.current.pause();
       }
     }
+    playSfx("/sound/gearSound.mp3");
   };
 
   const handleStart = () => {
@@ -362,7 +312,7 @@ export default function GustavoPortfolio() {
     toggleSound();
   };
 
-  // Scroll-Spy Dot Navigation & Section Transition Fade Reveals
+  // Scroll-Spy Dot Navigation
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY + window.innerHeight * 0.4;
@@ -386,16 +336,16 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Three.js 3D WebGL Scene Engine with Exact Camera Gliding Across Sections
+  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Wave Terrain, Star & Brain
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x121212, 0.0018);
+    scene.fog = new THREE.FogExp2(0x121212, 0.0015);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(-3, 0, 100);
+    camera.position.set(0, 485, 120);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -406,61 +356,200 @@ export default function GustavoPortfolio() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor("#121212");
 
-    // 3D Cyberpunk Head / Neural Wireframe Mesh
-    const headGroup = new THREE.Group();
-    scene.add(headGroup);
+    const textureLoader = new THREE.TextureLoader();
+    const gltfLoader = new GLTFLoader();
 
-    const geo = new THREE.IcosahedronGeometry(26, 2);
-    const wireGeo = new THREE.WireframeGeometry(geo);
-    const lineMat = new THREE.LineBasicMaterial({
-      color: 0x888888,
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(0, 550, 200);
+    scene.add(dirLight);
+
+    // 1. HOME SCENE: Celestial Star + Flowing Heightmap Particle Wave Terrain
+    const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
+    const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const starMesh = new THREE.Mesh(starGeo, starMat);
+    starMesh.position.set(-2.5, 565, 0);
+    scene.add(starMesh);
+
+    // Glowing Star Light
+    const starLight = new THREE.PointLight(0xffffff, 2.5, 300);
+    starLight.position.set(-2.5, 565, 10);
+    scene.add(starLight);
+
+    // Terrain Wireframe Plane with Alpha and Displacement
+    const heightMap = textureLoader.load("/images/height.png");
+    const alphaMap = textureLoader.load("/images/alpha.png");
+    const binMap = textureLoader.load("/images/bin.png");
+
+    const terrainGeo = new THREE.PlaneGeometry(200, 200, 96, 128);
+    const terrainMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.35,
-    });
-    const wireMesh = new THREE.LineSegments(wireGeo, lineMat);
-    headGroup.add(wireMesh);
-
-    // Inner Glowing Core
-    const innerGeo = new THREE.DodecahedronGeometry(16, 1);
-    const innerMat = new THREE.MeshBasicMaterial({
-      color: 0xaaaaaa,
+      opacity: 0.18,
+      displacementMap: heightMap,
+      alphaMap: alphaMap,
+      displacementScale: 40,
       wireframe: true,
-      transparent: true,
-      opacity: 0.12,
+      depthTest: false,
     });
-    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    headGroup.add(innerMesh);
+    const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+    terrainMesh.rotateX(Math.PI / 3);
+    terrainMesh.position.set(0, 485, 0);
+    scene.add(terrainMesh);
 
-    // Dynamic Orbital Particles (Smoke / Cybernetic Dust)
-    const particleCount = 240;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 400;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 400;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 200;
+    // Binary Particle Cloud scattered over Terrain
+    const binCount = 1200;
+    const binGeo = new THREE.BufferGeometry();
+    const binPos = new Float32Array(binCount * 3);
+    for (let i = 0; i < binCount * 3; i += 3) {
+      binPos[i] = (Math.random() - 0.5) * 220;
+      binPos[i + 1] = (Math.random() - 0.5) * 220;
+      binPos[i + 2] = (Math.random() - 0.5) * 60;
     }
-    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      size: 1.6,
-      color: 0xcccccc,
+    binGeo.setAttribute("position", new THREE.BufferAttribute(binPos, 3));
+    const binParticleMat = new THREE.PointsMaterial({
+      size: 1.2,
+      map: binMap,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.6,
       blending: THREE.AdditiveBlending,
     });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
+    const binParticles = new THREE.Points(binGeo, binParticleMat);
+    terrainMesh.add(binParticles);
 
-    headGroup.position.set(-18, 0, 0);
+    // 2. ABOUT SCENE: Wireframe Head & Glowing Lightbulb
+    const headGroup = new THREE.Group();
+    headGroup.position.set(-30, 260, 0);
+    headGroup.scale.set(25, 25, 25);
+    headGroup.rotation.y = Math.PI / 6;
+    scene.add(headGroup);
+
+    // Lamp Point Light inside the head
+    const lampLight = new THREE.PointLight(0xffffff, 2.0, 150);
+    lampLight.position.set(-28, 275, 10);
+    scene.add(lampLight);
+
+    gltfLoader.load(
+      "/models/head/Head.gltf",
+      (gltf) => {
+        headGroup.add(gltf.scene);
+      },
+      undefined,
+      (err) => console.warn("Head.gltf fallback:", err)
+    );
+
+    gltfLoader.load(
+      "/models/head/scene3.gltf",
+      (gltf) => {
+        headGroup.add(gltf.scene);
+      },
+      undefined,
+      (err) => console.warn("scene3.gltf fallback:", err)
+    );
+
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Orbiting Particle Sphere
+    const brainGroup = new THREE.Group();
+    brainGroup.position.set(45, 110, 0);
+    brainGroup.scale.set(13, 13, 13);
+    brainGroup.rotation.y = 1;
+    scene.add(brainGroup);
+
+    let mixer: THREE.AnimationMixer | null = null;
+
+    gltfLoader.load(
+      "/models/brain/te3.glb",
+      (gltf) => {
+        brainGroup.add(gltf.scene);
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(gltf.scene);
+          gltf.animations.forEach((clip) => {
+            mixer?.clipAction(clip).play();
+          });
+        }
+      },
+      undefined,
+      (err) => console.warn("te3.glb fallback:", err)
+    );
+
+    // Orbiting Spherical Particle Ring around Brain
+    const sphereParticleCount = 1300;
+    const sphereGeo = new THREE.BufferGeometry();
+    const spherePos: number[] = [];
+    const radius = 45;
+    for (let i = 0; i < sphereParticleCount; i++) {
+      const u = Math.random();
+      const v = Math.random();
+      const theta = u * 2.0 * Math.PI;
+      const phi = Math.acos(2.0 * v - 1.0);
+      const r = Math.cbrt(Math.random()) * radius;
+      const sinPhi = Math.sin(phi);
+      spherePos.push(r * sinPhi * Math.cos(theta), r * sinPhi * Math.sin(theta), r * Math.cos(phi));
+    }
+    sphereGeo.setAttribute("position", new THREE.Float32BufferAttribute(spherePos, 3));
+    const sphereMat = new THREE.PointsMaterial({
+      color: 0x868686,
+      size: 0.45,
+      transparent: true,
+      opacity: 0.8,
+    });
+    const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
+    brainOrbitParticles.position.set(38, 115, -10);
+    scene.add(brainOrbitParticles);
+
+    // 4. AMBIENT SMOKE & SPACE DUST
+    const smokeTexture = textureLoader.load("/images/smoke3.png");
+    const smokeGeo = new THREE.PlaneGeometry(350, 350);
+    const smokeMat = new THREE.MeshLambertMaterial({
+      map: smokeTexture,
+      transparent: true,
+      opacity: 0.04,
+      depthWrite: false,
+    });
+    const smokeParticles: THREE.Mesh[] = [];
+    for (let i = 0; i < 30; i++) {
+      const smokeMesh = new THREE.Mesh(smokeGeo, smokeMat);
+      smokeMesh.position.set(
+        Math.random() * 600 - 300,
+        Math.random() * 800 - 200,
+        Math.random() * 100 - 80
+      );
+      smokeMesh.rotation.z = Math.random() * Math.PI * 2;
+      scene.add(smokeMesh);
+      smokeParticles.push(smokeMesh);
+    }
+
+    // Interactive Raycaster for Lamp & Gears
+    const raycaster = new THREE.Raycaster();
+    const mouseCoord = new THREE.Vector2();
 
     let mouseX = 0;
     let mouseY = 0;
-    let targetRotationY = Math.PI / 6;
+    let targetHeadRotY = Math.PI / 6;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
       mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-      targetRotationY = (e.clientX / window.innerWidth) * (Math.PI / 3) + Math.PI / 8;
+      targetHeadRotY = (e.clientX / window.innerWidth) * (Math.PI / 3) + Math.PI / 8;
+    };
+
+    const onClick = (e: MouseEvent) => {
+      mouseCoord.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseCoord.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouseCoord, camera);
+
+      const headIntersects = raycaster.intersectObjects(headGroup.children, true);
+      if (headIntersects.length > 0) {
+        playSfx("/sound/lampSound.wav");
+        lampLight.intensity = lampLight.intensity > 3.0 ? 2.0 : 4.5;
+      }
+
+      const brainIntersects = raycaster.intersectObjects(brainGroup.children, true);
+      if (brainIntersects.length > 0) {
+        playSfx("/sound/gearSound.mp3");
+      }
     };
 
     const onResize = () => {
@@ -473,33 +562,89 @@ export default function GustavoPortfolio() {
     };
 
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("click", onClick);
     window.addEventListener("resize", onResize);
 
     let animId: number;
     let clock = new THREE.Clock();
 
     const animate = () => {
+      const delta = clock.getDelta();
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse follow interpolation
-      headGroup.rotation.y += (targetRotationY - headGroup.rotation.y) * 0.05;
-      headGroup.rotation.x = mouseY * 0.15;
-      headGroup.rotation.z = Math.sin(elapsedTime * 0.4) * 0.05;
+      if (mixer) mixer.update(delta);
 
-      innerMesh.rotation.y = -elapsedTime * 0.25;
-      innerMesh.rotation.x = elapsedTime * 0.18;
+      // 1. Terrain Wave Oscillation
+      const positionAttr = terrainGeo.attributes.position;
+      for (let i = 0; i < positionAttr.count; i++) {
+        const u = i % 96;
+        const v = Math.floor(i / 96);
+        const z = Math.sin(u * 0.15 + elapsedTime * 1.5) * Math.cos(v * 0.15 + elapsedTime * 1.2) * 3.0;
+        positionAttr.setZ(i, z);
+      }
+      terrainGeo.computeVertexNormals();
+      positionAttr.needsUpdate = true;
 
-      particles.rotation.y = elapsedTime * 0.015;
+      // 2. Head Smooth Rotation with Mouse
+      headGroup.rotation.y += (targetHeadRotY - headGroup.rotation.y) * 0.05;
+      headGroup.rotation.x = mouseY * 0.12;
 
-      // Scroll camera gliding smoothly through sections
+      // 3. Brain & Particle Orbit Rotation
+      brainOrbitParticles.rotation.y = elapsedTime * 0.08;
+      brainOrbitParticles.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1;
+      brainGroup.rotation.y = 1 + Math.sin(elapsedTime * 0.3) * 0.15;
+
+      // 4. Smoke Drift
+      smokeParticles.forEach((sm, idx) => {
+        sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
+      });
+
+      // 5. Scroll-driven Multi-Scene Camera Interpolation
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
-      const scrollFraction = scrollY / maxScroll;
+      const scrollProgress = scrollY / maxScroll;
 
-      camera.position.y = -scrollFraction * 70;
-      camera.position.x = -3 + Math.sin(scrollFraction * Math.PI * 2) * 8;
-      camera.position.z = 100 - Math.sin(scrollFraction * Math.PI) * 15;
-      camera.lookAt(0, -scrollFraction * 50, 0);
+      // Camera positions mapped to section heights:
+      // Home: y: 485, z: 120 -> About: y: 260, z: 90 -> Service: y: 110, z: 90 -> Projects: y: -30, z: 100 -> Contact: y: -160, z: 90
+      let targetY = 485;
+      let targetZ = 120;
+      let targetX = 0;
+      let targetLookY = 485;
+
+      if (scrollProgress < 0.25) {
+        // Home -> About
+        const t = scrollProgress / 0.25;
+        targetY = 485 - t * (485 - 260);
+        targetZ = 120 - t * (120 - 90);
+        targetX = -t * 10;
+        targetLookY = 485 - t * (485 - 260);
+      } else if (scrollProgress < 0.5) {
+        // About -> Service
+        const t = (scrollProgress - 0.25) / 0.25;
+        targetY = 260 - t * (260 - 110);
+        targetZ = 90;
+        targetX = -10 + t * 20;
+        targetLookY = 260 - t * (260 - 110);
+      } else if (scrollProgress < 0.75) {
+        // Service -> Projects
+        const t = (scrollProgress - 0.5) / 0.25;
+        targetY = 110 - t * (110 - (-30));
+        targetZ = 90 + t * 10;
+        targetX = 10 - t * 10;
+        targetLookY = 110 - t * (110 - (-30));
+      } else {
+        // Projects -> Contact
+        const t = (scrollProgress - 0.75) / 0.25;
+        targetY = -30 - t * (-30 - (-160));
+        targetZ = 100 - t * 10;
+        targetX = -t * 5;
+        targetLookY = -30 - t * (-30 - (-160));
+      }
+
+      camera.position.y += (targetY - camera.position.y) * 0.08;
+      camera.position.z += (targetZ - camera.position.z) * 0.08;
+      camera.position.x += (targetX + mouseX * 2 - camera.position.x) * 0.08;
+      camera.lookAt(0, targetLookY, 0);
 
       renderer.render(scene, camera);
       animId = requestAnimationFrame(animate);
@@ -510,14 +655,8 @@ export default function GustavoPortfolio() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("click", onClick);
       window.removeEventListener("resize", onResize);
-      geo.dispose();
-      wireGeo.dispose();
-      lineMat.dispose();
-      innerGeo.dispose();
-      innerMat.dispose();
-      particleGeo.dispose();
-      particleMat.dispose();
       renderer.dispose();
     };
   }, []);
@@ -525,7 +664,7 @@ export default function GustavoPortfolio() {
   // Form Submit Action
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    playTechClick(650, 0.05);
+    playSfx("/sound/woosh.mp3");
 
     if (!formData.name || !formData.email || !formData.message) return;
 
@@ -541,6 +680,14 @@ export default function GustavoPortfolio() {
 
   return (
     <>
+      {/* Background Audio */}
+      <audio
+        ref={audioRef}
+        src="/sound/Alphaxone-Ashes-of-Time.mp3"
+        loop
+        preload="auto"
+      />
+
       {/* Three.js Fixed Background Canvas */}
       <canvas id="main-content" ref={canvasRef}></canvas>
 
@@ -579,7 +726,7 @@ export default function GustavoPortfolio() {
                 href="#home"
                 className="nav-list-href"
                 onClick={() => {
-                  playTechClick(550, 0.03);
+                  playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -591,7 +738,7 @@ export default function GustavoPortfolio() {
                 href="#about"
                 className="nav-list-href"
                 onClick={() => {
-                  playTechClick(550, 0.03);
+                  playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -603,7 +750,7 @@ export default function GustavoPortfolio() {
                 href="#service"
                 className="nav-list-href"
                 onClick={() => {
-                  playTechClick(550, 0.03);
+                  playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -615,7 +762,7 @@ export default function GustavoPortfolio() {
                 href="#projects"
                 className="nav-list-href"
                 onClick={() => {
-                  playTechClick(550, 0.03);
+                  playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -627,7 +774,7 @@ export default function GustavoPortfolio() {
                 href="#contact"
                 className="nav-list-href"
                 onClick={() => {
-                  playTechClick(550, 0.03);
+                  playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -697,35 +844,35 @@ export default function GustavoPortfolio() {
             className="current"
             data-nav-href="#home"
             onClick={() => {
-              playTechClick(600, 0.03);
+              playSfx("/sound/woosh.mp3");
               document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
             }}
           ></li>
           <li
             data-nav-href="#about"
             onClick={() => {
-              playTechClick(600, 0.03);
+              playSfx("/sound/woosh.mp3");
               document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
             }}
           ></li>
           <li
             data-nav-href="#service"
             onClick={() => {
-              playTechClick(600, 0.03);
+              playSfx("/sound/woosh.mp3");
               document.getElementById("service")?.scrollIntoView({ behavior: "smooth" });
             }}
           ></li>
           <li
             data-nav-href="#projects"
             onClick={() => {
-              playTechClick(600, 0.03);
+              playSfx("/sound/woosh.mp3");
               document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
             }}
           ></li>
           <li
             data-nav-href="#contact"
             onClick={() => {
-              playTechClick(600, 0.03);
+              playSfx("/sound/woosh.mp3");
               document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
             }}
           ></li>
@@ -746,7 +893,7 @@ export default function GustavoPortfolio() {
               onClick={() => {
                 setLang("eng");
                 setDropdownOpen(false);
-                playTechClick(700, 0.03);
+                playSfx("/sound/woosh.mp3");
               }}
             >
               ENG
@@ -757,7 +904,7 @@ export default function GustavoPortfolio() {
               onClick={() => {
                 setLang("pt");
                 setDropdownOpen(false);
-                playTechClick(700, 0.03);
+                playSfx("/sound/woosh.mp3");
               }}
             >
               PT-BR
@@ -787,7 +934,7 @@ export default function GustavoPortfolio() {
           className="game-button"
           aria-label="Abrir Jogo / Open Experience"
           onClick={() => {
-            playTechClick(800, 0.05);
+            playSfx("/sound/woosh.mp3");
             setGameModalOpen(true);
           }}
         >
@@ -818,7 +965,7 @@ export default function GustavoPortfolio() {
                 </div>
 
                 <div className="contact-Btn-wrapper">
-                  <a href="#contact" onClick={() => playTechClick(600, 0.04)}>
+                  <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
                     <button className="contact-Btn">
                       {isEng ? "CONTACT" : "CONTATO"}
                     </button>
@@ -849,7 +996,7 @@ export default function GustavoPortfolio() {
             <p
               className={`tab-links ${activeTab === "education" ? "active-link" : ""}`}
               onClick={() => {
-                playTechClick(550, 0.03);
+                playSfx("/sound/woosh.mp3");
                 setActiveTab("education");
               }}
             >
@@ -862,7 +1009,7 @@ export default function GustavoPortfolio() {
             <p
               className={`tab-links skill-link ${activeTab === "skills" ? "active-link" : ""}`}
               onClick={() => {
-                playTechClick(550, 0.03);
+                playSfx("/sound/woosh.mp3");
                 setActiveTab("skills");
               }}
             >
@@ -936,7 +1083,7 @@ export default function GustavoPortfolio() {
             <div className="our-skills">
               <p>{isEng ? "Languages & Systems" : "Linguagens & Sistemas"}</p>
               {["Python", "SQL", "C++", "R", "Java", "MATLAB", "HTML5", "CSS3", "JavaScript"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playTechClick(750, 0.02)}>
+                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
                     <h2>{tech}</h2>
                   </div>
@@ -948,7 +1095,7 @@ export default function GustavoPortfolio() {
             <div className="our-skills">
               <p>{isEng ? "Machine Learning & MLOps" : "Machine Learning & MLOps"}</p>
               {["PyTorch", "TensorFlow", "FastAPI", "MLflow", "Docker", "Evidently AI", "scikit-learn", "pytest", "GitHub Actions"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playTechClick(750, 0.02)}>
+                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
                     <h2>{tech}</h2>
                   </div>
@@ -960,7 +1107,7 @@ export default function GustavoPortfolio() {
             <div className="our-skills">
               <p>{isEng ? "LLM & Agentic AI" : "LLM & IA Agêntica"}</p>
               {["LangGraph", "QLoRA", "RAG", "RAGAS", "DeepEval", "LangSmith", "ChromaDB", "Hugging Face"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playTechClick(750, 0.02)}>
+                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
                     <h2>{tech}</h2>
                   </div>
@@ -972,7 +1119,7 @@ export default function GustavoPortfolio() {
             <div className="our-skills">
               <p>{isEng ? "Quantitative Finance & Stats" : "Finanças Quantitativas"}</p>
               {["Black-Scholes", "Heston Model", "Kalman Filter", "Cointegration", "Factor Models", "CUPED", "DoWhy", "EconML"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playTechClick(750, 0.02)}>
+                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                   <div className="card-content">
                     <h2>{tech}</h2>
                   </div>
@@ -988,7 +1135,7 @@ export default function GustavoPortfolio() {
               href="/resumes/Abhiram_Boini_ML_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => playTechClick(700, 0.04)}
+              onClick={() => playSfx("/sound/woosh.mp3")}
             >
               <span></span>
               <span></span>
@@ -1011,7 +1158,7 @@ export default function GustavoPortfolio() {
 
             <div className="service-card-wrapper">
               {/* Service Card 1 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text api-title">
                   {isEng ? "Production ML & MLOps" : "Desenvolvimento de MLOps"}
                 </h1>
@@ -1025,7 +1172,7 @@ export default function GustavoPortfolio() {
               </div>
 
               {/* Service Card 2 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text web-title">
                   {isEng ? "Autonomous LLM Agents" : "Agentes LLM Autônomos"}
                 </h1>
@@ -1039,7 +1186,7 @@ export default function GustavoPortfolio() {
               </div>
 
               {/* Service Card 3 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text desktop-title">
                   {isEng ? "Quantitative Finance & StatArb" : "Finanças Quantitativas"}
                 </h1>
@@ -1053,7 +1200,7 @@ export default function GustavoPortfolio() {
               </div>
 
               {/* Service Card 4 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text devops-title">
                   {isEng ? "Computer Vision & Remote Sensing" : "Visão Computacional"}
                 </h1>
@@ -1067,7 +1214,7 @@ export default function GustavoPortfolio() {
               </div>
 
               {/* Service Card 5 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text database-title">
                   {isEng ? "Causal Inference & A/B Testing" : "Inferência Causal"}
                 </h1>
@@ -1081,7 +1228,7 @@ export default function GustavoPortfolio() {
               </div>
 
               {/* Service Card 6 */}
-              <div className="service-card" onMouseEnter={() => playTechClick(700, 0.02)}>
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
                 <h1 className="service-card-text cloud-title">
                   {isEng ? "Cloud & Data Infrastructure" : "Infraestrutura Cloud & Dados"}
                 </h1>
@@ -1113,7 +1260,7 @@ export default function GustavoPortfolio() {
                 <div
                   className="prev"
                   onClick={() => {
-                    playTechClick(550, 0.03);
+                    playSfx("/sound/woosh.mp3");
                     setCarouselIndex((prev) => (prev > 0 ? prev - 1 : PROJECTS_LIST.length - 1));
                   }}
                 >
@@ -1125,7 +1272,7 @@ export default function GustavoPortfolio() {
                 <div
                   className="next"
                   onClick={() => {
-                    playTechClick(550, 0.03);
+                    playSfx("/sound/woosh.mp3");
                     setCarouselIndex((prev) => (prev < PROJECTS_LIST.length - 1 ? prev + 1 : 0));
                   }}
                 >
@@ -1160,7 +1307,7 @@ export default function GustavoPortfolio() {
                         }}
                         onClick={() => {
                           setCarouselIndex(idx);
-                          playTechClick(650, 0.03);
+                          playSfx("/sound/woosh.mp3");
                         }}
                       >
                         <div
@@ -1204,7 +1351,7 @@ export default function GustavoPortfolio() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                playTechClick(750, 0.04);
+                                playSfx("/sound/woosh.mp3");
                                 setActiveProjectModal(proj);
                               }}
                               style={{
@@ -1255,6 +1402,19 @@ export default function GustavoPortfolio() {
                     ×
                   </span>
                   <div className="lightbox-grid">
+                    {activeProjectModal.video && (
+                      <div className="lightbox-video-area" style={{ borderRadius: "8px", overflow: "hidden", maxHeight: "320px", background: "#000" }}>
+                        <video
+                          src={activeProjectModal.video}
+                          controls
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      </div>
+                    )}
                     <div className="project-description-container">
                       <div className="project-name">
                         {isEng ? activeProjectModal.titleEng : activeProjectModal.titlePt}
