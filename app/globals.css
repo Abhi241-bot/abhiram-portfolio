@@ -11,7 +11,102 @@ body {
   overflow-x: hidden;
 }
 
-/* Fix Hero section visibility and centering */
+/* Hide any residual language dropdown */
+.dropdown, .dropdown__button, .dropdown__items {
+  display: none !important;
+}
+
+/* Mobile Hamburger Icon */
+.mobile-menu {
+  position: fixed !important;
+  top: 25px !important;
+  right: 28px !important;
+  width: 32px !important;
+  height: 22px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  cursor: pointer !important;
+  z-index: 10001 !important;
+}
+
+.mobile-menu .line1,
+.mobile-menu .line2,
+.mobile-menu .line3 {
+  width: 100% !important;
+  height: 2px !important;
+  background-color: #ffffff !important;
+  transition: all 0.3s ease !important;
+  border-radius: 2px !important;
+}
+
+.mobile-menu.active .line1 {
+  transform: rotate(-45deg) translate(-6px, 6px) !important;
+}
+
+.mobile-menu.active .line2 {
+  opacity: 0 !important;
+}
+
+.mobile-menu.active .line3 {
+  transform: rotate(45deg) translate(-6px, -6px) !important;
+}
+
+/* Slide-Out Navigation Drawer */
+.nav-list {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 320px !important;
+  max-width: 85vw !important;
+  height: 100vh !important;
+  background: rgba(14, 14, 14, 0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24px !important;
+  padding: 40px 20px !important;
+  transform: translateX(100%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s !important;
+  z-index: 10000 !important;
+  box-shadow: -15px 0 45px rgba(0, 0, 0, 0.95) !important;
+}
+
+.nav-list.active {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.nav-list li {
+  list-style: none !important;
+  margin: 8px 0 !important;
+}
+
+.nav-list-href {
+  font-family: 'Bitter', serif !important;
+  font-size: 19px !important;
+  letter-spacing: 0.22em !important;
+  color: #cecece !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  transition: all 0.25s ease !important;
+  display: inline-block !important;
+}
+
+.nav-list-href:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px #ffffff, 0 0 25px rgba(255, 255, 255, 0.8) !important;
+  transform: translateX(-4px) !important;
+}
+
+/* Fix Hero section visibility, positioning and layering */
 #section-home {
   visibility: visible !important;
   display: flex !important;
@@ -26,6 +121,7 @@ body {
   width: 100% !important;
   height: 100vh !important;
   z-index: 10 !important;
+  pointer-events: auto !important;
 }
 
 .home {
@@ -54,23 +150,23 @@ body {
   top: 0 !important;
   right: 0 !important;
   transform: none !important;
-  z-index: 10 !important;
+  z-index: 20 !important;
 }
 
 .name-highlight {
   display: flex !important;
   align-items: baseline !important;
   justify-content: center !important;
-  gap: 8px !important;
+  gap: 10px !important;
   width: 100% !important;
   transform: none !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 16px !important;
 }
 
 #letter, #letter2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 700 !important;
-  font-size: clamp(2.5rem, 6vw, 6rem) !important;
+  font-size: clamp(2.6rem, 6.2vw, 5.8rem) !important;
   color: #ffffff !important;
   text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 35px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5) !important;
 }
@@ -78,14 +174,14 @@ body {
 #name, .name2 {
   font-family: 'Nanum Myeongjo', serif !important;
   font-weight: 400 !important;
-  font-size: clamp(2rem, 5vw, 5rem) !important;
+  font-size: clamp(2rem, 5vw, 4.8rem) !important;
   color: #a8a8a8 !important;
   letter-spacing: 0.25em !important;
 }
 
 .typed-wrapper {
-  margin-top: 10px !important;
-  margin-bottom: 25px !important;
+  margin-top: 8px !important;
+  margin-bottom: 26px !important;
   transform: none !important;
   width: 100% !important;
   text-align: center !important;
@@ -93,8 +189,8 @@ body {
 
 .typed {
   font-family: 'Lato', sans-serif !important;
-  font-size: clamp(0.9rem, 1.4vw, 1.6rem) !important;
-  color: #888888 !important;
+  font-size: clamp(0.85rem, 1.3vw, 1.4rem) !important;
+  color: #999999 !important;
   letter-spacing: 0.35em !important;
   font-weight: 400 !important;
 }
@@ -103,17 +199,18 @@ body {
   display: flex !important;
   justify-content: center !important;
   width: 100% !important;
-  margin-top: 10px !important;
+  margin-top: 6px !important;
+  margin-bottom: 30px !important;
 }
 
 .contact-Btn {
   background-color: transparent !important;
-  color: #898989 !important;
+  color: #a8a8a8 !important;
   border: 1px solid #c2c2c2 !important;
   border-radius: 50px !important;
-  padding: 12px 36px !important;
+  padding: 12px 38px !important;
   font-family: 'Lato', sans-serif !important;
-  font-size: clamp(11px, 1vw, 14px) !important;
+  font-size: clamp(12px, 0.95vw, 14px) !important;
   letter-spacing: 0.25rem !important;
   text-transform: uppercase !important;
   cursor: pointer !important;
@@ -129,13 +226,13 @@ body {
 
 #scroll-down-animation {
   position: absolute !important;
-  bottom: 40px !important;
+  bottom: 35px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   cursor: pointer !important;
 }
 
-/* Section styling for clean scroll alignment */
+/* Section styling */
 .section {
   min-height: 100vh !important;
   display: flex !important;

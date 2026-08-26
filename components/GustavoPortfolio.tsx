@@ -288,15 +288,15 @@ export default function GustavoPortfolio() {
     const starGeo = new THREE.SphereGeometry(2.0, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 555, -20);
+    starMesh.position.set(-2.5, 550, -20);
     scene.add(starMesh);
 
     // Glowing Star Point Light
     const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
-    starLight.position.set(-2.5, 555, -10);
+    starLight.position.set(-2.5, 550, -10);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane with Alpha and Displacement Map
+    // Terrain Wireframe Plane positioned behind and below the name text
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -308,14 +308,14 @@ export default function GustavoPortfolio() {
       opacity: 0.18,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 38,
+      displacementScale: 30,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
     // Rotate terrain by 11 rad so mountain ridge arches UPWARDS in middle behind text
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 465, -30);
+    terrainMesh.position.set(0, 450, -40);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
@@ -368,7 +368,7 @@ export default function GustavoPortfolio() {
       (err) => console.warn("scene3.gltf fallback:", err)
     );
 
-    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Orbiting Particle Sphere
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Spherical Particle Shell
     const brainGroup = new THREE.Group();
     brainGroup.position.set(45, 110, 0);
     brainGroup.scale.set(13, 13, 13);
@@ -392,29 +392,30 @@ export default function GustavoPortfolio() {
       (err) => console.warn("te3.glb fallback:", err)
     );
 
-    // Orbiting Spherical Particle Ring accurately centered around Brain
+    // Spherical Particle Shell accurately centered around the Brain
+    const sphereRadius = Math.min(45, (typeof window !== "undefined" ? window.innerWidth : 1200) / 4);
     const sphereParticleCount = 1300;
     const sphereGeo = new THREE.BufferGeometry();
     const spherePos: number[] = [];
-    const radius = 45;
+
     for (let i = 0; i < sphereParticleCount; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = Math.cbrt(Math.random()) * radius;
-      const sinPhi = Math.sin(phi);
-      spherePos.push(r * sinPhi * Math.cos(theta), r * sinPhi * Math.sin(theta), r * Math.cos(phi));
+      // Spherical shell distribution matching original Gustavo formula
+      const lf = Math.acos(THREE.MathUtils.randFloatSpread(2));
+      const Lv = THREE.MathUtils.randFloatSpread(360);
+      const px = sphereRadius * Math.sin(lf) * Math.cos(Lv);
+      const py = sphereRadius * Math.sin(lf) * Math.sin(Lv);
+      const pz = sphereRadius * Math.cos(lf);
+      spherePos.push(px, py, pz);
     }
     sphereGeo.setAttribute("position", new THREE.Float32BufferAttribute(spherePos, 3));
     const sphereMat = new THREE.PointsMaterial({
       color: 0x868686,
-      size: 0.45,
+      size: 0.42,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    // Align particle orbit center directly with brain
+    // Align center directly with the brain at (45, 110, 0)
     brainOrbitParticles.position.set(45, 110, 0);
     scene.add(brainOrbitParticles);
 
@@ -503,7 +504,7 @@ export default function GustavoPortfolio() {
         const x = Math.sin(y) * 0.2;
         const S = v + t;
         const T = Math.cos(S) * 0.2;
-        positionAttr.setZ(f, (x + T) * 4.0);
+        positionAttr.setZ(f, (x + T) * 3.5);
       }
       terrainGeo.computeVertexNormals();
       positionAttr.needsUpdate = true;
@@ -512,7 +513,7 @@ export default function GustavoPortfolio() {
       headGroup.rotation.y += (targetHeadRotY - headGroup.rotation.y) * 0.05;
       headGroup.rotation.x = mouseY * 0.12;
 
-      // 3. Brain & Particle Orbit Rotation
+      // 3. Brain & Particle Shell Rotation around same origin
       brainOrbitParticles.rotation.y = elapsedTime * 0.08;
       brainOrbitParticles.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1;
       brainGroup.rotation.y = 1 + Math.sin(elapsedTime * 0.3) * 0.15;
@@ -622,7 +623,6 @@ export default function GustavoPortfolio() {
           <div
             className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ display: "block", cursor: "pointer", zIndex: 100 }}
           >
             <div className="line1"></div>
             <div className="line2"></div>
@@ -630,51 +630,11 @@ export default function GustavoPortfolio() {
           </div>
 
           {/* Slide-out Navigation Drawer Menu */}
-          <ul
-            className={`nav-list ${mobileMenuOpen ? "active" : ""}`}
-            style={{
-              position: "fixed",
-              top: 0,
-              right: 0,
-              width: "320px",
-              maxWidth: "85vw",
-              height: "100vh",
-              background: "rgba(18, 18, 18, 0.96)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderLeft: "1px solid rgba(255, 255, 255, 0.1)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "28px",
-              padding: "40px 20px",
-              transform: mobileMenuOpen ? "translateX(0)" : "translateX(100%)",
-              transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-              zIndex: 90,
-              boxShadow: mobileMenuOpen ? "-10px 0 30px rgba(0,0,0,0.8)" : "none",
-            }}
-          >
-            {/* Close button inside menu */}
-            <div
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                position: "absolute",
-                top: "24px",
-                right: "24px",
-                fontSize: "28px",
-                color: "#a8a8a8",
-                cursor: "pointer",
-              }}
-            >
-              ×
-            </div>
-
+          <ul className={`nav-list ${mobileMenuOpen ? "active" : ""}`}>
             <li>
               <a
                 href="#home"
                 className="nav-list-href"
-                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -687,7 +647,6 @@ export default function GustavoPortfolio() {
               <a
                 href="#about"
                 className="nav-list-href"
-                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -700,7 +659,6 @@ export default function GustavoPortfolio() {
               <a
                 href="#service"
                 className="nav-list-href"
-                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -713,7 +671,6 @@ export default function GustavoPortfolio() {
               <a
                 href="#projects"
                 className="nav-list-href"
-                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -726,7 +683,6 @@ export default function GustavoPortfolio() {
               <a
                 href="#contact"
                 className="nav-list-href"
-                style={{ fontSize: "18px", letterSpacing: "0.2em", color: "#ffffff", textDecoration: "none", fontFamily: "Bitter, serif" }}
                 onClick={() => {
                   playSfx("/sound/woosh.mp3");
                   setMobileMenuOpen(false);
@@ -737,7 +693,7 @@ export default function GustavoPortfolio() {
             </li>
 
             {/* Social Logos inside drawer */}
-            <div className="social" style={{ display: "flex", gap: "16px", marginTop: "20px" }}>
+            <div className="social" style={{ display: "flex", gap: "16px", marginTop: "24px" }}>
               <a href="https://github.com/Abhi241-bot" target="_blank" rel="noopener noreferrer">
                 <div className="github-logo">
                   <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
