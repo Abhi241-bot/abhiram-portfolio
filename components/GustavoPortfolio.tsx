@@ -162,6 +162,31 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
 ];
 
+// Skills Groups with Official SVG Icon Assets matching Screenshot 3
+const SKILLS_AI_BACKEND = [
+  { name: "Python", icon: "/images/skills/python.svg" },
+  { name: "PyTorch", icon: "/images/skills/pytorch.svg" },
+  { name: "TensorFlow", icon: "/images/skills/tensorflow.svg" },
+  { name: "Docker", icon: "/images/skills/docker.svg" },
+  { name: "FastAPI", icon: "/images/skills/fastapi.svg" },
+  { name: "Pandas", icon: "/images/skills/pandas.svg" },
+  { name: "NumPy", icon: "/images/skills/numpy.svg" },
+  { name: "GCP", icon: "/images/skills/gcp.svg" },
+  { name: "Linux", icon: "/images/skills/linux.svg" },
+];
+
+const SKILLS_FRONT_LANGS = [
+  { name: "C++", icon: "/images/skills/cplusplus.svg" },
+  { name: "Java", icon: "/images/skills/java.svg" },
+  { name: "R", icon: "/images/skills/r.svg" },
+  { name: "MySQL", icon: "/images/skills/mysql.svg" },
+  { name: "PostgreSQL", icon: "/images/skills/postgresql.svg" },
+  { name: "MongoDB", icon: "/images/skills/mongodb.svg" },
+  { name: "JavaScript", icon: "/images/skills/javascript.svg" },
+  { name: "React", icon: "/images/skills/react.svg" },
+  { name: "Git", icon: "/images/skills/git.svg" },
+];
+
 export default function GustavoPortfolio() {
   const [isMuted, setIsMuted] = useState(true);
   const [activeTab, setActiveTab] = useState<"education" | "skills">("education");
@@ -256,7 +281,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine with Particle Physics, Wave Terrain & Shatter Effect
+  // Complete Three.js 3D WebGL Multi-Scene Engine with Calibrated Depth & Concentric Shatter Mesh
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -291,15 +316,15 @@ export default function GustavoPortfolio() {
     const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 565, -30);
+    starMesh.position.set(-2.5, 545, -30);
     scene.add(starMesh);
 
     // Glowing Star Point Light
     const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
-    starLight.position.set(-2.5, 565, -20);
+    starLight.position.set(-2.5, 545, -20);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane positioned safely in the background
+    // Terrain Wireframe Plane positioned comfortably in the bottom third of the view
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -308,16 +333,16 @@ export default function GustavoPortfolio() {
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.11,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 25,
+      displacementScale: 20,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 440, -70);
+    terrainMesh.position.set(0, 380, -90);
     terrainMesh.scale.set(1.4, 1.4, 1.4);
     scene.add(terrainMesh);
 
@@ -432,26 +457,27 @@ export default function GustavoPortfolio() {
 
     // 4. CONTACT SCENE: 3D Ripple Mesh + Click Shatter Exploding Particle System
     const contactGroup = new THREE.Group();
-    contactGroup.position.set(40, -100, 10);
+    contactGroup.position.set(50, -100, 0);
     scene.add(contactGroup);
 
-    // Concentric Wireframe Ripple Rings matching reference screenshot
-    const outerRingGeo = new THREE.TorusGeometry(26, 4, 16, 60);
+    // Delicate concentric wireframe disc matching Gustavo's reference
+    const outerRingGeo = new THREE.TorusGeometry(16, 2.2, 16, 60);
     const outerRingMat = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       wireframe: true,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.16,
     });
     const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+    outerRing.rotation.x = Math.PI / 3;
     contactGroup.add(outerRing);
 
-    const innerSphereGeo = new THREE.SphereGeometry(14, 28, 28);
+    const innerSphereGeo = new THREE.SphereGeometry(9, 24, 24);
     const innerSphereMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       wireframe: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.2,
     });
     const innerSphere = new THREE.Mesh(innerSphereGeo, innerSphereMat);
     contactGroup.add(innerSphere);
@@ -463,17 +489,16 @@ export default function GustavoPortfolio() {
     const shatterVelocities: { x: number; y: number; z: number }[] = [];
 
     for (let i = 0; i < shatterCount; i++) {
-      shatterPos[i * 3] = (Math.random() - 0.5) * 20;
-      shatterPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      shatterPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      shatterPos[i * 3] = (Math.random() - 0.5) * 14;
+      shatterPos[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      shatterPos[i * 3 + 2] = (Math.random() - 0.5) * 14;
 
-      // Radial explosive velocities
       const dir = new THREE.Vector3(
         (Math.random() - 0.5) * 2,
         (Math.random() - 0.5) * 2,
         (Math.random() - 0.5) * 2
       ).normalize();
-      const speed = Math.random() * 2.8 + 1.2;
+      const speed = Math.random() * 2.5 + 1.0;
       shatterVelocities.push({ x: dir.x * speed, y: dir.y * speed, z: dir.z * speed });
     }
 
@@ -498,21 +523,18 @@ export default function GustavoPortfolio() {
       shatterTime = 0;
       playSfx("/sound/shatter.mp3");
 
-      // Hide original mesh and show exploding particles
       outerRing.visible = false;
       innerSphere.visible = false;
       shatterMat.opacity = 0.95;
 
-      // Reset initial particle positions
       const posArr = shatterGeo.attributes.position.array as Float32Array;
       for (let i = 0; i < shatterCount; i++) {
-        posArr[i * 3] = (Math.random() - 0.5) * 8;
-        posArr[i * 3 + 1] = (Math.random() - 0.5) * 8;
-        posArr[i * 3 + 2] = (Math.random() - 0.5) * 8;
+        posArr[i * 3] = (Math.random() - 0.5) * 6;
+        posArr[i * 3 + 1] = (Math.random() - 0.5) * 6;
+        posArr[i * 3 + 2] = (Math.random() - 0.5) * 6;
       }
       shatterGeo.attributes.position.needsUpdate = true;
 
-      // Reform after 3.5 seconds
       setTimeout(() => {
         outerRing.visible = true;
         innerSphere.visible = true;
@@ -570,7 +592,7 @@ export default function GustavoPortfolio() {
       smokeParticles.push(smokeMesh);
     }
 
-    // Interactive Raycaster for Lamp, Gears & Contact Exploding Mesh
+    // Interactive Raycaster
     const raycaster = new THREE.Raycaster();
     const mouseCoord = new THREE.Vector2();
 
@@ -663,9 +685,9 @@ export default function GustavoPortfolio() {
       brainGroup.rotation.y = 1 + Math.sin(elapsedTime * 0.3) * 0.15;
 
       // 4. Contact Ripple Mesh Rotation & Shatter Particle Explosion Physics
-      outerRing.rotation.x = elapsedTime * 0.4;
-      outerRing.rotation.y = elapsedTime * 0.3;
-      innerSphere.rotation.y = -elapsedTime * 0.5;
+      outerRing.rotation.z = elapsedTime * 0.25;
+      outerRing.rotation.y = Math.sin(elapsedTime * 0.3) * 0.2;
+      innerSphere.rotation.y = -elapsedTime * 0.4;
 
       if (isShattered) {
         shatterTime += delta;
@@ -753,7 +775,6 @@ export default function GustavoPortfolio() {
 
     if (!formData.name || !formData.email || !formData.message) return;
 
-    // Trigger explosive particle shatter on submission
     if (triggerShatterRef.current) {
       triggerShatterRef.current();
     }
@@ -978,7 +999,7 @@ export default function GustavoPortfolio() {
 
       {/* Main Content */}
       <main>
-        {/* Section 1: Home (Hero) - Symmetrical & Clean without Pill Button */}
+        {/* Section 1: Home (Hero) - Shifted Upwards, Perfectly Centered & Bright */}
         <section className="section" id="section-home">
           <section className="home" data-nav="data-nav">
             <div className="home-href" id="Home">
@@ -999,18 +1020,12 @@ export default function GustavoPortfolio() {
                     | DATA SCIENCE &amp; AI ENGINEER |
                   </span>
                 </div>
-
-                <div id="scroll-down-animation">
-                  <span className="mouse">
-                    <span className="move"></span>
-                  </span>
-                </div>
               </div>
             </div>
           </section>
         </section>
 
-        {/* Section 2: About */}
+        {/* Section 2: About & Skills */}
         <section className="section" id="about" data-nav="data-nav">
           <h1 className="about-title">About</h1>
           <h2 className="about-text">
@@ -1103,54 +1118,44 @@ export default function GustavoPortfolio() {
             </ul>
           </div>
 
-          {/* Skills Tab Content */}
+          {/* Skills Tab Content - Exact Match to Screenshot 3 with Official Icons */}
           <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills">
-            {/* Group 1: Core Languages */}
-            <div className="our-skills">
-              <p>Languages &amp; Systems</p>
-              {["Python", "SQL", "C++", "R", "Java", "MATLAB", "HTML5", "CSS3", "JavaScript"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                  <div className="card-content">
-                    <h2>{tech}</h2>
-                  </div>
+            <div className="skills-columns-wrapper">
+              {/* Column 1: AI & Back-End */}
+              <div className="skills-column">
+                <h3 className="skills-column-title">AI &amp; MACHINE LEARNING</h3>
+                <div className="skills-icon-grid">
+                  {SKILLS_AI_BACKEND.map((sk) => (
+                    <div
+                      key={sk.name}
+                      className="skill-card-icon"
+                      title={sk.name}
+                      onMouseEnter={() => playSfx("/sound/woosh.mp3")}
+                    >
+                      <img src={sk.icon} alt={sk.name} />
+                      <span className="skill-name-tooltip">{sk.name}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* Group 2: Machine Learning & MLOps */}
-            <div className="our-skills">
-              <p>Machine Learning &amp; MLOps</p>
-              {["PyTorch", "TensorFlow", "FastAPI", "MLflow", "Docker", "Evidently AI", "scikit-learn", "pytest", "GitHub Actions"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                  <div className="card-content">
-                    <h2>{tech}</h2>
-                  </div>
+              {/* Column 2: Languages & Systems */}
+              <div className="skills-column">
+                <h3 className="skills-column-title">LANGUAGES &amp; SYSTEMS</h3>
+                <div className="skills-icon-grid">
+                  {SKILLS_FRONT_LANGS.map((sk) => (
+                    <div
+                      key={sk.name}
+                      className="skill-card-icon"
+                      title={sk.name}
+                      onMouseEnter={() => playSfx("/sound/woosh.mp3")}
+                    >
+                      <img src={sk.icon} alt={sk.name} />
+                      <span className="skill-name-tooltip">{sk.name}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-
-            {/* Group 3: LLM & Agentic AI */}
-            <div className="our-skills">
-              <p>LLM &amp; Agentic AI</p>
-              {["LangGraph", "QLoRA", "RAG", "RAGAS", "DeepEval", "LangSmith", "ChromaDB", "Hugging Face"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                  <div className="card-content">
-                    <h2>{tech}</h2>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Group 4: Quantitative Finance */}
-            <div className="our-skills">
-              <p>Quantitative Finance &amp; Stats</p>
-              {["Black-Scholes", "Heston Model", "Kalman Filter", "Cointegration", "Factor Models", "CUPED", "DoWhy", "EconML"].map((tech) => (
-                <div key={tech} className="card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                  <div className="card-content">
-                    <h2>{tech}</h2>
-                  </div>
-                </div>
-              ))}
+              </div>
             </div>
           </div>
 
