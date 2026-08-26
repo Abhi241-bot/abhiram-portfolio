@@ -184,6 +184,9 @@ export default function GustavoPortfolio() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Callback ref for triggering Contact 3D shatter explosion from UI click
+  const triggerShatterRef = useRef<(() => void) | null>(null);
+
   // Loading Counter Animation
   useEffect(() => {
     let current = 0;
@@ -253,7 +256,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine
+  // Complete Three.js 3D WebGL Multi-Scene Engine with Particle Physics, Wave Terrain & Shatter Effect
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -296,7 +299,7 @@ export default function GustavoPortfolio() {
     starLight.position.set(-2.5, 565, -20);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane positioned in the background behind the name
+    // Terrain Wireframe Plane positioned safely in the background
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -313,20 +316,23 @@ export default function GustavoPortfolio() {
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-    // Rotate terrain by 11 rad so mountain ridge arches UPWARDS in middle behind text
     terrainMesh.rotation.x = 11;
     terrainMesh.position.set(0, 440, -70);
     terrainMesh.scale.set(1.4, 1.4, 1.4);
     scene.add(terrainMesh);
 
-    // Binary Particle Cloud scattered over Terrain
+    // Binary Particle Cloud on Terrain with dynamic float animation
     const binCount = 1400;
     const binGeo = new THREE.BufferGeometry();
     const binPos = new Float32Array(binCount * 3);
+    const binBasePos = new Float32Array(binCount * 3);
     for (let i = 0; i < binCount * 3; i += 3) {
       binPos[i] = (Math.random() - 0.5) * 260;
       binPos[i + 1] = (Math.random() - 0.5) * 260;
       binPos[i + 2] = (Math.random() - 0.5) * 80;
+      binBasePos[i] = binPos[i];
+      binBasePos[i + 1] = binPos[i + 1];
+      binBasePos[i + 2] = binPos[i + 2];
     }
     binGeo.setAttribute("position", new THREE.BufferAttribute(binPos, 3));
     const binParticleMat = new THREE.PointsMaterial({
@@ -369,7 +375,7 @@ export default function GustavoPortfolio() {
       (err) => console.warn("scene3.gltf fallback:", err)
     );
 
-    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Concentric Spherical Particle Shell
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Concentric Particle Shell
     const brainGroup = new THREE.Group();
     brainGroup.position.set(45, 110, 0);
     brainGroup.scale.set(13, 13, 13);
@@ -406,7 +412,6 @@ export default function GustavoPortfolio() {
     const spherePos: number[] = [];
 
     for (let i = 0; i < sphereParticleCount; i++) {
-      // Spherical shell distribution matching Gustavo's math
       const lf = Math.acos(THREE.MathUtils.randFloatSpread(2));
       const Lv = THREE.MathUtils.randFloatSpread(360);
       const px = sphereRadius * Math.sin(lf) * Math.cos(Lv);
@@ -422,11 +427,128 @@ export default function GustavoPortfolio() {
       opacity: 0.9,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    // Align center directly with the brain at (45, 110, 0)
     brainOrbitParticles.position.set(45, 110, 0);
     scene.add(brainOrbitParticles);
 
-    // 4. AMBIENT SMOKE & SPACE DUST
+    // 4. CONTACT SCENE: 3D Ripple Mesh + Click Shatter Exploding Particle System
+    const contactGroup = new THREE.Group();
+    contactGroup.position.set(40, -100, 10);
+    scene.add(contactGroup);
+
+    // Concentric Wireframe Ripple Rings matching reference screenshot
+    const outerRingGeo = new THREE.TorusGeometry(26, 4, 16, 60);
+    const outerRingMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.18,
+    });
+    const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+    contactGroup.add(outerRing);
+
+    const innerSphereGeo = new THREE.SphereGeometry(14, 28, 28);
+    const innerSphereMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.22,
+    });
+    const innerSphere = new THREE.Mesh(innerSphereGeo, innerSphereMat);
+    contactGroup.add(innerSphere);
+
+    // 1,200 Exploding Shatter Shards
+    const shatterCount = 1200;
+    const shatterGeo = new THREE.BufferGeometry();
+    const shatterPos = new Float32Array(shatterCount * 3);
+    const shatterVelocities: { x: number; y: number; z: number }[] = [];
+
+    for (let i = 0; i < shatterCount; i++) {
+      shatterPos[i * 3] = (Math.random() - 0.5) * 20;
+      shatterPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      shatterPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+
+      // Radial explosive velocities
+      const dir = new THREE.Vector3(
+        (Math.random() - 0.5) * 2,
+        (Math.random() - 0.5) * 2,
+        (Math.random() - 0.5) * 2
+      ).normalize();
+      const speed = Math.random() * 2.8 + 1.2;
+      shatterVelocities.push({ x: dir.x * speed, y: dir.y * speed, z: dir.z * speed });
+    }
+
+    shatterGeo.setAttribute("position", new THREE.BufferAttribute(shatterPos, 3));
+    const shatterMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.6,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+    });
+    const shatterParticles = new THREE.Points(shatterGeo, shatterMat);
+    contactGroup.add(shatterParticles);
+
+    // Shatter explosion trigger state
+    let isShattered = false;
+    let shatterTime = 0;
+
+    const triggerShatter = () => {
+      if (isShattered) return;
+      isShattered = true;
+      shatterTime = 0;
+      playSfx("/sound/shatter.mp3");
+
+      // Hide original mesh and show exploding particles
+      outerRing.visible = false;
+      innerSphere.visible = false;
+      shatterMat.opacity = 0.95;
+
+      // Reset initial particle positions
+      const posArr = shatterGeo.attributes.position.array as Float32Array;
+      for (let i = 0; i < shatterCount; i++) {
+        posArr[i * 3] = (Math.random() - 0.5) * 8;
+        posArr[i * 3 + 1] = (Math.random() - 0.5) * 8;
+        posArr[i * 3 + 2] = (Math.random() - 0.5) * 8;
+      }
+      shatterGeo.attributes.position.needsUpdate = true;
+
+      // Reform after 3.5 seconds
+      setTimeout(() => {
+        outerRing.visible = true;
+        innerSphere.visible = true;
+        shatterMat.opacity = 0;
+        isShattered = false;
+      }, 3500);
+    };
+
+    triggerShatterRef.current = triggerShatter;
+
+    // 5. AMBIENT DRIFTING SPACE PARTICLES
+    const dustCount = 800;
+    const dustGeo = new THREE.BufferGeometry();
+    const dustPos = new Float32Array(dustCount * 3);
+    const dustVelocities: { x: number; y: number; z: number }[] = [];
+    for (let i = 0; i < dustCount * 3; i += 3) {
+      dustPos[i] = (Math.random() - 0.5) * 500;
+      dustPos[i + 1] = Math.random() * 800 - 200;
+      dustPos[i + 2] = (Math.random() - 0.5) * 150;
+      dustVelocities.push({
+        x: (Math.random() - 0.5) * 0.05,
+        y: Math.random() * 0.08 + 0.02,
+        z: (Math.random() - 0.5) * 0.05,
+      });
+    }
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+    const dustMat = new THREE.PointsMaterial({
+      color: 0x888888,
+      size: 0.5,
+      transparent: true,
+      opacity: 0.45,
+    });
+    const dustParticles = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustParticles);
+
+    // 6. AMBIENT SMOKE & SPACE DUST
     const smokeTexture = textureLoader.load("/images/smoke3.png");
     const smokeGeo = new THREE.PlaneGeometry(350, 350);
     const smokeMat = new THREE.MeshLambertMaterial({
@@ -448,7 +570,7 @@ export default function GustavoPortfolio() {
       smokeParticles.push(smokeMesh);
     }
 
-    // Interactive Raycaster for Lamp & Gears
+    // Interactive Raycaster for Lamp, Gears & Contact Exploding Mesh
     const raycaster = new THREE.Raycaster();
     const mouseCoord = new THREE.Vector2();
 
@@ -477,6 +599,11 @@ export default function GustavoPortfolio() {
       if (brainIntersects.length > 0) {
         playSfx("/sound/gearSound.mp3");
       }
+
+      const contactIntersects = raycaster.intersectObjects(contactGroup.children, true);
+      if (contactIntersects.length > 0) {
+        triggerShatter();
+      }
     };
 
     const onResize = () => {
@@ -501,7 +628,7 @@ export default function GustavoPortfolio() {
 
       if (mixer) mixer.update(delta);
 
-      // 1. Terrain Real-time Vertex Wave Calculation matching original formula
+      // 1. Terrain Real-time Vertex Wave Calculation
       const t = Date.now() / 200;
       const positionAttr = terrainGeo.attributes.position;
       for (let f = 0; f < positionAttr.count; f++) {
@@ -516,21 +643,58 @@ export default function GustavoPortfolio() {
       terrainGeo.computeVertexNormals();
       positionAttr.needsUpdate = true;
 
+      // Dynamic Binary Particle Float Animation
+      const binPosArr = binGeo.attributes.position.array as Float32Array;
+      for (let i = 0; i < binCount; i++) {
+        const idx = i * 3 + 2;
+        binPosArr[idx] = binBasePos[idx] + Math.sin(elapsedTime * 1.5 + i * 0.2) * 4.0;
+      }
+      binGeo.attributes.position.needsUpdate = true;
+
       // 2. Head Smooth Rotation with Mouse
       headGroup.rotation.y += (targetHeadRotY - headGroup.rotation.y) * 0.05;
       headGroup.rotation.x = mouseY * 0.12;
 
-      // 3. Brain & Particle Shell Rotation around same origin
+      // 3. Brain & Particle Shell Rotation around same origin with Breathing Pulse
       brainOrbitParticles.rotation.y = elapsedTime * 0.08;
       brainOrbitParticles.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1;
+      const pulse = 1 + Math.sin(elapsedTime * 1.8) * 0.035;
+      brainOrbitParticles.scale.set(pulse, pulse, pulse);
       brainGroup.rotation.y = 1 + Math.sin(elapsedTime * 0.3) * 0.15;
 
-      // 4. Smoke Drift
+      // 4. Contact Ripple Mesh Rotation & Shatter Particle Explosion Physics
+      outerRing.rotation.x = elapsedTime * 0.4;
+      outerRing.rotation.y = elapsedTime * 0.3;
+      innerSphere.rotation.y = -elapsedTime * 0.5;
+
+      if (isShattered) {
+        shatterTime += delta;
+        const shatterPosArr = shatterGeo.attributes.position.array as Float32Array;
+        for (let i = 0; i < shatterCount; i++) {
+          shatterPosArr[i * 3] += shatterVelocities[i].x * 1.2;
+          shatterPosArr[i * 3 + 1] += shatterVelocities[i].y * 1.2;
+          shatterPosArr[i * 3 + 2] += shatterVelocities[i].z * 1.2;
+        }
+        shatterGeo.attributes.position.needsUpdate = true;
+        shatterMat.opacity = Math.max(0, 0.95 - shatterTime * 0.3);
+      }
+
+      // 5. Continuous Drifting Space Dust Particles
+      const dustPosArr = dustGeo.attributes.position.array as Float32Array;
+      for (let i = 0; i < dustCount; i++) {
+        dustPosArr[i * 3 + 1] += dustVelocities[i].y;
+        if (dustPosArr[i * 3 + 1] > 650) {
+          dustPosArr[i * 3 + 1] = -200;
+        }
+      }
+      dustGeo.attributes.position.needsUpdate = true;
+
+      // 6. Smoke Drift
       smokeParticles.forEach((sm, idx) => {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 5. Scroll-driven Multi-Scene Camera Interpolation
+      // 7. Scroll-driven Multi-Scene Camera Interpolation
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
@@ -588,6 +752,11 @@ export default function GustavoPortfolio() {
     playSfx("/sound/woosh.mp3");
 
     if (!formData.name || !formData.email || !formData.message) return;
+
+    // Trigger explosive particle shatter on submission
+    if (triggerShatterRef.current) {
+      triggerShatterRef.current();
+    }
 
     setFormState("delivering");
     setTimeout(() => {
@@ -809,30 +978,26 @@ export default function GustavoPortfolio() {
 
       {/* Main Content */}
       <main>
-        {/* Section 1: Home (Hero) */}
+        {/* Section 1: Home (Hero) - Symmetrical & Clean without Pill Button */}
         <section className="section" id="section-home">
           <section className="home" data-nav="data-nav">
             <div className="home-href" id="Home">
               <div className="name-container">
                 <div className="name-highlight">
-                  <span id="letter">A</span>
-                  <span id="name">BHIRAM</span>
-                  <span id="letter2">B</span>
-                  <span className="name2" id="name">OINI</span>
+                  <div className="name-word">
+                    <span id="letter">A</span>
+                    <span id="name">BHIRAM</span>
+                  </div>
+                  <div className="name-word">
+                    <span id="letter2">B</span>
+                    <span className="name2" id="name">OINI</span>
+                  </div>
                 </div>
 
                 <div className="typed-wrapper">
                   <span className="typed" id="typed">
                     | DATA SCIENCE &amp; AI ENGINEER |
                   </span>
-                </div>
-
-                <div className="contact-Btn-wrapper">
-                  <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")} style={{ textDecoration: "none" }}>
-                    <button className="contact-Btn">
-                      Get in Touch
-                    </button>
-                  </a>
                 </div>
 
                 <div id="scroll-down-animation">
@@ -1305,9 +1470,11 @@ export default function GustavoPortfolio() {
           <div className="spacer"></div>
         </section>
 
-        {/* Section 5: Contact */}
-        <section className="contact section">
-          <section className="content" id="contact" data-nav="data-nav">
+        {/* Section 5: Contact with Interactive 3D Exploding Mesh */}
+        <section className="contact section" id="contact" onClick={() => {
+          if (triggerShatterRef.current) triggerShatterRef.current();
+        }}>
+          <section className="content" data-nav="data-nav">
             <h2 className="contact-title">Contact</h2>
 
             {/* Delivering Animation */}
@@ -1333,7 +1500,7 @@ export default function GustavoPortfolio() {
             )}
 
             {/* Contact Form */}
-            <form id="contact-form" onSubmit={handleFormSubmit}>
+            <form id="contact-form" onSubmit={handleFormSubmit} onClick={(e) => e.stopPropagation()}>
               <input
                 type="text"
                 name="from_name"

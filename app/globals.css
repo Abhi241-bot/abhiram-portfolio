@@ -99,7 +99,7 @@ body {
   transform: translateX(-4px) !important;
 }
 
-/* Hero Section Positioning & Layout - Exactly Matching Gustavo Reference */
+/* Hero Section Positioning & Layout - Symmetrical & Clean */
 #section-home {
   visibility: visible !important;
   display: flex !important;
@@ -142,18 +142,27 @@ body {
   top: 0 !important;
   right: 0 !important;
   left: 0 !important;
+  margin: 0 auto !important;
   transform: none !important;
   z-index: 50 !important;
 }
 
+/* Mathematically Symmetric Name Alignment */
 .name-highlight {
   display: flex !important;
   align-items: baseline !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 28px !important;
   width: 100% !important;
+  margin: 0 auto 16px auto !important;
   transform: none !important;
-  margin-bottom: 14px !important;
+  padding: 0 !important;
+}
+
+.name-word {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
 }
 
 #letter, #letter2 {
@@ -169,12 +178,12 @@ body {
   font-weight: 400 !important;
   font-size: clamp(2.1rem, 5vw, 5rem) !important;
   color: #a8a8a8 !important;
-  letter-spacing: 0.28em !important;
+  letter-spacing: 0.22em !important;
 }
 
 .typed-wrapper {
-  margin-top: 4px !important;
-  margin-bottom: 24px !important;
+  margin-top: 6px !important;
+  margin-bottom: 28px !important;
   transform: none !important;
   width: 100% !important;
   text-align: center !important;
@@ -188,53 +197,9 @@ body {
   font-weight: 400 !important;
 }
 
-/* Centered Pill "Get in Touch" Button - Matching Reference Screenshot 2 */
-.contact-Btn-wrapper {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  width: 100% !important;
-  margin: 10px 0 45px 0 !important;
-  transform: none !important;
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-}
-
-.contact-Btn {
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-  transform: none !important;
-  width: auto !important;
-  min-width: 200px !important;
-  height: 44px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: transparent !important;
-  color: #999999 !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  border-radius: 50px !important;
-  padding: 0 38px !important;
-  font-family: 'Lato', sans-serif !important;
-  font-size: 13px !important;
-  letter-spacing: 0.22rem !important;
-  text-transform: capitalize !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-}
-
-.contact-Btn:hover {
-  background-color: #c2c2c2 !important;
-  color: #121212 !important;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
-  border-color: #ffffff !important;
-}
-
 #scroll-down-animation {
   position: absolute !important;
-  bottom: 25px !important;
+  bottom: 30px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   cursor: pointer !important;
@@ -250,6 +215,18 @@ body {
   z-index: 5 !important;
   padding: 80px 8vw !important;
   box-sizing: border-box !important;
+}
+
+/* Contact section layout with right side 3D interaction space */
+.contact.section {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.contact .content {
+  max-width: 600px !important;
+  position: relative !important;
+  z-index: 20 !important;
 }
 
 /* Carousel 3D styling */
