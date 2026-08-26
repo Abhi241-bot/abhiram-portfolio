@@ -281,7 +281,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine with Calibrated Depth & Concentric Shatter Mesh
+  // Complete Three.js 3D WebGL Multi-Scene Engine with Raised Terrain Horizon & Concentric Shatter Mesh
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -316,15 +316,15 @@ export default function GustavoPortfolio() {
     const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.position.set(-2.5, 545, -30);
+    starMesh.position.set(-2.5, 555, -30);
     scene.add(starMesh);
 
     // Glowing Star Point Light
     const starLight = new THREE.PointLight(0xffffff, 3.5, 350);
-    starLight.position.set(-2.5, 545, -20);
+    starLight.position.set(-2.5, 555, -20);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane positioned comfortably in the bottom third of the view
+    // Terrain Wireframe Plane raised upward behind the name
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -333,17 +333,17 @@ export default function GustavoPortfolio() {
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.11,
+      opacity: 0.12,
       displacementMap: heightMap,
       alphaMap: alphaMap,
-      displacementScale: 20,
+      displacementScale: 24,
       wireframe: true,
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
     terrainMesh.rotation.x = 11;
-    terrainMesh.position.set(0, 380, -90);
-    terrainMesh.scale.set(1.4, 1.4, 1.4);
+    terrainMesh.position.set(0, 430, -80);
+    terrainMesh.scale.set(1.35, 1.35, 1.35);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud on Terrain with dynamic float animation
@@ -457,11 +457,11 @@ export default function GustavoPortfolio() {
 
     // 4. CONTACT SCENE: 3D Ripple Mesh + Click Shatter Exploding Particle System
     const contactGroup = new THREE.Group();
-    contactGroup.position.set(50, -100, 0);
+    contactGroup.position.set(45, -100, 0);
     scene.add(contactGroup);
 
-    // Delicate concentric wireframe disc matching Gustavo's reference
-    const outerRingGeo = new THREE.TorusGeometry(16, 2.2, 16, 60);
+    // Concentric wireframe ripple disc safely on the right side
+    const outerRingGeo = new THREE.TorusGeometry(14, 2.0, 16, 60);
     const outerRingMat = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       wireframe: true,
@@ -472,7 +472,7 @@ export default function GustavoPortfolio() {
     outerRing.rotation.x = Math.PI / 3;
     contactGroup.add(outerRing);
 
-    const innerSphereGeo = new THREE.SphereGeometry(9, 24, 24);
+    const innerSphereGeo = new THREE.SphereGeometry(8, 24, 24);
     const innerSphereMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       wireframe: true,
@@ -999,7 +999,7 @@ export default function GustavoPortfolio() {
 
       {/* Main Content */}
       <main>
-        {/* Section 1: Home (Hero) - Shifted Upwards, Perfectly Centered & Bright */}
+        {/* Section 1: Home (Hero) - Perfectly Centered in Viewport */}
         <section className="section" id="section-home">
           <section className="home" data-nav="data-nav">
             <div className="home-href" id="Home">
