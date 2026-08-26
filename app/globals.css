@@ -1,6 +1,6 @@
 @import "./gustavo.css";
 
-/* Ensure smooth scrolling and prevent scroll before start */
+/* Ensure smooth scrolling */
 html {
   scroll-behavior: smooth;
   background-color: #121212;
@@ -8,18 +8,145 @@ html {
 
 body {
   background-color: #121212;
+  color: #fff;
+  overflow-x: hidden;
 }
 
-/* Custom override for font clarity and responsiveness */
+/* Ensure #section-home and name-container are always visible and centered */
+#section-home {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  position: relative !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  top: 0 !important;
+  right: 0 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 10 !important;
+}
+
+.home {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.home-href {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-decoration: none !important;
+}
+
+.name-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 3.5vw !important;
+  color: #a8a8a8 !important;
+  text-shadow: 0 0 10px #dfdfdf !important;
+  cursor: default !important;
+  z-index: 15 !important;
+}
+
 .name-highlight {
-  cursor: default;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  transform: none !important;
+  margin-bottom: 1vh !important;
 }
 
-/* Extra smooth transitions */
+#letter, #letter2 {
+  color: #ffffff !important;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 80px #fff !important;
+  font-weight: 700 !important;
+  font-size: 1.4em !important;
+  font-family: "Nanum Myeongjo", serif !important;
+  margin-right: 0.2vw !important;
+}
+
+#name, .name2 {
+  color: #a8a8a8 !important;
+  font-weight: 400 !important;
+  font-size: 1.1em !important;
+  font-family: "Nanum Myeongjo", serif !important;
+  letter-spacing: 0.3em !important;
+  margin-right: 2vw !important;
+}
+
+.typed-wrapper {
+  margin: 1vh 0 !important;
+  z-index: 15 !important;
+}
+
+.typed {
+  font-family: "Lato", sans-serif !important;
+  font-size: 1.2vw !important;
+  color: #a8a8a8 !important;
+  letter-spacing: 0.25rem !important;
+}
+
+.contact-Btn-wrapper {
+  margin-top: 2vh !important;
+  z-index: 15 !important;
+}
+
+.contact-Btn {
+  background-color: transparent !important;
+  color: #898989 !important;
+  padding: 12px 35px !important;
+  letter-spacing: 0.25rem !important;
+  font-family: "Lato", sans-serif !important;
+  font-size: 1vw !important;
+  font-weight: 400 !important;
+  border: 1px solid #c2c2c2 !important;
+  border-radius: 50px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.contact-Btn:hover {
+  background-color: #c2c2c2 !important;
+  color: #121212 !important;
+  box-shadow: 0 0 15px #c2c2c2, 0 0 30px #c2c2c2 !important;
+}
+
+/* Sections height and layout */
+main {
+  display: block !important;
+  width: 90vw !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.section {
+  min-height: 100vh !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: 60px 0 !important;
+  z-index: 5 !important;
+}
+
+/* 3D Carousel transitions */
 .carousel__slider__item {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
 }
 
+/* Lightbox Modal */
 .lightbox-backdrop {
   position: fixed;
   top: 0;
@@ -72,7 +199,7 @@ body {
 
 .project-description-container {
   color: #a8a8a8;
-  font-family: Lato, sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .project-name {
@@ -80,7 +207,7 @@ body {
   font-weight: 700;
   color: #fff;
   margin-bottom: 12px;
-  font-family: Bitter, serif;
+  font-family: "Bitter", serif;
 }
 
 .project-description-text {
@@ -96,7 +223,7 @@ body {
   color: #ffffff;
   margin-top: 16px;
   margin-bottom: 8px;
-  font-family: Bitter, serif;
+  font-family: "Bitter", serif;
 }
 
 .ul-description {

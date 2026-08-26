@@ -336,7 +336,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Wave Terrain, Star & Brain
+  // Complete Three.js 3D WebGL Multi-Scene Engine with GLTF Models, Correct Mountain Wave & Brain Orbit
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -345,7 +345,7 @@ export default function GustavoPortfolio() {
     scene.fog = new THREE.FogExp2(0x121212, 0.0015);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 485, 120);
+    camera.position.set(-3, 510, 100);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -360,26 +360,26 @@ export default function GustavoPortfolio() {
     const gltfLoader = new GLTFLoader();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
     dirLight.position.set(0, 550, 200);
     scene.add(dirLight);
 
-    // 1. HOME SCENE: Celestial Star + Flowing Heightmap Particle Wave Terrain
-    const starGeo = new THREE.SphereGeometry(1.8, 16, 16);
+    // 1. HOME SCENE: Celestial Star + Mountain Wave Terrain
+    const starGeo = new THREE.SphereGeometry(1.6, 16, 16);
     const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const starMesh = new THREE.Mesh(starGeo, starMat);
     starMesh.position.set(-2.5, 565, 0);
     scene.add(starMesh);
 
-    // Glowing Star Light
-    const starLight = new THREE.PointLight(0xffffff, 2.5, 300);
+    // Glowing Star Point Light
+    const starLight = new THREE.PointLight(0xffffff, 3.0, 350);
     starLight.position.set(-2.5, 565, 10);
     scene.add(starLight);
 
-    // Terrain Wireframe Plane with Alpha and Displacement
+    // Terrain Wireframe Plane with Alpha and Displacement (Arching upward behind name)
     const heightMap = textureLoader.load("/images/height.png");
     const alphaMap = textureLoader.load("/images/alpha.png");
     const binMap = textureLoader.load("/images/bin.png");
@@ -388,7 +388,7 @@ export default function GustavoPortfolio() {
     const terrainMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.2,
       displacementMap: heightMap,
       alphaMap: alphaMap,
       displacementScale: 40,
@@ -396,17 +396,18 @@ export default function GustavoPortfolio() {
       depthTest: false,
     });
     const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-    terrainMesh.rotateX(Math.PI / 3);
+    // Correct orientation so the crest arches upward like the reference screenshot
+    terrainMesh.rotation.set(11, 0, 0);
     terrainMesh.position.set(0, 485, 0);
     scene.add(terrainMesh);
 
     // Binary Particle Cloud scattered over Terrain
-    const binCount = 1200;
+    const binCount = 1300;
     const binGeo = new THREE.BufferGeometry();
     const binPos = new Float32Array(binCount * 3);
     for (let i = 0; i < binCount * 3; i += 3) {
-      binPos[i] = (Math.random() - 0.5) * 220;
-      binPos[i + 1] = (Math.random() - 0.5) * 220;
+      binPos[i] = (Math.random() - 0.5) * 240;
+      binPos[i + 1] = (Math.random() - 0.5) * 240;
       binPos[i + 2] = (Math.random() - 0.5) * 60;
     }
     binGeo.setAttribute("position", new THREE.BufferAttribute(binPos, 3));
@@ -414,7 +415,7 @@ export default function GustavoPortfolio() {
       size: 1.2,
       map: binMap,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
     });
     const binParticles = new THREE.Points(binGeo, binParticleMat);
@@ -422,13 +423,13 @@ export default function GustavoPortfolio() {
 
     // 2. ABOUT SCENE: Wireframe Head & Glowing Lightbulb
     const headGroup = new THREE.Group();
-    headGroup.position.set(-30, 260, 0);
+    headGroup.position.set(-28, 260, 0);
     headGroup.scale.set(25, 25, 25);
     headGroup.rotation.y = Math.PI / 6;
     scene.add(headGroup);
 
     // Lamp Point Light inside the head
-    const lampLight = new THREE.PointLight(0xffffff, 2.0, 150);
+    const lampLight = new THREE.PointLight(0xffffff, 2.2, 150);
     lampLight.position.set(-28, 275, 10);
     scene.add(lampLight);
 
@@ -452,7 +453,7 @@ export default function GustavoPortfolio() {
 
     // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Orbiting Particle Sphere
     const brainGroup = new THREE.Group();
-    brainGroup.position.set(45, 110, 0);
+    brainGroup.position.set(30, 110, 0);
     brainGroup.scale.set(13, 13, 13);
     brainGroup.rotation.y = 1;
     scene.add(brainGroup);
@@ -474,11 +475,11 @@ export default function GustavoPortfolio() {
       (err) => console.warn("te3.glb fallback:", err)
     );
 
-    // Orbiting Spherical Particle Ring around Brain
+    // Concentric Spherical Particle Ring around Brain
     const sphereParticleCount = 1300;
     const sphereGeo = new THREE.BufferGeometry();
     const spherePos: number[] = [];
-    const radius = 45;
+    const radius = 3.5;
     for (let i = 0; i < sphereParticleCount; i++) {
       const u = Math.random();
       const v = Math.random();
@@ -491,13 +492,13 @@ export default function GustavoPortfolio() {
     sphereGeo.setAttribute("position", new THREE.Float32BufferAttribute(spherePos, 3));
     const sphereMat = new THREE.PointsMaterial({
       color: 0x868686,
-      size: 0.45,
+      size: 0.05,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    brainOrbitParticles.position.set(38, 115, -10);
-    scene.add(brainOrbitParticles);
+    // Attached directly to brainGroup so it is always 100% concentric and aligned
+    brainGroup.add(brainOrbitParticles);
 
     // 4. AMBIENT SMOKE & SPACE DUST
     const smokeTexture = textureLoader.load("/images/smoke3.png");
@@ -543,7 +544,7 @@ export default function GustavoPortfolio() {
       const headIntersects = raycaster.intersectObjects(headGroup.children, true);
       if (headIntersects.length > 0) {
         playSfx("/sound/lampSound.wav");
-        lampLight.intensity = lampLight.intensity > 3.0 ? 2.0 : 4.5;
+        lampLight.intensity = lampLight.intensity > 3.0 ? 2.2 : 4.5;
       }
 
       const brainIntersects = raycaster.intersectObjects(brainGroup.children, true);
@@ -574,24 +575,28 @@ export default function GustavoPortfolio() {
 
       if (mixer) mixer.update(delta);
 
-      // 1. Terrain Wave Oscillation
-      const positionAttr = terrainGeo.attributes.position;
-      for (let i = 0; i < positionAttr.count; i++) {
-        const u = i % 96;
-        const v = Math.floor(i / 96);
-        const z = Math.sin(u * 0.15 + elapsedTime * 1.5) * Math.cos(v * 0.15 + elapsedTime * 1.2) * 3.0;
-        positionAttr.setZ(i, z);
+      // 1. Terrain Wave dynamic oscillation
+      const t = Date.now() / 200;
+      const posAttr = terrainGeo.attributes.position;
+      for (let f = 0; f < posAttr.count; f++) {
+        const u = terrainGeo.attributes.uv.getX(f) * Math.PI * 16;
+        const v = terrainGeo.attributes.uv.getY(f) * Math.PI * 16;
+        const y = u + t * 0.05;
+        const x = Math.sin(y) * 0.2;
+        const S = v + t * 0.05;
+        const T = Math.cos(S) * 0.2;
+        posAttr.setZ(f, (x + T) * 12);
       }
       terrainGeo.computeVertexNormals();
-      positionAttr.needsUpdate = true;
+      posAttr.needsUpdate = true;
 
       // 2. Head Smooth Rotation with Mouse
       headGroup.rotation.y += (targetHeadRotY - headGroup.rotation.y) * 0.05;
       headGroup.rotation.x = mouseY * 0.12;
 
       // 3. Brain & Particle Orbit Rotation
-      brainOrbitParticles.rotation.y = elapsedTime * 0.08;
-      brainOrbitParticles.rotation.x = Math.sin(elapsedTime * 0.05) * 0.1;
+      brainOrbitParticles.rotation.y = elapsedTime * 0.15;
+      brainOrbitParticles.rotation.x = Math.sin(elapsedTime * 0.1) * 0.1;
       brainGroup.rotation.y = 1 + Math.sin(elapsedTime * 0.3) * 0.15;
 
       // 4. Smoke Drift
@@ -599,46 +604,46 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 5. Scroll-driven Multi-Scene Camera Interpolation
+      // 5. Exact Scroll-driven Camera Interpolation matching Gustavo's site
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
 
-      // Camera positions mapped to section heights:
-      // Home: y: 485, z: 120 -> About: y: 260, z: 90 -> Service: y: 110, z: 90 -> Projects: y: -30, z: 100 -> Contact: y: -160, z: 90
-      let targetY = 485;
-      let targetZ = 120;
-      let targetX = 0;
-      let targetLookY = 485;
+      // Camera positions mapped:
+      // Home: y: 510, z: 100 -> About: y: 260, z: 90 -> Service: y: 110, z: 90 -> Projects: y: -30, z: 100 -> Contact: y: -160, z: 90
+      let targetY = 510;
+      let targetZ = 100;
+      let targetX = -3;
+      let targetLookY = 490;
 
       if (scrollProgress < 0.25) {
         // Home -> About
-        const t = scrollProgress / 0.25;
-        targetY = 485 - t * (485 - 260);
-        targetZ = 120 - t * (120 - 90);
-        targetX = -t * 10;
-        targetLookY = 485 - t * (485 - 260);
+        const progress = scrollProgress / 0.25;
+        targetY = 510 - progress * (510 - 260);
+        targetZ = 100 - progress * (100 - 90);
+        targetX = -3 - progress * 5;
+        targetLookY = 490 - progress * (490 - 260);
       } else if (scrollProgress < 0.5) {
         // About -> Service
-        const t = (scrollProgress - 0.25) / 0.25;
-        targetY = 260 - t * (260 - 110);
+        const progress = (scrollProgress - 0.25) / 0.25;
+        targetY = 260 - progress * (260 - 110);
         targetZ = 90;
-        targetX = -10 + t * 20;
-        targetLookY = 260 - t * (260 - 110);
+        targetX = -8 + progress * 15;
+        targetLookY = 260 - progress * (260 - 110);
       } else if (scrollProgress < 0.75) {
         // Service -> Projects
-        const t = (scrollProgress - 0.5) / 0.25;
-        targetY = 110 - t * (110 - (-30));
-        targetZ = 90 + t * 10;
-        targetX = 10 - t * 10;
-        targetLookY = 110 - t * (110 - (-30));
+        const progress = (scrollProgress - 0.5) / 0.25;
+        targetY = 110 - progress * (110 - (-30));
+        targetZ = 90 + progress * 10;
+        targetX = 7 - progress * 7;
+        targetLookY = 110 - progress * (110 - (-30));
       } else {
         // Projects -> Contact
-        const t = (scrollProgress - 0.75) / 0.25;
-        targetY = -30 - t * (-30 - (-160));
-        targetZ = 100 - t * 10;
-        targetX = -t * 5;
-        targetLookY = -30 - t * (-30 - (-160));
+        const progress = (scrollProgress - 0.75) / 0.25;
+        targetY = -30 - progress * (-30 - (-160));
+        targetZ = 100 - progress * 10;
+        targetX = -progress * 3;
+        targetLookY = -30 - progress * (-30 - (-160));
       }
 
       camera.position.y += (targetY - camera.position.y) * 0.08;
@@ -949,12 +954,12 @@ export default function GustavoPortfolio() {
         {/* Section 1: Home (Hero) */}
         <section className="section" id="section-home">
           <section className="home" data-nav="data-nav">
-            <div className="home-href" id="Home">
+            <a className="home-href" href="#home" id="Home">
               <div className="name-container">
                 <div className="name-highlight">
                   <span id="letter">A</span>
                   <span id="name">BHIRAM</span>
-                  <span id="letter2">B </span>
+                  <span id="letter2">B</span>
                   <span className="name2" id="name">OINI</span>
                 </div>
 
@@ -967,7 +972,7 @@ export default function GustavoPortfolio() {
                 <div className="contact-Btn-wrapper">
                   <a href="#contact" onClick={() => playSfx("/sound/woosh.mp3")}>
                     <button className="contact-Btn">
-                      {isEng ? "CONTACT" : "CONTATO"}
+                      {isEng ? "Get in Touch" : "Entre em Contato"}
                     </button>
                   </a>
                 </div>
@@ -978,7 +983,7 @@ export default function GustavoPortfolio() {
                   </span>
                 </div>
               </div>
-            </div>
+            </a>
           </section>
         </section>
 
@@ -1003,7 +1008,7 @@ export default function GustavoPortfolio() {
               <svg className="education-icon" viewBox="0 0 245.827 245.827" width="18" height="18" fill="currentColor">
                 <path d="M223.336,148.384l-0.137-23.527l22.628-12.662L122.576,47.195L0,113.495l49.144,28.216 l0.098,16.766l0.01,1.339l0.449-0.215c-0.518,0.703-0.85,1.426-0.84,2.149c0.039,8.246,33.326,14.772,74.41,14.548 c41.064-0.215,74.302-7.122,74.273-15.349c0-0.723-0.381-1.426-0.889-2.149l0.449,0.215v-1.339l-0.088-16.834l21.309-13.258 l0.117,20.83c-2.345,1.006-3.976,3.312-3.957,6.009c0.02,3.537,2.892,6.399,6.458,6.37c3.586-0.02,6.429-2.912,6.409-6.439 C227.332,151.657,225.691,149.371,223.336,148.384z"/>
               </svg>
-              {isEng ? "Education & Timeline" : "Educação & Trajetória"}
+              {isEng ? "Education" : "Educação"}
             </p>
 
             <p
