@@ -162,6 +162,7 @@ const PROJECTS_LIST: ProjectItem[] = [
   },
 ];
 
+// Skills Groups with Official SVG Icon Assets matching Screenshot 3
 const SKILLS_AI_BACKEND = [
   { name: "Python", icon: "/images/skills/python.svg" },
   { name: "PyTorch", icon: "/images/skills/pytorch.svg" },
@@ -280,7 +281,7 @@ export default function GustavoPortfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Complete Three.js 3D WebGL Multi-Scene Engine
+  // Complete Three.js 3D WebGL Multi-Scene Engine with Raised Terrain Horizon & Concentric Shatter Mesh
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -345,7 +346,7 @@ export default function GustavoPortfolio() {
     terrainMesh.scale.set(1.35, 1.35, 1.35);
     scene.add(terrainMesh);
 
-    // Binary Particle Cloud on Terrain
+    // Binary Particle Cloud on Terrain with dynamic float animation
     const binCount = 1400;
     const binGeo = new THREE.BufferGeometry();
     const binPos = new Float32Array(binCount * 3);
@@ -369,15 +370,16 @@ export default function GustavoPortfolio() {
     const binParticles = new THREE.Points(binGeo, binParticleMat);
     terrainMesh.add(binParticles);
 
-    // 2. ABOUT SCENE: Wireframe Head placed on Left at y = 300
+    // 2. ABOUT SCENE: Wireframe Head & Glowing Lightbulb
     const headGroup = new THREE.Group();
-    headGroup.position.set(-36, 300, 0);
-    headGroup.scale.set(19, 19, 19);
+    headGroup.position.set(-30, 315, 0);
+    headGroup.scale.set(22, 22, 22);
     headGroup.rotation.y = Math.PI / 6;
     scene.add(headGroup);
 
+    // Lamp Point Light inside the head
     const lampLight = new THREE.PointLight(0xffffff, 2.2, 160);
-    lampLight.position.set(-36, 315, 10);
+    lampLight.position.set(-28, 275, 10);
     scene.add(lampLight);
 
     gltfLoader.load(
@@ -398,10 +400,10 @@ export default function GustavoPortfolio() {
       (err) => console.warn("scene3.gltf fallback:", err)
     );
 
-    // 3. SERVICE SCENE: 3D Brain Model placed on Right at (40, 100, 0)
+    // 3. SERVICE SCENE: 3D Brain Model with Rotating Gears & Concentric Particle Shell
     const brainGroup = new THREE.Group();
-    brainGroup.position.set(40, 100, 0);
-    brainGroup.scale.set(13.5, 13.5, 13.5);
+    brainGroup.position.set(45, 150, 0);
+    brainGroup.scale.set(13, 13, 13);
     brainGroup.rotation.y = 1;
     scene.add(brainGroup);
 
@@ -410,6 +412,7 @@ export default function GustavoPortfolio() {
     gltfLoader.load(
       "/models/brain/te3.glb",
       (gltf) => {
+        // Mathematically center the brain mesh around (0, 0, 0)
         const box = new THREE.Box3().setFromObject(gltf.scene);
         const center = new THREE.Vector3();
         box.getCenter(center);
@@ -427,7 +430,7 @@ export default function GustavoPortfolio() {
       (err) => console.warn("te3.glb fallback:", err)
     );
 
-    // Spherical Particle Shell Concentric with Brain at (40, 100, 0)
+    // Spherical Particle Shell Concentric with Brain at (45, 110, 0)
     const sphereRadius = 45;
     const sphereParticleCount = 1300;
     const sphereGeo = new THREE.BufferGeometry();
@@ -449,15 +452,16 @@ export default function GustavoPortfolio() {
       opacity: 0.9,
     });
     const brainOrbitParticles = new THREE.Points(sphereGeo, sphereMat);
-    brainOrbitParticles.position.set(40, 100, 0);
+    brainOrbitParticles.position.set(45, 150, 0);
     scene.add(brainOrbitParticles);
 
-    // 4. CONTACT SCENE: 3D Ripple Mesh + Exploding Shatter Particles at y = -280
+    // 4. CONTACT SCENE: 3D Ripple Mesh + Click Shatter Exploding Particle System
     const contactGroup = new THREE.Group();
     contactGroup.position.set(45, -280, 0);
     scene.add(contactGroup);
 
-    const outerRingGeo = new THREE.TorusGeometry(15, 2.2, 16, 60);
+    // Concentric wireframe ripple disc safely on the right side
+    const outerRingGeo = new THREE.TorusGeometry(14, 2.0, 16, 60);
     const outerRingMat = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       wireframe: true,
@@ -468,7 +472,7 @@ export default function GustavoPortfolio() {
     outerRing.rotation.x = Math.PI / 3;
     contactGroup.add(outerRing);
 
-    const innerSphereGeo = new THREE.SphereGeometry(8.5, 24, 24);
+    const innerSphereGeo = new THREE.SphereGeometry(8, 24, 24);
     const innerSphereMat = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       wireframe: true,
@@ -509,6 +513,7 @@ export default function GustavoPortfolio() {
     const shatterParticles = new THREE.Points(shatterGeo, shatterMat);
     contactGroup.add(shatterParticles);
 
+    // Shatter explosion trigger state
     let isShattered = false;
     let shatterTime = 0;
 
@@ -547,7 +552,7 @@ export default function GustavoPortfolio() {
     const dustVelocities: { x: number; y: number; z: number }[] = [];
     for (let i = 0; i < dustCount * 3; i += 3) {
       dustPos[i] = (Math.random() - 0.5) * 500;
-      dustPos[i + 1] = Math.random() * 900 - 400;
+      dustPos[i + 1] = Math.random() * 800 - 200;
       dustPos[i + 2] = (Math.random() - 0.5) * 150;
       dustVelocities.push({
         x: (Math.random() - 0.5) * 0.05,
@@ -565,7 +570,7 @@ export default function GustavoPortfolio() {
     const dustParticles = new THREE.Points(dustGeo, dustMat);
     scene.add(dustParticles);
 
-    // 6. AMBIENT SMOKE
+    // 6. AMBIENT SMOKE & SPACE DUST
     const smokeTexture = textureLoader.load("/images/smoke3.png");
     const smokeGeo = new THREE.PlaneGeometry(350, 350);
     const smokeMat = new THREE.MeshLambertMaterial({
@@ -579,7 +584,7 @@ export default function GustavoPortfolio() {
       const smokeMesh = new THREE.Mesh(smokeGeo, smokeMat);
       smokeMesh.position.set(
         Math.random() * 600 - 300,
-        Math.random() * 900 - 400,
+        Math.random() * 800 - 200,
         Math.random() * 100 - 80
       );
       smokeMesh.rotation.z = Math.random() * Math.PI * 2;
@@ -701,7 +706,7 @@ export default function GustavoPortfolio() {
       for (let i = 0; i < dustCount; i++) {
         dustPosArr[i * 3 + 1] += dustVelocities[i].y;
         if (dustPosArr[i * 3 + 1] > 650) {
-          dustPosArr[i * 3 + 1] = -400;
+          dustPosArr[i * 3 + 1] = -200;
         }
       }
       dustGeo.attributes.position.needsUpdate = true;
@@ -711,7 +716,7 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 7. Scroll-driven Multi-Scene Camera Interpolation (Parallel to Sections)
+      // 7. Scroll-driven Multi-Scene Camera Interpolation
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
@@ -722,24 +727,24 @@ export default function GustavoPortfolio() {
       let targetLookY = 510;
 
       if (scrollProgress < 0.25) {
-        // Home (510) -> About (300)
+        // Home -> About
         const progress = scrollProgress / 0.25;
-        targetY = 510 - progress * (510 - 300);
+        targetY = 510 - progress * (510 - 315);
         targetLookY = targetY;
       } else if (scrollProgress < 0.5) {
-        // About (300) -> Service (100)
+        // About -> Service
         const progress = (scrollProgress - 0.25) / 0.25;
-        targetY = 300 - progress * (300 - 100);
+        targetY = 315 - progress * (315 - 150);
         targetLookY = targetY;
       } else if (scrollProgress < 0.75) {
-        // Service (100) -> Projects (-100)
+        // Service -> Projects (camera drops well below brain at y=150)
         const progress = (scrollProgress - 0.5) / 0.25;
-        targetY = 100 - progress * (100 - (-100));
+        targetY = 150 - progress * (150 - (-60));
         targetLookY = targetY;
       } else {
-        // Projects (-100) -> Contact (-280)
+        // Projects -> Contact
         const progress = (scrollProgress - 0.75) / 0.25;
-        targetY = -100 - progress * (-100 - (-280));
+        targetY = -60 - progress * (-60 - (-280));
         targetLookY = targetY;
       }
 
@@ -798,7 +803,7 @@ export default function GustavoPortfolio() {
       {/* Header & Sticky Navigation */}
       <header id="home">
         <nav className="menu">
-          {/* Hamburger Menu Icon in Top-Right */}
+          {/* Hamburger Menu Icon (3 horizontal white lines) in Top-Right */}
           <div
             className={`mobile-menu ${mobileMenuOpen ? "active" : ""}`}
             onClick={() => {
@@ -1182,262 +1187,236 @@ export default function GustavoPortfolio() {
           </section>
         </section>
 
-        {/* Section 2: About & Skills - Parallel to 3D Head on Left */}
+        {/* Section 2: About & Skills */}
         <section className="section" id="about" data-nav="data-nav">
-          <div className="about-content-wrapper">
-            <h1 className="about-title">About</h1>
-            <h2 className="about-text">
-              &ldquo;Hello, my name is Abhiram Boini and I am a Data Science &amp; AI undergraduate at IIIT Naya Raipur with production ML experience (a deployed government AI zoo system, MLOps pipelines, LLM multi-agent tooling) and quantitative finance research on option pricing and cross-asset market stress. I care about rigor: honest reporting of negative results, proper out-of-sample walk-forward validation, and statistical significance testing show up throughout my work below. Check out my projects in this portfolio or on my GitHub. If you are interested in collaborating or working together, feel free to contact me via email or LinkedIn.&rdquo;
-            </h2>
+          <h1 className="about-title">About</h1>
+          <h2 className="about-text">
+            “Hello, my name is Abhiram Boini and I am a Data Science &amp; AI undergraduate at IIIT Naya Raipur with production ML experience (a deployed government AI zoo system, MLOps pipelines, LLM multi-agent tooling) and quantitative finance research on option pricing and cross-asset market stress. I care about rigor: honest reporting of negative results, proper out-of-sample walk-forward validation, and statistical significance testing show up throughout my work below. Check out my projects in this portfolio or on my GitHub. If you are interested in collaborating or working together, feel free to contact me via email or LinkedIn.”
+          </h2>
 
-            {/* Tabs Header with Icons On Top and Parallel Baselines */}
-            <div className="tab-titles">
-              <div
-                className={`tab-links ${activeTab === "education" ? "active-link" : ""}`}
-                onClick={() => {
-                  playSfx("/sound/woosh.mp3");
-                  setActiveTab("education");
-                }}
-              >
-                <svg className="education-icon" viewBox="0 0 245.827 245.827" fill="currentColor">
-                  <path d="M223.336,148.384l-0.137-23.527l22.628-12.662L122.576,47.195L0,113.495l49.144,28.216 l0.098,16.766l0.01,1.339l0.449-0.215c-0.518,0.703-0.85,1.426-0.84,2.149c0.039,8.246,33.326,14.772,74.41,14.548 c41.064-0.215,74.302-7.122,74.273-15.349c0-0.723-0.381-1.426-0.889-2.149l0.449,0.215v-1.339l-0.088-16.834l21.309-13.258 l0.117,20.83c-2.345,1.006-3.976,3.312-3.957,6.009c0.02,3.537,2.892,6.399,6.458,6.37c3.586-0.02,6.429-2.912,6.409-6.439 C227.332,151.657,225.691,149.371,223.336,148.384z"/>
-                </svg>
-                <span>Education &amp; Timeline</span>
-              </div>
+          {/* Tabs Header */}
+          <div className="tab-titles">
+            <p
+              className={`tab-links ${activeTab === "education" ? "active-link" : ""}`}
+              onClick={() => {
+                playSfx("/sound/woosh.mp3");
+                setActiveTab("education");
+              }}
+            >
+              <svg className="education-icon" viewBox="0 0 245.827 245.827" width="18" height="18" fill="currentColor">
+                <path d="M223.336,148.384l-0.137-23.527l22.628-12.662L122.576,47.195L0,113.495l49.144,28.216 l0.098,16.766l0.01,1.339l0.449-0.215c-0.518,0.703-0.85,1.426-0.84,2.149c0.039,8.246,33.326,14.772,74.41,14.548 c41.064-0.215,74.302-7.122,74.273-15.349c0-0.723-0.381-1.426-0.889-2.149l0.449,0.215v-1.339l-0.088-16.834l21.309-13.258 l0.117,20.83c-2.345,1.006-3.976,3.312-3.957,6.009c0.02,3.537,2.892,6.399,6.458,6.37c3.586-0.02,6.429-2.912,6.409-6.439 C227.332,151.657,225.691,149.371,223.336,148.384z"/>
+              </svg>
+              Education &amp; Timeline
+            </p>
 
-              <div
-                className={`tab-links ${activeTab === "skills" ? "active-link" : ""}`}
-                onClick={() => {
-                  playSfx("/sound/woosh.mp3");
-                  setActiveTab("skills");
-                }}
-              >
-                <svg className="skill-icon" viewBox="0 0 1024 1024" fill="currentColor">
-                  <path d="M448.512 479.232a54.272 54.272 0 1 1 56.32-55.296 55.296 55.296 0 0 1-56.32 55.296z m343.04 91.136l-73.728-110.592V450.56a245.76 245.76 0 0 0-244.736-245.76 225.28 225.28 0 0 0-58.368 7.168A244.736 244.736 0 0 0 228.352 450.56a224.256 224.256 0 0 0 36.864 130.048c43.008 61.44 71.68 110.592 54.272 177.152a47.104 47.104 0 0 0 9.216 43.008 45.056 45.056 0 0 0 36.864 18.432h200.704a48.128 48.128 0 0 0 48.128-38.912 51.2 51.2 0 0 0 2.048-12.288 24.576 24.576 0 0 1 24.576-20.48H655.36a48.128 48.128 0 0 0 48.128-34.816 422.912 422.912 0 0 0 15.36-98.304h52.224a28.672 28.672 0 0 0 22.528-16.384 29.696 29.696 0 0 0-2.048-27.648z"/>
-                </svg>
-                <span>Skills</span>
-              </div>
-            </div>
+            <p
+              className={`tab-links skill-link ${activeTab === "skills" ? "active-link" : ""}`}
+              onClick={() => {
+                playSfx("/sound/woosh.mp3");
+                setActiveTab("skills");
+              }}
+            >
+              <svg className="skill-icon" viewBox="0 0 1024 1024" width="18" height="18" fill="currentColor">
+                <path d="M448.512 479.232a54.272 54.272 0 1 1 56.32-55.296 55.296 55.296 0 0 1-56.32 55.296z m343.04 91.136l-73.728-110.592V450.56a245.76 245.76 0 0 0-244.736-245.76 225.28 225.28 0 0 0-58.368 7.168A244.736 244.736 0 0 0 228.352 450.56a224.256 224.256 0 0 0 36.864 130.048c43.008 61.44 71.68 110.592 54.272 177.152a47.104 47.104 0 0 0 9.216 43.008 45.056 45.056 0 0 0 36.864 18.432h200.704a48.128 48.128 0 0 0 48.128-38.912 51.2 51.2 0 0 0 2.048-12.288 24.576 24.576 0 0 1 24.576-20.48H655.36a48.128 48.128 0 0 0 48.128-34.816 422.912 422.912 0 0 0 15.36-98.304h52.224a28.672 28.672 0 0 0 22.528-16.384 29.696 29.696 0 0 0-2.048-27.648z"/>
+              </svg>
+              Skills
+            </p>
+          </div>
 
-            {/* Education Tab Content */}
-            <div className={`tab-contents ${activeTab === "education" ? "active-tab" : ""}`} id="education">
-              <ul>
-                <li className="graduation-title">
-                  <span>2024–2028</span>
-                  <br />
-                  IIIT Naya Raipur — B.Tech, Data Science &amp; Artificial Intelligence (CGPA: 8.70/10.0)
-                </li>
-                <li className="graduation-title">
-                  <span>May 2026 – July 2026</span>
-                  <br />
-                  IIT (BHU) Varanasi — Research Intern (Multi-Modal Satellite Image Segmentation)
-                </li>
-                <li className="graduation-title">
-                  <span>Dec 2025 – March 2026</span>
-                  <br />
-                  Department of Forests, Chhattisgarh Govt. — AI/ML Engineer (Production Voice-Logging Zoo AI)
-                </li>
-                <li className="graduation-title">
-                  <span>Dec 2025 – Jan 2026</span>
-                  <br />
-                  Rochester Institute of Technology (RIT) NY — AI Data Analyst (Student Retention Modeling)
-                </li>
-                <li className="graduation-title">
-                  <span>Oct 2025 – Dec 2025</span>
-                  <br />
-                  Infosys Springboard — AI/ML Engineer Intern (SmileAgeAI Face Attribute Pipeline)
-                </li>
+          {/* Education Tab Content */}
+          <div className={`tab-contents ${activeTab === "education" ? "active-tab" : ""}`} id="education">
+            <ul>
+              <li className="graduation-title">
+                <span>2024–2028</span>
+                <br />
+                IIIT Naya Raipur — B.Tech, Data Science &amp; Artificial Intelligence (CGPA: 8.70/10.0)
+              </li>
+              <li className="graduation-title">
+                <span>May 2026 – July 2026</span>
+                <br />
+                IIT (BHU) Varanasi — Research Intern (Multi-Modal Satellite Image Segmentation)
+              </li>
+              <li className="graduation-title">
+                <span>Dec 2025 – March 2026</span>
+                <br />
+                Department of Forests, Chhattisgarh Govt. — AI/ML Engineer (Production Voice-Logging Zoo AI)
+              </li>
+              <li className="graduation-title">
+                <span>Dec 2025 – Jan 2026</span>
+                <br />
+                Rochester Institute of Technology (RIT) NY — AI Data Analyst (Student Retention Modeling)
+              </li>
+              <li className="graduation-title">
+                <span>Oct 2025 – Dec 2025</span>
+                <br />
+                Infosys Springboard — AI/ML Engineer Intern (SmileAgeAI Face Attribute Pipeline)
+              </li>
 
-                {/* Expandable Coursework Accordion */}
-                <li className="parent">
-                  <span>2024–2026</span>
-                  <button
-                    className="toggle-button"
-                    onClick={() => setCourseworkOpen(!courseworkOpen)}
-                  >
-                    {courseworkOpen ? "−" : "+"}
-                  </button>
-                  <br />
-                  <span className="course-text">
-                    Key Honors &amp; Certified Specializations
-                  </span>
-                  {courseworkOpen && (
-                    <ul className="child" style={{ display: "block" }}>
-                      <li>JEE Main: 97.7 percentile (Top 2.3% Nationwide)</li>
-                      <li>Class XII: 96.9% | Class X: 95.6%</li>
-                      <li>Kaggle Expert (Notebooks &amp; Datasets)</li>
-                      <li>IBM Data Science Professional Certificate</li>
-                      <li>Oracle Cloud Infrastructure 2025 Data Science Professional</li>
-                      <li>Google Gen AI Academy 2.0</li>
-                      <li>Intel AI Fundamentals</li>
-                    </ul>
-                  )}
-                </li>
-              </ul>
-            </div>
+              {/* Expandable Coursework Accordion */}
+              <li className="parent">
+                <span>2024–2026</span>
+                <button
+                  className="toggle-button"
+                  onClick={() => setCourseworkOpen(!courseworkOpen)}
+                >
+                  {courseworkOpen ? "−" : "+"}
+                </button>
+                <br />
+                <span className="course-text">
+                  Key Honors &amp; Certified Specializations
+                </span>
+                {courseworkOpen && (
+                  <ul className="child" style={{ display: "block" }}>
+                    <li>JEE Main: 97.7 percentile (Top 2.3% Nationwide)</li>
+                    <li>Class XII: 96.9% | Class X: 95.6%</li>
+                    <li>Kaggle Expert (Notebooks &amp; Datasets)</li>
+                    <li>IBM Data Science Professional Certificate</li>
+                    <li>Oracle Cloud Infrastructure 2025 Data Science Professional</li>
+                    <li>Google Gen AI Academy 2.0</li>
+                    <li>Intel AI Fundamentals</li>
+                  </ul>
+                )}
+              </li>
+            </ul>
+          </div>
 
-            {/* Skills Tab Content */}
-            <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills">
-              <div className="skills-columns-wrapper">
-                {/* Column 1: AI & Back-End */}
-                <div className="skills-column">
-                  <h3 className="skills-column-title">AI &amp; MACHINE LEARNING</h3>
-                  <div className="skills-icon-grid">
-                    {SKILLS_AI_BACKEND.map((sk) => (
-                      <div
-                        key={sk.name}
-                        className="skill-card-icon"
-                        title={sk.name}
-                        onMouseEnter={() => playSfx("/sound/woosh.mp3")}
-                      >
-                        <img src={sk.icon} alt={sk.name} />
-                        <span className="skill-name-tooltip">{sk.name}</span>
-                      </div>
-                    ))}
-                  </div>
+          {/* Skills Tab Content - Exact Match to Screenshot 3 with Official Icons */}
+          <div className={`tab-contents ${activeTab === "skills" ? "active-tab" : ""}`} id="skills">
+            <div className="skills-columns-wrapper">
+              {/* Column 1: AI & Back-End */}
+              <div className="skills-column">
+                <h3 className="skills-column-title">AI &amp; MACHINE LEARNING</h3>
+                <div className="skills-icon-grid">
+                  {SKILLS_AI_BACKEND.map((sk) => (
+                    <div
+                      key={sk.name}
+                      className="skill-card-icon"
+                      title={sk.name}
+                      onMouseEnter={() => playSfx("/sound/woosh.mp3")}
+                    >
+                      <img src={sk.icon} alt={sk.name} />
+                      <span className="skill-name-tooltip">{sk.name}</span>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Column 2: Languages & Systems */}
-                <div className="skills-column">
-                  <h3 className="skills-column-title">LANGUAGES &amp; SYSTEMS</h3>
-                  <div className="skills-icon-grid">
-                    {SKILLS_FRONT_LANGS.map((sk) => (
-                      <div
-                        key={sk.name}
-                        className="skill-card-icon"
-                        title={sk.name}
-                        onMouseEnter={() => playSfx("/sound/woosh.mp3")}
-                      >
-                        <img src={sk.icon} alt={sk.name} />
-                        <span className="skill-name-tooltip">{sk.name}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Column 2: Languages & Systems */}
+              <div className="skills-column">
+                <h3 className="skills-column-title">LANGUAGES &amp; SYSTEMS</h3>
+                <div className="skills-icon-grid">
+                  {SKILLS_FRONT_LANGS.map((sk) => (
+                    <div
+                      key={sk.name}
+                      className="skill-card-icon"
+                      title={sk.name}
+                      onMouseEnter={() => playSfx("/sound/woosh.mp3")}
+                    >
+                      <img src={sk.icon} alt={sk.name} />
+                      <span className="skill-name-tooltip">{sk.name}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Animated Download CV Button - Pure Silver/White Theme */}
-            <div className="btn-cv-border">
-              <a
-                className="dcv"
-                href="/resumes/Abhiram_Boini_ML_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => playSfx("/sound/woosh.mp3")}
-              >
-                Download CV
-              </a>
-            </div>
+          {/* Animated Download CV Button */}
+          <div className="btn-cv-border">
+            <a
+              className="dcv"
+              href="/resumes/Abhiram_Boini_ML_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => playSfx("/sound/woosh.mp3")}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              Download CV
+            </a>
           </div>
         </section>
 
-        {/* Section 3: Service - 3x2 Grid side-by-side on left, 3D Brain on right */}
-        <section className="section service" id="service" data-nav="data-nav">
-          <div className="service-content-wrapper">
+        {/* Section 3: Service */}
+        <section className="section service">
+          <section className="content" id="service" data-nav="data-nav">
             <h2 className="service-title">Service</h2>
             <p className="service-text">
-              &ldquo;You might be wondering how I can help you. As an AI Engineer and Quantitative Researcher, I transform complex data and research hypotheses into robust production systems, scalable MLOps architectures, and mathematically rigorous predictive models.&rdquo;
+              “You might be wondering how I can help you. As an AI Engineer and Quantitative Researcher, I transform complex data and research hypotheses into robust production systems, scalable MLOps architectures, and mathematically rigorous predictive models.”
             </p>
 
-            {/* 3x2 Grid exactly matching Screenshot 1 */}
-            <div className="service-grid-3x2">
-              {/* Card 1: API Development / Production MLOps */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-                <div className="service-box-title">API development</div>
-                <div className="service-box-overlay">
-                  End-to-end containerized FastAPI &amp; MLOps microservices with automated drift triggers and zero-downtime hot-reload.
+            <div className="service-card-wrapper">
+              {/* Service Card 1 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text api-title">Production ML &amp; MLOps</h1>
+                <div className="service-card-content">
+                  <p className="api-text">
+                    I build end-to-end containerized ML pipelines with automated drift monitoring, MLflow registry promotion gates, and FastAPI zero-downtime hot-reloading.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 2: Web Application / Autonomous LLM Agents */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <rect x="2" y="3" width="16" height="13" rx="2" />
-                  <rect x="6" y="8" width="16" height="13" rx="2" />
-                </svg>
-                <div className="service-box-title">Web Application</div>
-                <div className="service-box-overlay">
-                  Autonomous LangGraph multi-agent systems with 4-bit QLoRA Text-to-SQL, RAG over enterprise filings, and RAGAS evaluations.
+              {/* Service Card 2 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text web-title">Autonomous LLM Agents</h1>
+                <div className="service-card-content">
+                  <p className="web-text">
+                    I design multi-agent LangGraph systems with 4-bit QLoRA fine-tuned tools, RAG over enterprise filings, safety guardrails, and automated RAGAS evaluations.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 3: Desktop Application / Quantitative Finance */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <rect x="2" y="3" width="20" height="14" rx="2" />
-                  <line x1="8" y1="21" x2="16" y2="21" />
-                  <line x1="12" y1="17" x2="12" y2="21" />
-                  <polyline points="7 10 9 8 11 10" />
-                  <line x1="10" y1="8" x2="14" y2="12" />
-                  <polyline points="13 10 15 8 17 10" />
-                </svg>
-                <div className="service-box-title">Desktop Application</div>
-                <div className="service-box-overlay">
-                  Statistical arbitrage pairs trading, options implied volatility surfaces, and cross-asset stress flow drawdown indices.
+              {/* Service Card 3 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text desktop-title">Quantitative Finance &amp; StatArb</h1>
+                <div className="service-card-content">
+                  <p className="desktop-text">
+                    I develop statistical arbitrage pairs strategies, options implied volatility surfaces, multi-factor risk attribution models, and cross-asset stress flow indices.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 4: DevOps & CI/CD / Computer Vision */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <circle cx="12" cy="12" r="3" />
-                  <circle cx="6" cy="6" r="2" />
-                  <circle cx="18" cy="6" r="2" />
-                  <circle cx="6" cy="18" r="2" />
-                  <circle cx="18" cy="18" r="2" />
-                  <line x1="8" y1="8" x2="10" y2="10" />
-                  <line x1="16" y1="8" x2="14" y2="10" />
-                  <line x1="8" y1="16" x2="10" y2="14" />
-                  <line x1="16" y1="16" x2="14" y2="14" />
-                </svg>
-                <div className="service-box-title">DevOps &amp; CI/CD</div>
-                <div className="service-box-overlay">
-                  Automated test suites (pytest), Docker Compose pipelines, and GitHub Actions continuous integration gates.
+              {/* Service Card 4 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text devops-title">Computer Vision &amp; Remote Sensing</h1>
+                <div className="service-card-content">
+                  <p className="devops-text">
+                    I engineer deep learning segmentation architectures fusing optical and SAR satellite imagery, 3D-CNNs for multimodal stress detection, and real-time facial analytics.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 5: Database Management / Causal Inference */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <ellipse cx="10" cy="5" rx="8" ry="3" />
-                  <path d="M2 5v6c0 1.66 3.58 3 8 3 1.5 0 2.9-.16 4.1-.44" />
-                  <path d="M2 11v6c0 1.66 3.58 3 8 3 1.2 0 2.34-.1 3.35-.28" />
-                  <circle cx="18" cy="17" r="3" />
-                  <path d="M18 12v2M18 20v2M13 17h2M21 17h2" />
-                </svg>
-                <div className="service-box-title">Database Management</div>
-                <div className="service-box-overlay">
-                  High-throughput PostgreSQL, DuckDB, ChromaDB vector stores, and automated causal experimentation analysis.
+              {/* Service Card 5 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text database-title">Causal Inference &amp; A/B Testing</h1>
+                <div className="service-card-content">
+                  <p className="database-text">
+                    I implement self-serve causal experimentation platforms with CUPED variance reduction (35–50%), sample ratio mismatch checks, and observational bias correction.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 6: Cloud Computing */}
-              <div className="service-box-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="service-box-icon">
-                  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-                  <line x1="9" y1="19" x2="9" y2="22" />
-                  <line x1="13" y1="19" x2="13" y2="22" />
-                  <line x1="17" y1="19" x2="17" y2="22" />
-                </svg>
-                <div className="service-box-title">Cloud Computing</div>
-                <div className="service-box-overlay">
-                  GCP cloud architectures, containerized inference clusters, and scalable distributed ML workflows.
+              {/* Service Card 6 */}
+              <div className="service-card" onMouseEnter={() => playSfx("/sound/woosh.mp3")}>
+                <h1 className="service-card-text cloud-title">Cloud &amp; Data Infrastructure</h1>
+                <div className="service-card-content">
+                  <p className="cloud-text">
+                    I architect scalable cloud microservices, PostgreSQL/DuckDB pipelines, automated invariant test suites (pytest), and CI/CD automation.
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </section>
 
         {/* Section 4: Projects (Exact 3D Perspective Carousel) */}
-        <section className="section" style={{ minHeight: "100vh" }}>
+        <section className="section">
           <section className="content" id="projects" data-nav="data-nav">
             <h1 className="project-title">Projects</h1>
             <p className="project-text">
-              &ldquo;Check out some of my projects. They reflect my experience in production AI engineering, MLOps, LLM agents, and quantitative finance research.&rdquo;
+              “Check out some of my projects. They reflect my experience in production AI engineering, MLOps, LLM agents, and quantitative finance research.”
             </p>
 
             <div className="carousel">
@@ -1773,48 +1752,49 @@ export default function GustavoPortfolio() {
         </section>
       </main>
 
-      {/* Loading Screen Overlay - 100% Solid Fullscreen Layer */}
+      {/* Loading Screen */}
       {!startClicked && (
-        <div
-          id="loading-screen"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "#121212",
-            zIndex: 999999,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div id="loader-text">
-            ABHIRAM BOINI
-            <div className="loader-desc">
-              DATA SCIENTIST &amp; AI ENGINEER
-            </div>
-          </div>
-
-          {!loadingComplete ? (
-            <>
-              <div id="loader"></div>
-              <div className="counter" id="percentage">
-                {loadingPercent}%
+        <>
+          <section
+            id="loading-screen"
+            className={loadingComplete ? "fade-out" : ""}
+            style={{ display: loadingComplete ? "none" : "flex" }}
+          >
+            <div id="loader-text">
+              ABHIRAM BOINI
+              <div className="loader-desc">
+                DATA SCIENTIST &amp; AI ENGINEER
               </div>
-            </>
-          ) : (
-            <button
-              className="start-button"
-              id="start-button"
-              onClick={handleStart}
+            </div>
+            <div id="loader"></div>
+            <div className="counter" id="percentage">
+              {loadingPercent}%
+            </div>
+          </section>
+
+          {/* Loading Screen Start Button */}
+          {loadingComplete && !startClicked && (
+            <section
+              id="loading-screen-start"
+              className="visible"
+              style={{ display: "flex" }}
             >
-              Start
-            </button>
+              <div id="loader-text">
+                ABHIRAM BOINI
+                <div className="loader-desc">
+                  DATA SCIENTIST &amp; AI ENGINEER
+                </div>
+              </div>
+              <button
+                className="start-button"
+                id="start-button"
+                onClick={handleStart}
+              >
+                Start
+              </button>
+            </section>
           )}
-        </div>
+        </>
       )}
 
       {/* Privacy Policy Modal */}
