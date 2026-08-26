@@ -1773,49 +1773,48 @@ export default function GustavoPortfolio() {
         </section>
       </main>
 
-      {/* Loading Screen */}
+      {/* Loading Screen Overlay - 100% Solid Fullscreen Layer */}
       {!startClicked && (
-        <>
-          <section
-            id="loading-screen"
-            className={loadingComplete ? "fade-out" : ""}
-            style={{ display: loadingComplete ? "none" : "flex" }}
-          >
-            <div id="loader-text">
-              ABHIRAM BOINI
-              <div className="loader-desc">
-                DATA SCIENTIST &amp; AI ENGINEER
-              </div>
+        <div
+          id="loading-screen"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "#121212",
+            zIndex: 999999,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div id="loader-text">
+            ABHIRAM BOINI
+            <div className="loader-desc">
+              DATA SCIENTIST &amp; AI ENGINEER
             </div>
-            <div id="loader"></div>
-            <div className="counter" id="percentage">
-              {loadingPercent}%
-            </div>
-          </section>
+          </div>
 
-          {/* Loading Screen Start Button */}
-          {loadingComplete && !startClicked && (
-            <section
-              id="loading-screen-start"
-              className="visible"
-              style={{ display: "flex" }}
-            >
-              <div id="loader-text">
-                ABHIRAM BOINI
-                <div className="loader-desc">
-                  DATA SCIENTIST &amp; AI ENGINEER
-                </div>
+          {!loadingComplete ? (
+            <>
+              <div id="loader"></div>
+              <div className="counter" id="percentage">
+                {loadingPercent}%
               </div>
-              <button
-                className="start-button"
-                id="start-button"
-                onClick={handleStart}
-              >
-                Start
-              </button>
-            </section>
+            </>
+          ) : (
+            <button
+              className="start-button"
+              id="start-button"
+              onClick={handleStart}
+            >
+              Start
+            </button>
           )}
-        </>
+        </div>
       )}
 
       {/* Privacy Policy Modal */}
