@@ -1565,9 +1565,9 @@ export default function GustavoPortfolio() {
                         key={proj.id}
                         className={`carousel__slider__item ${isActive ? "carousel__slider__item--active" : ""}`}
                         style={{
-                          width: "290px",
-                          minWidth: "290px",
-                          height: "360px",
+                          width: "300px",
+                          minWidth: "300px",
+                          height: "380px",
                           cursor: "pointer",
                         }}
                         onClick={() => {
@@ -1580,34 +1580,35 @@ export default function GustavoPortfolio() {
                           style={{
                             width: "100%",
                             height: "100%",
-                            background: "rgba(18, 18, 18, 0.95)",
-                            border: isActive ? "2px solid #c2c2c2" : "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: "10px",
-                            padding: "20px",
+                            background: "rgba(22, 22, 22, 0.96)",
+                            border: isActive ? "2px solid #ffffff" : "1px solid rgba(255, 255, 255, 0.16)",
+                            borderRadius: "14px",
+                            padding: "24px 20px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
-                            boxShadow: isActive ? "0 0 25px rgba(255, 255, 255, 0.25)" : "20px 20px 50px rgba(0,0,0,0.8)",
+                            boxShadow: isActive ? "0 0 30px rgba(255, 255, 255, 0.3)" : "0 15px 35px rgba(0, 0, 0, 0.8)",
                             transform: `perspective(1200px) rotateY(${rotateY}deg) scale(${isActive ? 1.05 : 0.92})`,
-                            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+                            transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                            boxSizing: "border-box",
                           }}
                         >
                           <div>
-                            <div style={{ fontSize: "11px", color: "#a8a8a8", fontFamily: "monospace", textTransform: "uppercase", marginBottom: "8px" }}>
+                            <div style={{ fontSize: "11px", color: "#cecece", fontFamily: "monospace", textTransform: "uppercase", marginBottom: "8px", fontWeight: "600" }}>
                               {proj.tags[0]}
                             </div>
-                            <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#fff", marginBottom: "10px", lineHeight: "1.3" }}>
+                            <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#ffffff", marginBottom: "10px", lineHeight: "1.3" }}>
                               {proj.title}
                             </h3>
-                            <p style={{ fontSize: "12px", color: "#888888", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                            <p style={{ fontSize: "13px", color: "#b0b0b0", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                               {proj.desc}
                             </p>
                           </div>
 
                           <div>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "12px" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
                               {proj.descriptions.slice(0, 3).map((d, dIdx) => (
-                                <span key={dIdx} style={{ fontSize: "10px", background: "#111", border: "1px solid rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: "4px", color: "#a8a8a8" }}>
+                                <span key={dIdx} style={{ fontSize: "10px", background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", padding: "3px 8px", borderRadius: "4px", color: "#e0e0e0", fontWeight: "500" }}>
                                   {d}
                                 </span>
                               ))}
@@ -1621,24 +1622,24 @@ export default function GustavoPortfolio() {
                               }}
                               style={{
                                 width: "100%",
-                                padding: "8px",
-                                background: "transparent",
-                                border: "1px solid #c2c2c2",
+                                padding: "10px",
+                                background: isActive ? "#ffffff" : "rgba(255, 255, 255, 0.06)",
+                                border: "1px solid rgba(255, 255, 255, 0.5)",
                                 borderRadius: "50px",
-                                color: "#c2c2c2",
+                                color: isActive ? "#121212" : "#ffffff",
                                 fontSize: "11px",
                                 fontWeight: "700",
-                                letterSpacing: "0.05em",
+                                letterSpacing: "0.1em",
                                 cursor: "pointer",
                                 transition: "all 0.3s",
                               }}
                               onMouseEnter={(e) => {
-                                e.currentTarget.style.background = "#c2c2c2";
+                                e.currentTarget.style.background = "#ffffff";
                                 e.currentTarget.style.color = "#121212";
                               }}
                               onMouseLeave={(e) => {
-                                e.currentTarget.style.background = "transparent";
-                                e.currentTarget.style.color = "#c2c2c2";
+                                e.currentTarget.style.background = isActive ? "#ffffff" : "rgba(255, 255, 255, 0.06)";
+                                e.currentTarget.style.color = isActive ? "#121212" : "#ffffff";
                               }}
                             >
                               VIEW PROJECT
@@ -1651,86 +1652,9 @@ export default function GustavoPortfolio() {
                 </div>
               </div>
             </div>
-
-            {/* Lightbox Project Modal */}
-            {activeProjectModal && (
-              <>
-                <div
-                  className="lightbox-backdrop"
-                  onClick={() => setActiveProjectModal(null)}
-                ></div>
-                <div className="lightbox">
-                  <span
-                    className="close"
-                    onClick={() => setActiveProjectModal(null)}
-                  >
-                    ×
-                  </span>
-                  <div className="lightbox-grid">
-                    {activeProjectModal.video && (
-                      <div className="lightbox-video-area" style={{ borderRadius: "8px", overflow: "hidden", maxHeight: "320px", background: "#000" }}>
-                        <video
-                          src={activeProjectModal.video}
-                          controls
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                        />
-                      </div>
-                    )}
-                    <div className="project-description-container">
-                      <div className="project-name">
-                        {activeProjectModal.title}
-                      </div>
-                      <p className="project-description-text">
-                        {activeProjectModal.desc}
-                      </p>
-
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: activeProjectModal.fullDesc,
-                        }}
-                      />
-
-                      <div className="project-tags">
-                        {activeProjectModal.tags.map((t, idx) => (
-                          <span key={idx} className="project-tag-item">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="project-action-links">
-                        {activeProjectModal.githubUrl && (
-                          <a
-                            href={activeProjectModal.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="project-link-btn primary"
-                          >
-                            <span>GitHub Repo</span>
-                          </a>
-                        )}
-                        {activeProjectModal.demoUrl && (
-                          <a
-                            href={activeProjectModal.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="project-link-btn secondary"
-                          >
-                            <span>Documentation</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
           </section>
         </section>
+
 
 
 
@@ -1956,6 +1880,84 @@ export default function GustavoPortfolio() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Project Details Modal (Fixed Root Level) */}
+      {activeProjectModal && (
+        <>
+          <div
+            className="lightbox-backdrop"
+            onClick={() => setActiveProjectModal(null)}
+          ></div>
+          <div className="lightbox">
+            <span
+              className="close"
+              onClick={() => setActiveProjectModal(null)}
+            >
+              ×
+            </span>
+            <div className="lightbox-grid">
+              {activeProjectModal.video && (
+                <div className="lightbox-video-area" style={{ borderRadius: "10px", overflow: "hidden", maxHeight: "300px", background: "#000" }}>
+                  <video
+                    src={activeProjectModal.video}
+                    controls
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
+              )}
+              <div className="project-description-container">
+                <div className="project-name">
+                  {activeProjectModal.title}
+                </div>
+                <p className="project-description-text">
+                  {activeProjectModal.desc}
+                </p>
+
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: activeProjectModal.fullDesc,
+                  }}
+                />
+
+                <div className="project-tags">
+                  {activeProjectModal.tags.map((t, idx) => (
+                    <span key={idx} className="project-tag-item">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="project-action-links">
+                  {activeProjectModal.githubUrl && (
+                    <a
+                      href={activeProjectModal.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link-btn primary"
+                    >
+                      <span>GitHub Repo</span>
+                    </a>
+                  )}
+                  {activeProjectModal.demoUrl && (
+                    <a
+                      href={activeProjectModal.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link-btn secondary"
+                    >
+                      <span>Documentation</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </>
   );

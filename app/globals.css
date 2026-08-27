@@ -26,7 +26,7 @@ body {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -42,10 +42,21 @@ body {
 }
 
 /* Stagger child elements for more dynamic feel */
-.section h2 { transition-delay: 0s; }
-.section .content { transition-delay: 0.10s; }
-.contact-title { transition-delay: 0s; }
-.contact-form { transition-delay: 0.18s; }
+.section h2 {
+  transition-delay: 0s;
+}
+
+.section .content {
+  transition-delay: 0.10s;
+}
+
+.contact-title {
+  transition-delay: 0s;
+}
+
+.contact-form {
+  transition-delay: 0.18s;
+}
 
 /* Hide language dropdown completely */
 .dropdown,
@@ -497,6 +508,289 @@ body {
 
 .footer-privacy-link:hover {
   color: #aaaaaa !important;
+}
+
+/* ============================================================
+   PROJECTS SECTION & 3D CAROUSEL CLEAN STYLING
+   ============================================================ */
+
+#projects,
+.section #projects {
+  position: relative !important;
+  margin: 0 !important;
+  margin-top: 0 !important;
+  transform: none !important;
+  max-width: 1200px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  z-index: 20 !important;
+  overflow: visible !important;
+}
+
+.project-title {
+  font-family: 'Bitter', serif !important;
+  font-size: clamp(28px, 3.2vw, 42px) !important;
+  letter-spacing: 0.2em !important;
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+  padding-bottom: 12px !important;
+  display: inline-block !important;
+  margin-bottom: 16px !important;
+}
+
+.project-text {
+  font-family: 'Lato', sans-serif !important;
+  font-size: clamp(14px, 1.1vw, 16px) !important;
+  color: #b0b0b0 !important;
+  line-height: 1.7 !important;
+  max-width: 680px !important;
+  margin-bottom: 30px !important;
+}
+
+.carousel {
+  position: relative !important;
+  width: 100% !important;
+  padding: 20px 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  overflow: visible !important;
+  perspective: 1200px !important;
+  transform-style: preserve-3d !important;
+  top: auto !important;
+  left: auto !important;
+}
+
+.carousel__body {
+  position: relative !important;
+  width: 100% !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+.carousel__body .carousel__slider {
+  background: transparent !important;
+  margin: 0 !important;
+  opacity: 1 !important;
+  float: none !important;
+  overflow: visible !important;
+}
+
+.carousel__slider__item {
+  float: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* Fix Carousel Arrow Controls */
+.carousel__body .prev,
+.carousel__body .next {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: rgba(30, 30, 30, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 35 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+.carousel__body .prev {
+  left: -24px !important;
+}
+
+.carousel__body .next {
+  right: -24px !important;
+}
+
+.carousel__body .prev:hover,
+.carousel__body .next:hover {
+  background: #ffffff !important;
+  color: #121212 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
+  transform: translateY(-50%) scale(1.1) !important;
+}
+
+/* ============================================================
+   LIGHTBOX PROJECT MODAL (FULLSCREEN FIXED POPUP)
+   ============================================================ */
+
+.lightbox-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.82) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  z-index: 99998 !important;
+  margin: 0 !important;
+}
+
+.lightbox {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 90vw !important;
+  max-width: 860px !important;
+  max-height: 85vh !important;
+  background: #181818 !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.08) !important;
+  z-index: 99999 !important;
+  overflow-y: auto !important;
+  padding: 32px !important;
+  box-sizing: border-box !important;
+}
+
+.lightbox .close {
+  position: absolute !important;
+  top: 16px !important;
+  right: 20px !important;
+  font-size: 28px !important;
+  color: #aaaaaa !important;
+  cursor: pointer !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  line-height: 1 !important;
+}
+
+.lightbox .close:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+.lightbox-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  width: 100% !important;
+  height: auto !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.project-description-container {
+  color: #e0e0e0 !important;
+  width: 100% !important;
+}
+
+.project-name {
+  font-family: 'Bitter', serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 12px !important;
+  line-height: 1.3 !important;
+}
+
+.project-description-text {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #cccccc !important;
+  margin-bottom: 16px !important;
+}
+
+.ul-title {
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-top: 14px !important;
+  margin-bottom: 8px !important;
+  font-size: 14px !important;
+}
+
+.ul-description {
+  list-style: disc !important;
+  padding-left: 20px !important;
+  margin-bottom: 16px !important;
+}
+
+.ul-description li {
+  font-size: 13px !important;
+  color: #b8b8b8 !important;
+  line-height: 1.6 !important;
+  margin-bottom: 6px !important;
+}
+
+.project-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 16px 0 !important;
+}
+
+.project-tag-item {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  padding: 4px 10px !important;
+  font-size: 11px !important;
+  color: #d0d0d0 !important;
+}
+
+.project-action-links {
+  display: flex !important;
+  gap: 12px !important;
+  margin-top: 20px !important;
+}
+
+.project-link-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 24px !important;
+  border-radius: 50px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  transition: all 0.25s ease !important;
+}
+
+.project-link-btn.primary {
+  background: #ffffff !important;
+  color: #121212 !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3) !important;
+}
+
+.project-link-btn.primary:hover {
+  background: #e0e0e0 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6) !important;
+}
+
+.project-link-btn.secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.project-link-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }
 
 /* Download CV Button - Silver/White theme matching the site */
