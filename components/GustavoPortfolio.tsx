@@ -317,6 +317,25 @@ export default function GustavoPortfolio() {
     };
   }, []);
 
+  // IntersectionObserver — fade-in text content when sections scroll into view
+  useEffect(() => {
+    const targets = document.querySelectorAll(
+      '.section .content, .section h2, .section .about-description, .section .service-description, .contact-title, .contact-form'
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('scroll-visible');
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+    );
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   // Complete Three.js 3D WebGL Multi-Scene Engine with Raised Terrain Horizon & Concentric Shatter Mesh
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -791,9 +810,10 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 7. Scroll-driven Camera with DWELL ZONES
-      // 5 equal sections: 0-0.2 Home, 0.2-0.4 About, 0.4-0.6 Service, 0.6-0.8 Projects, 0.8-1.0 Contact
-      // Camera transitions in first/last 15% of each section's range, dwells at 3D object for middle 70%
+      // 7. Smooth Keyframe Camera — 3D objects centered at section midpoints
+      // Keyframe Y positions matched to each section's center scroll progress:
+      // Home center ~0.10 → y=510, About center ~0.30 → y=315, Service ~0.50 → y=150,
+      // Projects ~0.70 → y=-60, Contact ~0.90 → y=-180
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
@@ -801,49 +821,35 @@ export default function GustavoPortfolio() {
       let targetY = 510;
       let targetZ = 100;
       let targetX = -3;
-      let targetLookY = 510;
 
-      const lerp = (a: number, b: number, t: number) => a + (b - a) * Math.max(0, Math.min(1, t));
+      // Smooth piecewise linear interpolation between camera keyframes
+      const camKeyframes = [
+        { s: 0.00, y: 510 },
+        { s: 0.08, y: 510 },   // Hold at home a little before moving
+        { s: 0.30, y: 315 },   // About section center — head perfectly framed
+        { s: 0.50, y: 150 },   // Service section center — brain perfectly framed
+        { s: 0.70, y: -60 },   // Projects section center
+        { s: 0.90, y: -180 },  // Contact section center — ripple mesh framed
+        { s: 1.00, y: -180 },
+      ];
 
-      if (scrollProgress < 0.20) {
-        // Home — terrain + star. Transition toward head as About approaches.
-        const p = scrollProgress / 0.20;
-        targetY = lerp(510, 315, p);
-        targetLookY = targetY;
-      } else if (scrollProgress < 0.40) {
-        // About — head at y=315. DWELL: camera stays locked on head for full section.
-        targetY = 315;
-        targetLookY = 315;
-      } else if (scrollProgress < 0.42) {
-        // Short transition About → Service
-        const p = (scrollProgress - 0.40) / 0.02;
-        targetY = lerp(315, 150, p);
-        targetLookY = targetY;
-      } else if (scrollProgress < 0.60) {
-        // Service — brain at y=150. DWELL: camera stays locked on brain.
-        targetY = 150;
-        targetLookY = 150;
-      } else if (scrollProgress < 0.62) {
-        // Short transition Service → Projects
-        const p = (scrollProgress - 0.60) / 0.02;
-        targetY = lerp(150, -60, p);
-        targetLookY = targetY;
-      } else if (scrollProgress < 0.80) {
-        // Projects — camera at y=-60 (below brain, above contact)
-        targetY = -60;
-        targetLookY = -60;
-      } else {
-        // Contact — ripple mesh at y=-180
-        const p = (scrollProgress - 0.80) / 0.20;
-        targetY = lerp(-60, -180, p);
-        targetLookY = targetY;
+      for (let i = 0; i < camKeyframes.length - 1; i++) {
+        const kA = camKeyframes[i];
+        const kB = camKeyframes[i + 1];
+        if (scrollProgress >= kA.s && scrollProgress <= kB.s) {
+          const range = kB.s - kA.s;
+          const t = range > 0 ? (scrollProgress - kA.s) / range : 0;
+          // Smooth-step easing so camera decelerates near each 3D object
+          const tEased = t * t * (3 - 2 * t);
+          targetY = kA.y + (kB.y - kA.y) * tEased;
+          break;
+        }
       }
 
-
-      camera.position.y += (targetY - camera.position.y) * 0.08;
-      camera.position.z += (targetZ - camera.position.z) * 0.08;
-      camera.position.x += (targetX + mouseX * 2 - camera.position.x) * 0.08;
-      camera.lookAt(0, targetLookY, 0);
+      camera.position.y += (targetY - camera.position.y) * 0.055;
+      camera.position.z += (targetZ - camera.position.z) * 0.055;
+      camera.position.x += (targetX + mouseX * 2 - camera.position.x) * 0.055;
+      camera.lookAt(0, camera.position.y, 0);
 
       renderer.render(scene, camera);
       animId = requestAnimationFrame(animate);

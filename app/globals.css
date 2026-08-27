@@ -11,6 +11,42 @@ body {
   overflow-x: hidden;
 }
 
+/* ============================================================
+   SCROLL-TRIGGERED TEXT ANIMATIONS
+   Elements start invisible; IntersectionObserver adds .scroll-visible
+   ============================================================ */
+
+/* Default hidden state for animated elements */
+.section .content,
+.section h2,
+.section .about-description,
+.section .service-description,
+.contact-title,
+.contact-form {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Triggered state — added by IntersectionObserver */
+.section .content.scroll-visible,
+.section h2.scroll-visible,
+.section .about-description.scroll-visible,
+.section .service-description.scroll-visible,
+.contact-title.scroll-visible,
+.contact-form.scroll-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Stagger child elements for more dynamic feel */
+.section h2 { transition-delay: 0s; }
+.section .content { transition-delay: 0.10s; }
+.contact-title { transition-delay: 0s; }
+.contact-form { transition-delay: 0.18s; }
+
 /* Hide language dropdown completely */
 .dropdown,
 .dropdown__button,
