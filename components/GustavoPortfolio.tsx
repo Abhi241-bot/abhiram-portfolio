@@ -257,27 +257,31 @@ export default function GustavoPortfolio() {
     toggleSound();
   };
 
-  // Scroll-Spy Dot Navigation
+  // Scroll-Spy Dot Navigation — using scrollProgress thresholds matching camera ranges
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight * 0.4;
-      const sections = ["home", "about", "service", "projects", "contact"];
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
+      const sp = scrollY / maxScroll;
       const dots = document.querySelectorAll(".nav__dot li");
+      if (!dots.length) return;
 
-      sections.forEach((secId, idx) => {
-        const el = document.getElementById(secId) || document.getElementById(`section-${secId}`);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            dots.forEach((d) => d.classList.remove("current"));
-            if (dots[idx]) dots[idx].classList.add("current");
-          }
-        }
-      });
+      dots.forEach((d) => d.classList.remove("current"));
+      if (sp < 0.15) {
+        dots[0]?.classList.add("current"); // Home
+      } else if (sp < 0.35) {
+        dots[1]?.classList.add("current"); // About
+      } else if (sp < 0.55) {
+        dots[2]?.classList.add("current"); // Service
+      } else if (sp < 0.75) {
+        dots[3]?.classList.add("current"); // Projects
+      } else {
+        dots[4]?.classList.add("current"); // Contact
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // set initial state
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -457,7 +461,7 @@ export default function GustavoPortfolio() {
 
     // 4. CONTACT SCENE: 3D Ripple Mesh + Click Shatter Exploding Particle System
     const contactGroup = new THREE.Group();
-    contactGroup.position.set(45, -280, 0);
+    contactGroup.position.set(45, -180, 0);
     scene.add(contactGroup);
 
     // Concentric wireframe ripple disc safely on the right side
@@ -552,7 +556,7 @@ export default function GustavoPortfolio() {
     const dustVelocities: { x: number; y: number; z: number }[] = [];
     for (let i = 0; i < dustCount * 3; i += 3) {
       dustPos[i] = (Math.random() - 0.5) * 500;
-      dustPos[i + 1] = Math.random() * 800 - 200;
+      dustPos[i + 1] = Math.random() * 900 - 400;
       dustPos[i + 2] = (Math.random() - 0.5) * 150;
       dustVelocities.push({
         x: (Math.random() - 0.5) * 0.05,
@@ -569,6 +573,31 @@ export default function GustavoPortfolio() {
     });
     const dustParticles = new THREE.Points(dustGeo, dustMat);
     scene.add(dustParticles);
+
+    // 5b. VOID FILLER — glowing debris field filling the space between Projects and Contact (y = -60 to -180)
+    const voidCount = 600;
+    const voidGeo = new THREE.BufferGeometry();
+    const voidPos = new Float32Array(voidCount * 3);
+    const voidBaseY: number[] = [];
+    for (let i = 0; i < voidCount; i++) {
+      const px = (Math.random() - 0.5) * 400;
+      const py = -60 - Math.random() * 120; // between y=-60 and y=-180
+      const pz = (Math.random() - 0.5) * 120;
+      voidPos[i * 3] = px;
+      voidPos[i * 3 + 1] = py;
+      voidPos[i * 3 + 2] = pz;
+      voidBaseY.push(py);
+    }
+    voidGeo.setAttribute("position", new THREE.BufferAttribute(voidPos, 3));
+    const voidMat = new THREE.PointsMaterial({
+      color: 0xaaaaaa,
+      size: 0.8,
+      transparent: true,
+      opacity: 0.55,
+      blending: THREE.AdditiveBlending,
+    });
+    const voidParticles = new THREE.Points(voidGeo, voidMat);
+    scene.add(voidParticles);
 
     // 6. AMBIENT SMOKE & SPACE DUST
     const smokeTexture = textureLoader.load("/images/smoke3.png");
@@ -711,6 +740,20 @@ export default function GustavoPortfolio() {
       }
       dustGeo.attributes.position.needsUpdate = true;
 
+      // 5b. Void Filler Particles — slow drift + sinusoidal floating
+      const voidPosArr = voidGeo.attributes.position.array as Float32Array;
+      for (let i = 0; i < voidCount; i++) {
+        voidPosArr[i * 3 + 1] = voidBaseY[i] + Math.sin(elapsedTime * 0.4 + i * 0.5) * 6;
+        voidPosArr[i * 3] += Math.sin(elapsedTime * 0.2 + i) * 0.02;
+      }
+      voidGeo.attributes.position.needsUpdate = true;
+
+      // 5c. Star Orbit Animation — gentle circular orbit + mouse parallax
+      starMesh.position.x = -2.5 + Math.sin(elapsedTime * 0.35) * 22 + mouseX * 14;
+      starMesh.position.z = -30 + Math.cos(elapsedTime * 0.35) * 18;
+      starMesh.position.y = 555 + Math.sin(elapsedTime * 0.6) * 4;
+      starLight.position.set(starMesh.position.x, starMesh.position.y, starMesh.position.z + 12);
+
       // 6. Smoke Drift
       smokeParticles.forEach((sm, idx) => {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
@@ -726,25 +769,42 @@ export default function GustavoPortfolio() {
       let targetX = -3;
       let targetLookY = 510;
 
-      if (scrollProgress < 0.25) {
-        // Home -> About
-        const progress = scrollProgress / 0.25;
-        targetY = 510 - progress * (510 - 315);
+      // DOM-measured section breakpoints — camera tracks actual section on-screen position
+      const aboutEl = document.getElementById('about');
+      const serviceEl = document.getElementById('service');
+      const projectsEl = document.getElementById('projects');
+      const contactEl = document.getElementById('contact');
+      const totalH = document.documentElement.scrollHeight - window.innerHeight || 1;
+
+      const aboutStart = aboutEl ? (aboutEl.offsetTop / totalH) : 0.20;
+      const serviceStart = serviceEl ? (serviceEl.offsetTop / totalH) : 0.38;
+      const projectsStart = projectsEl ? (projectsEl.offsetTop / totalH) : 0.56;
+      const contactStart = contactEl ? (contactEl.offsetTop / totalH) : 0.76;
+
+      if (scrollProgress < aboutStart) {
+        // Home
+        const p = scrollProgress / aboutStart;
+        targetY = 510 - p * (510 - 315);
         targetLookY = targetY;
-      } else if (scrollProgress < 0.5) {
-        // About -> Service
-        const progress = (scrollProgress - 0.25) / 0.25;
-        targetY = 315 - progress * (315 - 150);
+      } else if (scrollProgress < serviceStart) {
+        // About (head at y=315)
+        const p = (scrollProgress - aboutStart) / (serviceStart - aboutStart);
+        targetY = 315 - p * (315 - 150);
         targetLookY = targetY;
-      } else if (scrollProgress < 0.75) {
-        // Service -> Projects (camera drops well below brain at y=150)
-        const progress = (scrollProgress - 0.5) / 0.25;
-        targetY = 150 - progress * (150 - (-60));
+      } else if (scrollProgress < projectsStart) {
+        // Service (brain at y=150)
+        const p = (scrollProgress - serviceStart) / (projectsStart - serviceStart);
+        targetY = 150 - p * (150 - (-60));
+        targetLookY = targetY;
+      } else if (scrollProgress < contactStart) {
+        // Projects
+        const p = (scrollProgress - projectsStart) / (contactStart - projectsStart);
+        targetY = -60 - p * (-60 - (-120));
         targetLookY = targetY;
       } else {
-        // Projects -> Contact
-        const progress = (scrollProgress - 0.75) / 0.25;
-        targetY = -60 - progress * (-60 - (-280));
+        // Contact (ripple mesh at y=-180)
+        const p = Math.min(1, (scrollProgress - contactStart) / (1 - contactStart));
+        targetY = -120 - p * (-120 - (-180));
         targetLookY = targetY;
       }
 
@@ -1632,10 +1692,7 @@ export default function GustavoPortfolio() {
           </section>
         </section>
 
-        {/* Spacer Section */}
-        <section className="section spacer-section">
-          <div className="spacer"></div>
-        </section>
+
 
         {/* Section 5: Contact with Interactive 3D Exploding Mesh */}
         <section className="contact section" id="contact" onClick={() => {
