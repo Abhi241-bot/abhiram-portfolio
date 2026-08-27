@@ -791,7 +791,9 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 7. Scroll-driven Camera — uses cached section breakpoints (measured once, not every frame)
+      // 7. Scroll-driven Camera with DWELL ZONES
+      // 5 equal sections: 0-0.2 Home, 0.2-0.4 About, 0.4-0.6 Service, 0.6-0.8 Projects, 0.8-1.0 Contact
+      // Camera transitions in first/last 15% of each section's range, dwells at 3D object for middle 70%
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
@@ -801,38 +803,42 @@ export default function GustavoPortfolio() {
       let targetX = -3;
       let targetLookY = 510;
 
-      const { aboutStart, serviceStart, projectsStart, contactStart } = sectionBreakpointsRef.current;
+      const lerp = (a: number, b: number, t: number) => a + (b - a) * Math.max(0, Math.min(1, t));
 
-      if (scrollProgress < aboutStart) {
-        // Home
-        const p = aboutStart > 0 ? scrollProgress / aboutStart : 0;
-        targetY = 510 - p * (510 - 315);
+      if (scrollProgress < 0.20) {
+        // Home — terrain + star. Transition toward head as About approaches.
+        const p = scrollProgress / 0.20;
+        targetY = lerp(510, 315, p);
         targetLookY = targetY;
-      } else if (scrollProgress < serviceStart) {
-        // About (head at y=315)
-        const range = serviceStart - aboutStart || 0.001;
-        const p = (scrollProgress - aboutStart) / range;
-        targetY = 315 - p * (315 - 150);
+      } else if (scrollProgress < 0.40) {
+        // About — head at y=315. DWELL: camera stays locked on head for full section.
+        targetY = 315;
+        targetLookY = 315;
+      } else if (scrollProgress < 0.42) {
+        // Short transition About → Service
+        const p = (scrollProgress - 0.40) / 0.02;
+        targetY = lerp(315, 150, p);
         targetLookY = targetY;
-      } else if (scrollProgress < projectsStart) {
-        // Service (brain at y=150)
-        const range = projectsStart - serviceStart || 0.001;
-        const p = (scrollProgress - serviceStart) / range;
-        targetY = 150 - p * (150 - (-60));
+      } else if (scrollProgress < 0.60) {
+        // Service — brain at y=150. DWELL: camera stays locked on brain.
+        targetY = 150;
+        targetLookY = 150;
+      } else if (scrollProgress < 0.62) {
+        // Short transition Service → Projects
+        const p = (scrollProgress - 0.60) / 0.02;
+        targetY = lerp(150, -60, p);
         targetLookY = targetY;
-      } else if (scrollProgress < contactStart) {
-        // Projects
-        const range = contactStart - projectsStart || 0.001;
-        const p = (scrollProgress - projectsStart) / range;
-        targetY = -60 - p * (-60 - (-120));
-        targetLookY = targetY;
+      } else if (scrollProgress < 0.80) {
+        // Projects — camera at y=-60 (below brain, above contact)
+        targetY = -60;
+        targetLookY = -60;
       } else {
-        // Contact (ripple mesh at y=-180)
-        const range = 1 - contactStart || 0.001;
-        const p = Math.min(1, (scrollProgress - contactStart) / range);
-        targetY = -120 - p * (-120 - (-180));
+        // Contact — ripple mesh at y=-180
+        const p = (scrollProgress - 0.80) / 0.20;
+        targetY = lerp(-60, -180, p);
         targetLookY = targetY;
       }
+
 
       camera.position.y += (targetY - camera.position.y) * 0.08;
       camera.position.z += (targetZ - camera.position.z) * 0.08;
