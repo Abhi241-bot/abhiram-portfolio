@@ -257,8 +257,35 @@ export default function GustavoPortfolio() {
     toggleSound();
   };
 
+  // Cache section scroll breakpoints once after layout settles
+  const sectionBreakpointsRef = React.useRef({
+    aboutStart: 0.20,
+    serviceStart: 0.40,
+    projectsStart: 0.60,
+    contactStart: 0.80,
+  });
+
   // Scroll-Spy Dot Navigation — using scrollProgress thresholds matching camera ranges
   useEffect(() => {
+    // Measure section positions once after layout is complete
+    const measureBreakpoints = () => {
+      const totalH = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalH <= 0) return;
+      const aboutEl = document.getElementById('about');
+      const serviceEl = document.getElementById('service');
+      const projectsEl = document.getElementById('projects');
+      const contactEl = document.getElementById('contact');
+      sectionBreakpointsRef.current = {
+        aboutStart: aboutEl ? aboutEl.offsetTop / totalH : 0.20,
+        serviceStart: serviceEl ? serviceEl.offsetTop / totalH : 0.40,
+        projectsStart: projectsEl ? projectsEl.offsetTop / totalH : 0.60,
+        contactStart: contactEl ? contactEl.offsetTop / totalH : 0.80,
+      };
+    };
+    // Delay to let the DOM fully layout
+    const t = setTimeout(measureBreakpoints, 600);
+    window.addEventListener('resize', measureBreakpoints);
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
@@ -266,14 +293,15 @@ export default function GustavoPortfolio() {
       const dots = document.querySelectorAll(".nav__dot li");
       if (!dots.length) return;
 
+      const { aboutStart, serviceStart, projectsStart, contactStart } = sectionBreakpointsRef.current;
       dots.forEach((d) => d.classList.remove("current"));
-      if (sp < 0.15) {
+      if (sp < aboutStart) {
         dots[0]?.classList.add("current"); // Home
-      } else if (sp < 0.35) {
+      } else if (sp < serviceStart) {
         dots[1]?.classList.add("current"); // About
-      } else if (sp < 0.55) {
+      } else if (sp < projectsStart) {
         dots[2]?.classList.add("current"); // Service
-      } else if (sp < 0.75) {
+      } else if (sp < contactStart) {
         dots[3]?.classList.add("current"); // Projects
       } else {
         dots[4]?.classList.add("current"); // Contact
@@ -281,8 +309,12 @@ export default function GustavoPortfolio() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // set initial state
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener('resize', measureBreakpoints);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Complete Three.js 3D WebGL Multi-Scene Engine with Raised Terrain Horizon & Concentric Shatter Mesh
@@ -759,7 +791,7 @@ export default function GustavoPortfolio() {
         sm.rotation.z += (idx % 2 === 0 ? 0.0005 : -0.0005);
       });
 
-      // 7. Scroll-driven Multi-Scene Camera Interpolation
+      // 7. Scroll-driven Camera — uses cached section breakpoints (measured once, not every frame)
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
       const scrollProgress = scrollY / maxScroll;
@@ -769,41 +801,35 @@ export default function GustavoPortfolio() {
       let targetX = -3;
       let targetLookY = 510;
 
-      // DOM-measured section breakpoints — camera tracks actual section on-screen position
-      const aboutEl = document.getElementById('about');
-      const serviceEl = document.getElementById('service');
-      const projectsEl = document.getElementById('projects');
-      const contactEl = document.getElementById('contact');
-      const totalH = document.documentElement.scrollHeight - window.innerHeight || 1;
-
-      const aboutStart = aboutEl ? (aboutEl.offsetTop / totalH) : 0.20;
-      const serviceStart = serviceEl ? (serviceEl.offsetTop / totalH) : 0.38;
-      const projectsStart = projectsEl ? (projectsEl.offsetTop / totalH) : 0.56;
-      const contactStart = contactEl ? (contactEl.offsetTop / totalH) : 0.76;
+      const { aboutStart, serviceStart, projectsStart, contactStart } = sectionBreakpointsRef.current;
 
       if (scrollProgress < aboutStart) {
         // Home
-        const p = scrollProgress / aboutStart;
+        const p = aboutStart > 0 ? scrollProgress / aboutStart : 0;
         targetY = 510 - p * (510 - 315);
         targetLookY = targetY;
       } else if (scrollProgress < serviceStart) {
         // About (head at y=315)
-        const p = (scrollProgress - aboutStart) / (serviceStart - aboutStart);
+        const range = serviceStart - aboutStart || 0.001;
+        const p = (scrollProgress - aboutStart) / range;
         targetY = 315 - p * (315 - 150);
         targetLookY = targetY;
       } else if (scrollProgress < projectsStart) {
         // Service (brain at y=150)
-        const p = (scrollProgress - serviceStart) / (projectsStart - serviceStart);
+        const range = projectsStart - serviceStart || 0.001;
+        const p = (scrollProgress - serviceStart) / range;
         targetY = 150 - p * (150 - (-60));
         targetLookY = targetY;
       } else if (scrollProgress < contactStart) {
         // Projects
-        const p = (scrollProgress - projectsStart) / (contactStart - projectsStart);
+        const range = contactStart - projectsStart || 0.001;
+        const p = (scrollProgress - projectsStart) / range;
         targetY = -60 - p * (-60 - (-120));
         targetLookY = targetY;
       } else {
         // Contact (ripple mesh at y=-180)
-        const p = Math.min(1, (scrollProgress - contactStart) / (1 - contactStart));
+        const range = 1 - contactStart || 0.001;
+        const p = Math.min(1, (scrollProgress - contactStart) / range);
         targetY = -120 - p * (-120 - (-180));
         targetLookY = targetY;
       }
