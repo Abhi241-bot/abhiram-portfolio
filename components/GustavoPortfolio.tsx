@@ -811,30 +811,32 @@ export default function GustavoPortfolio() {
       });
 
       // 7. Smooth Keyframe Camera — 3D objects centered at section midpoints
-      // Keyframe Y positions matched to each section's center scroll progress:
-      // Home center ~0.10 → y=510, About center ~0.30 → y=315, Service ~0.50 → y=150,
-      // Projects ~0.70 → y=-60, Contact ~0.90 → y=-180
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight || 1;
-      const scrollProgress = scrollY / maxScroll;
+      // Clamp to [0,1] — prevents floating-point overscroll from resetting camera to home
+      const scrollProgress = Math.min(1.0, Math.max(0.0, scrollY / maxScroll));
 
-      let targetY = 510;
+      let targetY = camera.position.y; // default: hold current position (no snap to 510)
       let targetZ = 100;
       let targetX = -3;
 
-      // Smooth piecewise linear interpolation between camera keyframes
+      // Smooth piecewise smooth-step interpolation between camera keyframes
       const camKeyframes = [
         { s: 0.00, y: 510 },
-        { s: 0.08, y: 510 },   // Hold at home a little before moving
-        { s: 0.30, y: 315 },   // About section center — head perfectly framed
-        { s: 0.50, y: 150 },   // Service section center — brain perfectly framed
-        { s: 0.70, y: -60 },   // Projects section center
-        { s: 0.90, y: -180 },  // Contact section center — ripple mesh framed
-        { s: 1.00, y: -180 },
+        { s: 0.08, y: 510 },   // Hold at home before moving
+        { s: 0.30, y: 315 },   // About center — head framed
+        { s: 0.50, y: 150 },   // Service center — brain framed
+        { s: 0.70, y: -60 },   // Projects center
+        { s: 0.92, y: -180 },  // Contact center — ripple framed
+        { s: 1.00, y: -180 },  // Held past 1.0 to prevent snap-back
       ];
+
+      // Hide terrain when camera is far below it (y < 300) to prevent glitch
+      terrainMesh.visible = camera.position.y > 280;
 
       for (let i = 0; i < camKeyframes.length - 1; i++) {
         const kA = camKeyframes[i];
+
         const kB = camKeyframes[i + 1];
         if (scrollProgress >= kA.s && scrollProgress <= kB.s) {
           const range = kB.s - kA.s;
